@@ -3,9 +3,19 @@ import Tile from "./tile.js";
 export default class TileMap
 {
     /**Creates a empty hexagonal tile map.*/
-    constructor(rows, cols)
+    constructor(rows = 10, cols = 10)
     {
-        this.map = new Array(rows);
+        this.map = null;
+        this.view = null;
+        this.rows = rows;
+        this.cols = cols;
+        this.displayMode = 0;
+        this.generateNewMap(rows, cols);
+    }
+
+    generateNewMap(rows, cols)
+    {
+        this.map = Array(rows);
         //initialize the map hexagonal grid to 0,0.
         for(let i = 0; i < rows; i++)
         {
@@ -20,20 +30,78 @@ export default class TileMap
                     newTile.row = i;
                     newTile.col = j;
                     this.map[i][j] = newTile;
-                }
-                    
+                }  
             }
         }
+    }
+
+    setViews(views)
+    {
+        this.view = views;
+        this.updatesView();
+    }
+
+    updatesView()
+    {
+        if(this.view == null)
+            return;
+        this.view.drawMap(this.map, this.displayMode);
+    }
+
+    updateSymbolOfTileAt(row, col, symbol="O")
+    {
+        let tile = this.getTileAt(row - 1, col - 1);
+        if(tile)
+        {
+            tile.symbol = symbol;
+            this.updatesView();
+        }
+    }
+
+    getRowAndColOfTilesWithSymbol(symbol)
+    {
+        if(!symbol)
+            return null;
+        let arr = [];
+        for(let i = 0; i < this.rows; i++)
+        {
+            for(let j = 0; j < this.cols; j++)
+            {
+                if(this.map[i][j] && this.map[i][j].symbol == symbol)
+                {
+                    arr.push([i, j]);
+                }
+            }
+        }
+        return arr;
+    }
+
+    setDisplayModeFog()
+    {
+        this.displayMode = 0;
+        this.updatesView();
+    }
+
+    setDisplayModeVotes()
+    {
+        this.displayMode = 1;
+        this.updatesView();
+    }
+
+    resetBoard()
+    {
+        this.generateNewMap(this.rows, this.cols);
+        this.updatesView();
     }
 
     /**1 for fogOfWarMap, 2 for show all, 3 for occupy map.*/
     printMap(configNum)
     {
         let str = "";
+        let htmlStr = "";
         for(let i = 0; i < this.map.length; i++)
         {
-            if(i % 2 == 1)
-                str += " ";
+            let rowStr = "";
             for(let j = 0; j < this.map[0].length; j++)
             {
                 if(this.map[i][j] != null)
@@ -42,28 +110,37 @@ export default class TileMap
                     {
                         case 1: {
                             if(this.map[i][j].visible)
-                                str += this.map[i][j].numberOfVoters;
+                                rowStr += this.map[i][j].numberOfVoters;
                             else
-                                str += this.map[i][j].symbol;
+                                rowStr += this.map[i][j].symbol;
                         }; break;
                         case 2: 
-                            str += this.map[i][j].numberOfVoters;
+                            rowStr += this.map[i][j].numberOfVoters;
                             break;
                         case 3: 
-                            str += this.map[i][j].numberOfVoters;
+                            rowStr += this.map[i][j].numberOfVoters;
                             break;
                         default:
-                            str += this.map[i][j].numberOfVoters;
+                            rowStr += this.map[i][j].numberOfVoters;
                     }
                 }
                 else 
-                    str += " ";
-                str += " ";
+                rowStr += " ";
+                rowStr += " ";
             }
-            str += "\n";
+            if(i % 2 == 1)
+            {
+                str += " " + rowStr + "\n";
+                htmlStr += "&nbsp;" + rowStr + "<br>";
+            }
+            else
+            {
+                htmlStr += rowStr + "<br>"
+                str += rowStr + "\n";
+            }
         }
         console.log(str);
-        return str;
+        return htmlStr;
     }
 
     getTileAt(row, col)
