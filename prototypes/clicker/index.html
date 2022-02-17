@@ -1,14 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="app.css">
-    <script src="app.js"></script>
-    <title>Clicker Game</title>
-</head>
-<body>
-    <h1>Clicker Game</h1>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="app.css">
+        <script type="module" src="app.js"></script>
+        <title>Clicker Game</title>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Clicker Game</h1>
+        </div>
+        <div class="row">
+            <div class="column">
+                <h2>Stats</h2>
+                <p id="current_funds">Current Funds: $0.00</p>
+                <p id="rate_of_revenue">Automated Rate of Revenue: $0.00/sec</p>
+                <button id="call_button">Text/Call</button>
+            </div>
+            <div class="column">
+                <h2>Workers</h2>
+                <div class="row">
+                    <div class="worker_column">
+                        <button disabled id="cold_caller_button">Hire<br>Cold Caller</button>
+                    </div>
+                    <div class="worker_column">
+                        <p id="cold_caller_stats">Hired: 0<br>
+                            Cost: $10.00</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="worker_column">
+                        <button disabled id="leafleter_button">Hire<br>Leafleter</button>
+                    </div>
+                    <div class="worker_column">
+                        <p id="leafleter_stats">Hired: 0<br>
+                            Cost: $30.00</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <h2>Upgrades</h2>
+                <div class="row" id="cold_caller_upgrade">
+                    <button disabled id="cold_caller_upgrade_button">
+                        Office Equipment<br>
+                        $250<br>
+                        Cold Callers become 2&times; more effective
+                    </button>
+                </div>
+                <div class="row" id="leafleter_upgrade">
+                    <button disabled id="leafleter_upgrade_button">
+                        Demographic Targeting<br>
+                        $500<br>
+                        Leafleters become 2&times; more effective
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
