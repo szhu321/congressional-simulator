@@ -1,19 +1,42 @@
-import UserInput from './controller/userInput.js';
-import Tile from './model/tile.js';
-import TileMap from './model/tilemap.js';
-import TileMapView from './view/tilemapview.js';
+
+// const express = require('express');
+// const app = express();
+// const port = 3000;
+
+// app.use(express.static('public'));
+
+// app.listen(port, () => {
+//     console.log(`Server is listening on port ${port}`);
+// });
 
 
-let mapDisplay = document.querySelector("#map");
-let input = document.querySelector("#input");
 
 
-let tileMap = new TileMap(10, 10);
-let tileMapView = new TileMapView(mapDisplay);
-tileMap.setViews(tileMapView);
-let inputController = new UserInput();
-inputController.setInputDOM(input);
-inputController.setTileMapModel(tileMap);
+
+
+
+
+
+
+
+
+
+// import UserInput from './controller/userInput.js';
+// import Tile from './model/tile.js';
+// import TileMap from './model/tilemap.js';
+// import TileMapView from './view/tilemapview.js';
+
+
+// let mapDisplay = document.querySelector("#map");
+// let input = document.querySelector("#input");
+
+
+// let tileMap = new TileMap(10, 10);
+// let tileMapView = new TileMapView(mapDisplay);
+// tileMap.setViews(tileMapView);
+// let inputController = new UserInput();
+// inputController.setInputDOM(input);
+// inputController.setTileMapModel(tileMap);
 
 // let tileAtZero = tileMap.getTileAt(0, 0);
 // tileAtZero.symbol = "O";
@@ -33,3 +56,4 @@ inputController.setTileMapModel(tileMap);
 
 //MVC format
 //Map model stores the data and updates the mapview when the data changes.
+
