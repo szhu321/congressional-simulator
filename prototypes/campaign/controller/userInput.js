@@ -5,6 +5,7 @@ export default class UserInput {
     {
         this.inputDOM = null;
         this.tileMapModel = null;
+        this.tileView = null;
     }
 
     setTileMapModel(map)
@@ -12,6 +13,11 @@ export default class UserInput {
         this.tileMapModel = map;
     }
     
+    setTileView(tileView)
+    {
+        this.tileView = tileView;
+    }
+
     setInputDOM(input)
     {
         this.inputDOM = input;
@@ -88,6 +94,26 @@ export default class UserInput {
                     }
                 }
                 console.log("Waited for a little bit.");
+            }break;
+            case "tile": {
+                if(args[1] && args[2])
+                {
+                    let row = parseInt(args[1]);
+                    let col = parseInt(args[2]);
+                    if(Number.isInteger(row) && Number.isInteger(col))
+                    {
+                        console.log(`Displaying information for tile at row ${row} and col ${col}.`);
+                        let tile = this.tileMapModel.getTileAt(row - 1,col - 1);
+                        if(tile)
+                        {
+                            this.tileView.drawTile(tile);
+                        }
+                    }
+                    else
+                    {
+                        console.log("Incorrect Input.");
+                    }
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ import Tile from "./tile.js";
 export default class TileMap
 {
     /**Creates a empty hexagonal tile map.*/
-    constructor(rows = 10, cols = 10)
+    constructor(rows = 20, cols = 20)
     {
         this.map = null;
         this.view = null;
@@ -48,6 +48,12 @@ export default class TileMap
         this.view.drawMap(this.map, this.displayMode);
     }
 
+    /**
+     * Updates the tile at the specified row and col with the provided symbol.
+     * @param {*} row - row starting at 1.
+     * @param {*} col - col starting at 1.
+     * @param {*} symbol - the symbol.
+     */
     updateSymbolOfTileAt(row, col, symbol="O")
     {
         let tile = this.getTileAt(row - 1, col - 1);

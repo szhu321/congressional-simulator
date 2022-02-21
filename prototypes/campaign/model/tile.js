@@ -9,6 +9,11 @@ class Tile
         this.visible = false;
         this.row = 0;
         this.col = 0;
+        this.ecomony = Math.round(((Math.random() * 2) - 1) * 100) / 100;
+        this.healthcare = Math.round(((Math.random() * 2) - 1) * 100) / 100;
+        this.education = Math.round(((Math.random() * 2) - 1) * 100) / 100;
+        this.taxes = Math.round(((Math.random() * 2) - 1) * 100) / 100;
+        this.environment = Math.round(((Math.random() * 2) - 1) * 100) / 100;
     }
 
     occupy(name, amount)
