@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 
+import CampaignScene from './scenes/CampaignScene.js';
+import Game from './scenes/Game.js';
+
 let config = {
     type: Phaser.AUTO,
     width: 800,
@@ -10,42 +13,46 @@ let config = {
             gravity: { y: 200 }
         }
     },
-    scene: {
-        preload: preload,
-        create: create
-    }
+    // scene: {
+    //     preload: preload,
+    //     create: create
+    // }
 };
 
 let game = new Phaser.Game(config);
 
-function preload()
-{
-    this.load.setBaseURL('https://labs.phaser.io');
+game.scene.add('campaignScene', CampaignScene);
+game.scene.add('game', Game);
+game.scene.start('campaignScene');
 
-    this.load.image('sky', 'assets/skies/space3.png');
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-    this.load.image('red', 'assets/particles/red.png');
-}
+// function preload()
+// {
+//     this.load.setBaseURL('https://labs.phaser.io');
 
-function create()
-{
-    //this.add.image(400, 300, 'sky');
+//     this.load.image('sky', 'assets/skies/space3.png');
+//     this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+//     this.load.image('red', 'assets/particles/red.png');
+// }
 
-    this.add.image(400)
+// function create()
+// {
+//     //this.add.image(400, 300, 'sky');
 
-    var particles = this.add.particles('red');
+//     this.add.image(400)
 
-    var emitter = particles.createEmitter({
-        speed: 100,
-        scale: { start: 1, end: 0 },
-        blendMode: 'ADD'
-    });
+//     var particles = this.add.particles('red');
 
-    var logo = this.physics.add.image(400, 100, 'logo');
+//     var emitter = particles.createEmitter({
+//         speed: 100,
+//         scale: { start: 1, end: 0 },
+//         blendMode: 'ADD'
+//     });
 
-    logo.setVelocity(100, 200);
-    logo.setBounce(1, 1);
-    logo.setCollideWorldBounds(true);
+//     var logo = this.physics.add.image(400, 100, 'logo');
 
-    emitter.startFollow(logo);
-}
+//     logo.setVelocity(100, 200);
+//     logo.setBounce(1, 1);
+//     logo.setCollideWorldBounds(true);
+
+//     emitter.startFollow(logo);
+// }
