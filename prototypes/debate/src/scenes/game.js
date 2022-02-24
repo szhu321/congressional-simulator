@@ -9,8 +9,8 @@ export default class MyGame extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('issueCard', '../assets/issue_card.png');
-        this.load.image('workerCard', '../assets/worker_card.png');
+        this.load.image('issueCard', 'assets/issue_card.png');
+        this.load.image('workerCard', 'assets/worker_card.png');
         // this.load.setBaseURL('http://labs.phaser.io');
 
         // this.load.image('sky', 'assets/skies/space3.png');
@@ -24,10 +24,11 @@ export default class MyGame extends Phaser.Scene {
 
 		// this.card = this.add.image(300, 300, 'issueCard').setScale(0.5, 0.5).setInteractive();
         // this.input.setDraggable(this.card);
-
+        console.log('hello2')
 		this.dealCards = () => {
         	for (let i = 0; i < 5; i++) {
                 let playerCard = new Card(this);
+                console.log('hello')
                 playerCard.render(475 + (i * 100), 650, 'issueCard');
             }
     	}
