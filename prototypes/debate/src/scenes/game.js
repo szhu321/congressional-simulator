@@ -45,6 +45,11 @@ export default class MyGame extends Phaser.Scene {
             self.dealText.setColor('#00ffff');
         })
 
+        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        })
+
         this.input.on('dragstart', function (pointer, gameObject) {
             gameObject.setTint(0xff69b4);
             self.children.bringToTop(gameObject);
