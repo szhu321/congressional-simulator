@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import TileMap from "../model/tilemap";
+import LeftPanelContainer from "../view/LeftPanelContainer.js";
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -71,34 +72,37 @@ export default class CampaignScene extends Phaser.Scene
 
     initializeSidePanel()
     {
-        let vgap = 50;
-        let fontSize = 20;
-        let locationText = this.add.text(0, 0 * vgap, "Location(row, col): ");
-        let symbolText = this.add.text(0, 1 * vgap, "Symbol: ");
-        let politicalStanceText = this.add.text(0, 2 * vgap, "(-1 <- Liberal Conservative -> 1):");
-        let economyText = this.add.text(0, 3* vgap, "Economy: ");
-        let healthcareText = this.add.text(0, 4* vgap, "Healthcare: ");
-        let educationText = this.add.text(0, 5* vgap, "Education: ");
-        let taxesText = this.add.text(0, 6* vgap, "taxes: ");
-        let environmentText = this.add.text(0, 7* vgap, "Environment: ");
+        this.sidePanel = new LeftPanelContainer();
+        this.add.existing(this.sidePanel);
+        this.sidePanel.initialize();
+        // let vgap = 50;
+        // let fontSize = 20;
+        // let locationText = this.add.text(0, 0 * vgap, "Location(row, col): ");
+        // let symbolText = this.add.text(0, 1 * vgap, "Symbol: ");
+        // let politicalStanceText = this.add.text(0, 2 * vgap, "(-1 <- Liberal Conservative -> 1):");
+        // let economyText = this.add.text(0, 3* vgap, "Economy: ");
+        // let healthcareText = this.add.text(0, 4* vgap, "Healthcare: ");
+        // let educationText = this.add.text(0, 5* vgap, "Education: ");
+        // let taxesText = this.add.text(0, 6* vgap, "taxes: ");
+        // let environmentText = this.add.text(0, 7* vgap, "Environment: ");
         
-        this.sidePanel = {
-            group: this.add.group([locationText, symbolText, politicalStanceText,
-            economyText, healthcareText, educationText, taxesText, environmentText]),
-            locationText,
-            symbolText,
-            politicalStanceText,
-            economyText,
-            healthcareText,
-            educationText,
-            taxesText,
-            environmentText
-        }
+        // this.sidePanel = {
+        //     group: this.add.group([locationText, symbolText, politicalStanceText,
+        //     economyText, healthcareText, educationText, taxesText, environmentText]),
+        //     locationText,
+        //     symbolText,
+        //     politicalStanceText,
+        //     economyText,
+        //     healthcareText,
+        //     educationText,
+        //     taxesText,
+        //     environmentText
+        // }
 
-        for(let text of this.sidePanel.group.getChildren())
-        {
-            text.setFontSize(fontSize);
-        }
+        // for(let text of this.sidePanel.group.getChildren())
+        // {
+        //     text.setFontSize(fontSize);
+        // }
     }
 
     initializeTileObjects(tileMap)
