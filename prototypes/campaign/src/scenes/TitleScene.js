@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-export default class Game extends Phaser.Scene
+export default class TitleScene extends Phaser.Scene
 {
     preload()
     {
@@ -9,6 +9,7 @@ export default class Game extends Phaser.Scene
 
     create()
     {
+        let gameWidth = this.game.scale.width;
 
         let circle = this.add.circle(300, 300, 20, 0xcccccc);
         this.physics.add.existing(circle);
@@ -16,12 +17,12 @@ export default class Game extends Phaser.Scene
         circle.body.setBounce(1, 1);
         circle.body.setCollideWorldBounds(true);
 
-        let title = this.add.text(400, 100, "Campaign Game");
+        let title = this.add.text(gameWidth/2, 100, "Campaign Game");
         title.setOrigin(0.5, 0.5);
         title.setFontSize(64);
 
 
-        let buttonX = 400;
+        let buttonX = gameWidth/2;
         let buttonY = 400;
         let playButtonBackground = this.add.rectangle(buttonX, buttonY, 300, 60, 0xffffff);
         playButtonBackground.setOrigin(0.5, 0.5);
@@ -32,8 +33,9 @@ export default class Game extends Phaser.Scene
         playButtonBackground.setInteractive();
         playButtonBackground.on("pointerup", () => {
             console.log("Starting game...");
-            this.game.scene.stop('game');
-            this.game.scene.start('campaignScene');
+            //this.game.scene.stop('game');
+            //this.game.scene.start('campaignScene');
+            this.scene.switch('campaignScene');
         },this);
 
 

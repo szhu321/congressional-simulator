@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 
 import CampaignScene from './scenes/CampaignScene.js';
-import Game from './scenes/Game.js';
+import TitleScene from './scenes/TitleScene.js';
 
 let config = {
     type: Phaser.AUTO,
-    width: 800,
+    width: 1200,
     height: 600,
     physics: {
         default: 'arcade',
@@ -22,7 +22,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 game.scene.add('campaignScene', CampaignScene);
-game.scene.add('game', Game);
+game.scene.add('titleScene', TitleScene);
 game.scene.start('campaignScene');
 
 // function preload()

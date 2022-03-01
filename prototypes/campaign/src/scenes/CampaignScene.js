@@ -103,9 +103,9 @@ export default class CampaignScene extends Phaser.Scene
 
     initializeTileObjects(tileMap)
     {
-        let startX = 300;
+        let startX = 700;
         let startY = 100;
-        let verticalDiameter = 80;
+        let verticalDiameter = 90;
         let points = this.polygonPoints(verticalDiameter);
         let hitarea = new Phaser.Geom.Polygon(points);
         this.tileMapTiles = new Array(tileMap.length);
