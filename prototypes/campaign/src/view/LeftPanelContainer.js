@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 
 export default class LeftPanelContainer extends Phaser.GameObjects.Container
 {
-    constructor()
+    constructor(scene)
     {
+        super(scene);
         this.maxLines = 12;
         this.vgap = 50;
         this.fontSize = 20;
@@ -21,16 +22,16 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
 
     updateDisplay(textArray)
     {
-        let texts = this.getChildren();
+        let texts = this.getAll();
         for(let i = 0; i < texts.length; i++)
         {
             if(i < textArray.length)
             {
-                texts.setText(textArray[i]);
+                texts[i].setText(textArray[i]);
             }
             else
             {
-                texts.setText("");
+                texts[i].setText("");
             }
         }
     }
