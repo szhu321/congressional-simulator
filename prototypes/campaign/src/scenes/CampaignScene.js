@@ -1,6 +1,9 @@
 import Phaser from "phaser";
+import MapController from "../controller/MapController";
+import TimeController from "../controller/TimeController";
 import TileMap from "../model/tilemap";
 import LeftPanelContainer from "../view/LeftPanelContainer.js";
+import chroma from 'chroma-js';
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -9,11 +12,15 @@ export default class CampaignScene extends Phaser.Scene
         this.tileMap = new TileMap(6, 6);
         this.tileMapTiles;
         this.sidePanel;
+        this.dayDisplay;
+        this.mapController;
     }
 
     create()
     {
         this.initializeSidePanel();
+        this.initializeDayDisplay();
+        this.initializeMapController();
         // this.add.text(200, 200, 'Hello World');
         // let polygon = this.add.polygon(300, 300, this.polygonPoints(100), 0xffffff);
         // polygon.setOrigin(0.5, 0.5);
@@ -63,7 +70,9 @@ export default class CampaignScene extends Phaser.Scene
     {
         this.sidePanel.updateDisplay([
             `Location(row, col): (${tile.row + 1}, ${tile.col + 1})`,
-            `Symbol: ${tile.symbol}`,
+            `Voters: ${tile.numberOfVoters}`,
+            `Voters Secured: ${tile.totalOccupied()}`,
+            `Worker On Tile: ${tile.workerOnTile}`,
             `Political Stance (-1 <- Liberal Conservative -> 1):`,
             `Economy: ${tile.ecomony}`,
             `Healthcare: ${tile.healthcare}`,
@@ -71,6 +80,19 @@ export default class CampaignScene extends Phaser.Scene
             `Taxes: ${tile.taxes}`,
             `Environment: ${tile.environment}`
         ]);
+    }
+
+    initializeDayDisplay()
+    {
+        this.dayDisplay = this.add.text(this.game.scale.width, 0, "Day: 1");
+        this.dayDisplay.setFontSize(20);
+        this.dayDisplay.setOrigin(1, 0);
+        this.timeController = new TimeController(this, this.dayDisplay);
+    }
+
+    initializeMapController()
+    {
+        this.mapController = new MapController(this, this.tileMap);
     }
 
     initializeSidePanel()
@@ -112,7 +134,7 @@ export default class CampaignScene extends Phaser.Scene
     initializeTileObjects(tileMap)
     {
         let startX = 700;
-        let startY = 100;
+        let startY = 200;
         let verticalDiameter = 90;
         let points = this.polygonPoints(verticalDiameter);
         let hitarea = new Phaser.Geom.Polygon(points);
@@ -140,6 +162,27 @@ export default class CampaignScene extends Phaser.Scene
                     hexagon.setOrigin(0.5, 0.5);
                     hexagon.setStrokeStyle(2, 0xaaaaaa);
                     hexagon.setInteractive(hitarea, Phaser.Geom.Polygon.Contains);
+                    //let scale = chroma.scale(["white", "blue"]);
+                    //chroma('#D4F880').darken().hex();
+                    hexagon.updateView = function(tile) { 
+                        let percentageOccupied = tile.percentageOccupied();
+                        if(tile.workerOnTile)
+                        {
+                            //console.log("Set stroke color");
+                            this.setStrokeStyle(2, 0x0000ff);
+                        }
+                        if(percentageOccupied == 1)
+                        {
+                            //this.setStrokeStyle(2, 0x5555ee);
+                        }
+                        else
+                        {
+                            //this.setStrokeStyle(2, 0xaaaaaa);
+                            let colorScale = chroma.scale(['eeeeee', 'blue']);
+                            //console.log(parseInt(colorScale(percentageOccupied).toString().substring(1), 16));
+                            this.setFillStyle(parseInt(colorScale(percentageOccupied).toString().substring(1), 16));
+                        }
+                    }
                     hexagon.on("pointerover", () => {
                         hexagon.setAlpha(0.8);
                         this.drawTile(this.tileMap.getTileAt(row,col));
@@ -147,6 +190,12 @@ export default class CampaignScene extends Phaser.Scene
                     hexagon.on("pointerout", ()=>{
                         hexagon.setAlpha(1);
                     });
+                    hexagon.on("pointerdown", ()=>{
+                        let tile = this.tileMap.getTileAt(row, col);
+                        tile.addWorkerToTile();
+                        console.log("Pressed");
+                    })
+                    tileMap[row][col].setView(hexagon);
                     this.tileMapTiles[row][col] = hexagon;
                 }
             }

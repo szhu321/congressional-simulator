@@ -100,54 +100,54 @@ export default class TileMap
         this.updatesView();
     }
 
-    /**1 for fogOfWarMap, 2 for show all, 3 for occupy map.*/
-    printMap(configNum)
-    {
-        let str = "";
-        let htmlStr = "";
-        for(let i = 0; i < this.map.length; i++)
-        {
-            let rowStr = "";
-            for(let j = 0; j < this.map[0].length; j++)
-            {
-                if(this.map[i][j] != null)
-                {
-                    switch(configNum)
-                    {
-                        case 1: {
-                            if(this.map[i][j].visible)
-                                rowStr += this.map[i][j].numberOfVoters;
-                            else
-                                rowStr += this.map[i][j].symbol;
-                        }; break;
-                        case 2: 
-                            rowStr += this.map[i][j].numberOfVoters;
-                            break;
-                        case 3: 
-                            rowStr += this.map[i][j].numberOfVoters;
-                            break;
-                        default:
-                            rowStr += this.map[i][j].numberOfVoters;
-                    }
-                }
-                else 
-                rowStr += " ";
-                rowStr += " ";
-            }
-            if(i % 2 == 1)
-            {
-                str += " " + rowStr + "\n";
-                htmlStr += "&nbsp;" + rowStr + "<br>";
-            }
-            else
-            {
-                htmlStr += rowStr + "<br>"
-                str += rowStr + "\n";
-            }
-        }
-        console.log(str);
-        return htmlStr;
-    }
+    // /**1 for fogOfWarMap, 2 for show all, 3 for occupy map.*/
+    // printMap(configNum)
+    // {
+    //     let str = "";
+    //     let htmlStr = "";
+    //     for(let i = 0; i < this.map.length; i++)
+    //     {
+    //         let rowStr = "";
+    //         for(let j = 0; j < this.map[0].length; j++)
+    //         {
+    //             if(this.map[i][j] != null)
+    //             {
+    //                 switch(configNum)
+    //                 {
+    //                     case 1: {
+    //                         if(this.map[i][j].visible)
+    //                             rowStr += this.map[i][j].numberOfVoters;
+    //                         else
+    //                             rowStr += this.map[i][j].symbol;
+    //                     }; break;
+    //                     case 2: 
+    //                         rowStr += this.map[i][j].numberOfVoters;
+    //                         break;
+    //                     case 3: 
+    //                         rowStr += this.map[i][j].numberOfVoters;
+    //                         break;
+    //                     default:
+    //                         rowStr += this.map[i][j].numberOfVoters;
+    //                 }
+    //             }
+    //             else 
+    //             rowStr += " ";
+    //             rowStr += " ";
+    //         }
+    //         if(i % 2 == 1)
+    //         {
+    //             str += " " + rowStr + "\n";
+    //             htmlStr += "&nbsp;" + rowStr + "<br>";
+    //         }
+    //         else
+    //         {
+    //             htmlStr += rowStr + "<br>"
+    //             str += rowStr + "\n";
+    //         }
+    //     }
+    //     console.log(str);
+    //     return htmlStr;
+    // }
 
     getTileAt(row, col)
     {
