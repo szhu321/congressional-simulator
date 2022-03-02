@@ -136,6 +136,8 @@ export default class CampaignScene extends Phaser.Scene
         let startX = 700;
         let startY = 200;
         let verticalDiameter = 90;
+        let gapBetweenTiles = 6;
+        let tileStrokeSize = 5;
         let points = this.polygonPoints(verticalDiameter);
         let hitarea = new Phaser.Geom.Polygon(points);
         this.tileMapTiles = new Array(tileMap.length);
@@ -150,17 +152,17 @@ export default class CampaignScene extends Phaser.Scene
             {
                 if(tileMap[row][col] != null)
                 {
-                    let x = startX + this.polygonCalcHorizonalDiameter(verticalDiameter) * col;
-                    let y = startY + ((verticalDiameter/2)+Math.sin(30*Math.PI/180)*(verticalDiameter/2)) * row;
+                    let x = startX + this.polygonCalcHorizonalDiameter(verticalDiameter) * col + (gapBetweenTiles * col);
+                    let y = startY + ((verticalDiameter/2)+Math.sin(30*Math.PI/180)*(verticalDiameter/2)) * row + (gapBetweenTiles * row);
                     if(row % 2 == 1)
                     {
-                        x += Math.cos(30*Math.PI/180) * verticalDiameter /2;
+                        x += Math.cos(30*Math.PI/180) * verticalDiameter /2 + gapBetweenTiles / 2;
                     }
                     //let color = col % 2 == 1 ? 0xffffff: 0xaaaaaa;
                     let color = 0xeeeeee;
                     let hexagon = this.add.polygon(x, y, points, color);
                     hexagon.setOrigin(0.5, 0.5);
-                    hexagon.setStrokeStyle(2, 0xaaaaaa);
+                    hexagon.setStrokeStyle(tileStrokeSize, 0xaaaaaa);
                     hexagon.setInteractive(hitarea, Phaser.Geom.Polygon.Contains);
                     //let scale = chroma.scale(["white", "blue"]);
                     //chroma('#D4F880').darken().hex();
@@ -169,7 +171,7 @@ export default class CampaignScene extends Phaser.Scene
                         if(tile.workerOnTile)
                         {
                             //console.log("Set stroke color");
-                            this.setStrokeStyle(2, 0x0000ff);
+                            this.setStrokeStyle(tileStrokeSize, 0x37ed98);
                         }
                         if(percentageOccupied == 1)
                         {
@@ -178,10 +180,12 @@ export default class CampaignScene extends Phaser.Scene
                         else
                         {
                             //this.setStrokeStyle(2, 0xaaaaaa);
-                            let colorScale = chroma.scale(['eeeeee', 'blue']);
-                            //console.log(parseInt(colorScale(percentageOccupied).toString().substring(1), 16));
-                            this.setFillStyle(parseInt(colorScale(percentageOccupied).toString().substring(1), 16));
+                            
                         }
+                        let colorScale = chroma.scale(['eeeeee', 'blue']);
+                        let hexNum = parseInt(colorScale(percentageOccupied).toString().substring(1), 16);
+                        //console.log(percentageOccupied, hexNum);
+                        this.setFillStyle(hexNum);
                     }
                     hexagon.on("pointerover", () => {
                         hexagon.setAlpha(0.8);
