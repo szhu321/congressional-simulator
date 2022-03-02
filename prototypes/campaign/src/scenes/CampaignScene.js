@@ -13,6 +13,7 @@ export default class CampaignScene extends Phaser.Scene
 
     create()
     {
+        this.initializeSidePanel();
         // this.add.text(200, 200, 'Hello World');
         // let polygon = this.add.polygon(300, 300, this.polygonPoints(100), 0xffffff);
         // polygon.setOrigin(0.5, 0.5);
@@ -60,21 +61,24 @@ export default class CampaignScene extends Phaser.Scene
 
     updateSidePanel(tile)
     {
-        this.sidePanel.locationText.setText(`Location(row, col): (${tile.row + 1}, ${tile.col + 1})`);
-        this.sidePanel.symbolText.setText(`Symbol: ${tile.symbol}`);
-        this.sidePanel.politicalStanceText.setText(`Political Stance (-1 <- Liberal Conservative -> 1):`);
-        this.sidePanel.economyText.setText(`Economy: ${tile.ecomony}`);
-        this.sidePanel.healthcareText.setText(`Healthcare: ${tile.healthcare}`);
-        this.sidePanel.educationText.setText(`Education: ${tile.education}`);
-        this.sidePanel.taxesText.setText(`Taxes: ${tile.taxes}`);
-        this.sidePanel.environmentText.setText(`Environment: ${tile.environment}`);
+        this.sidePanel.updateDisplay([
+            `Location(row, col): (${tile.row + 1}, ${tile.col + 1})`,
+            `Symbol: ${tile.symbol}`,
+            `Political Stance (-1 <- Liberal Conservative -> 1):`,
+            `Economy: ${tile.ecomony}`,
+            `Healthcare: ${tile.healthcare}`,
+            `Education: ${tile.education}`,
+            `Taxes: ${tile.taxes}`,
+            `Environment: ${tile.environment}`
+        ]);
     }
 
     initializeSidePanel()
     {
-        this.sidePanel = new LeftPanelContainer();
+        this.sidePanel = new LeftPanelContainer(this);
         this.add.existing(this.sidePanel);
         this.sidePanel.initialize();
+        this.sidePanel.updateDisplay(["Hello", "World"]);
         // let vgap = 50;
         // let fontSize = 20;
         // let locationText = this.add.text(0, 0 * vgap, "Location(row, col): ");
