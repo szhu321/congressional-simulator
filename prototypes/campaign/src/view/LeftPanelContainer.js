@@ -14,7 +14,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     {
         for(let i = 0; i < this.maxLines; i++)
         {
-            let text = this.scene.add.text(0, i * this.vgap, "");
+            let text = this.scene.add.text(0, i * this.vgap, "" , {wordWrap: {width: 500}});
             text.setFontSize(this.fontSize);
             this.add(text);
         }

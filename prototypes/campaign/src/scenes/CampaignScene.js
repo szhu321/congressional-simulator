@@ -100,7 +100,6 @@ export default class CampaignScene extends Phaser.Scene
         this.sidePanel = new LeftPanelContainer(this);
         this.add.existing(this.sidePanel);
         this.sidePanel.initialize();
-        this.sidePanel.updateDisplay(["Hello", "World"]);
         // let vgap = 50;
         // let fontSize = 20;
         // let locationText = this.add.text(0, 0 * vgap, "Location(row, col): ");
