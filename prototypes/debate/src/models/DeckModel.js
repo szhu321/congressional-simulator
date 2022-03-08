@@ -24,7 +24,7 @@ export default class DeckModel
     }
 
     /**
-     * 
+     * Add a card to the end of the deck.
      * @param {CardModel} card - The card to add to this deck.
      */
     addCard(card)
@@ -34,6 +34,27 @@ export default class DeckModel
             this.cardCount++;
             this.deck.push(card);
             this.updateView();
+        }
+    }
+
+    /**
+     * Inserts a card at the specifed location.
+     * @param {CardModel} card - the card to insert.
+     * @param {Number} idx - the idx to insert at (0 - deck.length).
+     */
+    insertCard(card, idx)
+    {
+        if(card)
+        {
+            if(!idx)
+            {
+                this.addCard(card);
+            }
+            else
+            {
+                this.deck.splice(idx, 0, [card]);
+                this.updateView();
+            }
         }
     }
 
@@ -77,6 +98,7 @@ export default class DeckModel
             this.deck[i] = this.deck[swapIndex];
             this.deck[swapIndex] = temp;
         }
+        this.updateView();
     }
 
     /**

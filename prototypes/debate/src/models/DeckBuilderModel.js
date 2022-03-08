@@ -1,11 +1,10 @@
-import CardModel from "./CardModel";
 
 export default class DeckBuilderModel
 {
     constructor()
     {
-        this.allCardsDeck = new CardModel();
-        this.chosenCardsDeck = new CardModel();
+        this.allCardsDeck = new DeckModel();
+        this.chosenCardsDeck = new DeckModel();
         this.updateViewCallback = null;
     }
 
