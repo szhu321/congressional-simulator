@@ -1,5 +1,7 @@
 import Card from '../helpers/card';
 import Zone from '../helpers/zone';
+import CardView from '../views/CardView';
+import Phaser from 'phaser';
 
 export default class MyGame extends Phaser.Scene {
     constructor() {
@@ -9,12 +11,13 @@ export default class MyGame extends Phaser.Scene {
     }
 
     init() {
-        this.data.set({battleFunds: 450, playerVotes: 10, opponentVotes: 10});
+        this.data.set({playerBattleFunds: 450, opponentBattleFunds: 450, playerVotes: 10, opponentVotes: 10, playerDeckSize: 20, opponentDeckSize: 20});
     }
 
     preload() {
         this.load.image('issueCard', 'assets/issue_card.png');
         this.load.image('workerCard', 'assets/worker_card.png');
+        this.card;
         // this.load.setBaseURL('http://labs.phaser.io');
 
         // this.load.image('sky', 'assets/skies/space3.png');
@@ -26,39 +29,45 @@ export default class MyGame extends Phaser.Scene {
         this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
         let self = this;
 
-        this.battleFundsText = this.add.text(50, 550, ['Current Funds: $' + this.data.values.battleFunds]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
-        this.playerVotesText = this.add.text(100, 650, [this.data.values.playerVotes + ' Votes']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
-        this.opponentVotesText = this.add.text(100, 150, [this.data.values.opponentVotes + ' Votes']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
-
 		// this.card = this.add.image(300, 300, 'issueCard').setScale(0.5, 0.5).setInteractive();
         // this.input.setDraggable(this.card);
         this.playerCards = [];
+        this.opponentCards = [];
         console.log('hello2')
 		this.dealCards = () => {
             console.log(this);
         	for (let i = 0; i < 5; i++) {
-                let playerCard = new Card(this);
+                let playerCard = this.createCard(true);
+                let opponentCard = this.createCard(true);
+                opponentCard.disableInteractive();
+                opponentCard.setRotation(Math.PI);
                 console.log('hello')
-                this.playerCards.push(playerCard.render(475 + (i * 100), 650, 'issueCard'));
+                this.playerCards.push(playerCard);
+                this.opponentCards.push(opponentCard);
             }
-            this.repositionCards(this.playerCards, 475, 650);
+            this.repositionCards(this.playerCards, 425, 640, 1);
+            this.repositionCards(this.opponentCards, 975, 80, -1);
             // for(let i = 0; i < this.playerCards.length; i++){
             //     this.playerCards[i].x = 475 + (i * 100);
             //     this.playerCards[i].y = 650;
             // }
     	}
 
-        let playerDeck = new Card(this);
-        this.playerDeckZone = playerDeck.render(1200, 650, 'issueCard');
+        this.playerDeckZone = this.createCard(false, 20);
+        this.playerDeckZone.setPosition(1300, 640);
         console.log(this.playerDeckZone);
         this.input.setDraggable(this.playerDeckZone, false);
+
+        this.opponentDeckZone = this.createCard(false, 20);
+        this.opponentDeckZone.setPosition(120, 80).setRotation(Math.PI).disableInteractive();
         
         this.playerDeckZone.on('pointerdown', function () {
             console.log("Draw 1 card");
             console.log(self);
-            let playerCard = new Card(self);
-            self.playerCards.push(playerCard.render(0, 0, 'issueCard'));
-            self.repositionCards(self.playerCards, 475, 650);
+            // let playerCard = new Card(self);
+            let playerCard = self.createCard(true);
+            self.playerCards.push(playerCard);
+            self.repositionCards(self.playerCards, 425, 640, 1);
             // for(let i = 0; i < self.playerCards.length; i++){
             //     self.playerCards[i].x = 475 + (i * 100);
             //     self.playerCards[i].y = 650;
@@ -84,12 +93,12 @@ export default class MyGame extends Phaser.Scene {
         })
 
         this.input.on('dragstart', function (pointer, gameObject) {
-            gameObject.setTint(0xff69b4);
+            // gameObject.setTint(0xff69b4);
             self.children.bringToTop(gameObject);
         })
 
         this.input.on('dragend', function (pointer, gameObject, dropped) {
-            gameObject.setTint();
+            // gameObject.setTint();
             if (!dropped) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
@@ -121,13 +130,14 @@ export default class MyGame extends Phaser.Scene {
                 }
                 gameObject.x = gameObject.data.values.dropZoneX;
                 gameObject.y = gameObject.data.values.dropZoneY;
+                // gameObject.disableInteractive();
             }else{
                 console.log("Drop detected");
-                console.log(self.data.values.battleFunds);
-                if(gameObject.data.values.cost <= self.data.values.battleFunds && dropZone.name === 'playerZone'){
+                console.log(self.data.values.playerBattleFunds);
+                if(gameObject.data.values.cost <= self.data.values.playerBattleFunds && dropZone.name === 'playerZone'){
                     console.log("Place card");
-                    self.data.values.battleFunds -= gameObject.data.values.cost;
-                    self.battleFundsText.setText(['Current Funds: $' + self.data.values.battleFunds]);
+                    self.data.values.playerBattleFunds -= gameObject.data.values.cost;
+                    self.playerBattleFundsText.setText(['Current Funds: $' + self.data.values.playerBattleFunds]);
                     dropZone.data.values.cards++;
                     dropZone.data.values.cardList.push(gameObject);
                     console.log(self.playerCards.indexOf(gameObject));
@@ -138,8 +148,8 @@ export default class MyGame extends Phaser.Scene {
                     //     dropZone.data.values.cardList[i].x = dropZone.x - 350 + 100 * i;
                     //     dropZone.data.values.cardList[i].y = dropZone.y;
                     // }
-                    self.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y);
-                    self.repositionCards(self.playerCards, 475, 650);
+                    self.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y, 1);
+                    self.repositionCards(self.playerCards, 425, 640, 1);
                     gameObject.data.values.dropZoneName = dropZone.name;
                     gameObject.data.values.dropZoneX = gameObject.x;
                     gameObject.data.values.dropZoneY = gameObject.y;
@@ -153,13 +163,19 @@ export default class MyGame extends Phaser.Scene {
         console.log("start");
 
         this.zone = new Zone(this);
-        this.playerDropZone = this.zone.renderZone(700, 475).setName("playerZone");
+        this.playerDropZone = this.zone.renderZone(700, 460).setName("playerZone");
         this.playerOutline = this.zone.renderOutline(this.playerDropZone);
-        this.opponentDropZone = this.zone.renderZone(700, 175).setName("opponentZone");
-        this.opponentOutline = this.zone.renderOutline(this.opponentDropZone);
+        this.playerBattleFundsText = this.add.text(125, 550, ['Current Funds: $' + this.data.values.playerBattleFunds]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
+        this.playerVotesText = this.add.text(125, 650, [this.data.values.playerVotes + ' Votes']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
 
-        this.opponentVoteZone = this.add.zone(125, 175, 100, 100).setRectangleDropZone(100, 100).setName("opponentVotes");
+        this.opponentDropZone = this.zone.renderZone(700, 260).setName("opponentZone");
+        this.opponentOutline = this.zone.renderOutline(this.opponentDropZone);
+        this.opponentBattleFundsText = this.add.text(1300, 170, ['Current Funds: $' + this.data.values.opponentBattleFunds]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
+        this.opponentVotesText = this.add.text(1300, 80, [this.data.values.opponentVotes + ' Votes']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
+        this.opponentVoteZone = this.add.zone(1300, 80, 100, 100).setRectangleDropZone(100, 100).setName("opponentVotes");
         this.opponentVoteOutline = this.zone.renderOutline(this.opponentVoteZone);
+
+        // this.createCard();
         // this.add.image(400, 300, 'sky');
 
         // var particles = this.add.particles('red');
@@ -178,11 +194,33 @@ export default class MyGame extends Phaser.Scene {
 
         // emitter.startFollow(logo);
 
-        this.repositionCards = (dropZoneCards, x, y) => {
-            for(let i = 0; i < dropZoneCards.length; i++){
-                dropZoneCards[i].x = x + 100 * i;
-                dropZoneCards[i].y = y;
-            }
+    }
+
+    createCard(frontFacing, deckSize){
+        let card = new CardView(this);
+        card.initialize();
+        this.add.existing(card);
+        if(frontFacing){
+            card.updateDisplay(["\u{2605}", "$100", "Environment Liberal", "When played deal 1 damage to a random opponent card", "1", "1"], frontFacing);
+        }else{
+            card.updateDisplay(["" + deckSize], frontFacing);
+        }
+        // let bounds = card.getAll()[0].getBounds();
+        // console.log(bounds);
+        card.setInteractive(new Phaser.Geom.Rectangle(-1 * card.maxWidth / 2, -1 * card.maxHeight / 2, card.maxWidth, card.maxHeight), Phaser.Geom.Rectangle.Contains);
+        this.input.setDraggable(card);
+        return card;
+        // this.card.setPosition(100, 100);
+        // this.input.enableDebug(this.card);
+        // this.graphics = this.add.graphics();
+        // this.graphics.fillStyle(0xff00ff, .4);
+        // this.graphics.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
+    repositionCards = (dropZoneCards, x, y, sign) => {
+        for(let i = 0; i < dropZoneCards.length; i++){
+            dropZoneCards[i].x = x + sign * 150 * i;
+            dropZoneCards[i].y = y;
         }
     }
     
