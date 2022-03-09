@@ -11,8 +11,15 @@ export default class CardModel
         this.politicalIssue = "";
         this.politicalView = "";
         this.description = "";
-        this.rank = 2;
+        this.rank = 1;//rarity of the card.
         this.updateViewCallback = null;
+        this.actionCount = 0;
+        this.stars = 1;//number of starts this card has.
+
+        //worker card properties
+        //stars, cost, name, isAttacking, health. isWorker.
+        this.isAttacking = false;
+        this.isWorker = false;
     }
 
     /**
@@ -23,7 +30,8 @@ export default class CardModel
      */
     setConfig(configObject)
     {
-        let {name, cost, health, attack, ability, politicalIssue, politicalView, descirption, rank, updateViewCallback} = configObject;
+        let {name, cost, health, attack, ability, politicalIssue, politicalView, 
+            descirption, rank, updateViewCallback, actionCount, stars, isAttacking, isWorker} = configObject;
         if(name) this.name = name;
         if(cost) this.cost = cost;
         if(health) this.health = health;
@@ -33,7 +41,76 @@ export default class CardModel
         if(politicalView) this.politicalView = politicalView;
         if(descirption) this.description = descirption;
         if(rank) this.rank = rank;
-        if(updateViewCallback) this.updateViewCallback = updateViewCallback; 
+        if(updateViewCallback) this.updateViewCallback = updateViewCallback;
+        if(actionCount) this.actionCount = actionCount;
+        if(stars) this.stars = stars;
+        if(isAttacking !== undefined) this.isAttacking = isAttacking;
+        if(isWorker !== undefined) this.isWorker = isWorker;
+        this.updateView();
+    }
+
+
+    getIsWorker()
+    {
+        return this.isWorker;
+    }
+
+    setIsWorker(isWorker)
+    {
+        this.isWorker = isWorker;
+        this.updateView();
+    }
+
+    getIsAttacking()
+    {
+        return this.isAttacking;
+    }
+
+    setIsAttacking(isAttacking)
+    {
+        this.isAttacking = isAttacking;
+        this.updateView();
+    }
+
+
+    getStar()
+    {
+        return this.stars;
+    }
+
+    /**
+     * @param {Number} stars - the number of stars this card will be set to.
+     */
+    setStars(stars)
+    {
+        this.stars = stars;
+    }
+
+    hasAction()
+    {
+        return this.actionCount > 0;
+    }
+
+    /**
+     * Decrease the actionCount of this card by 1.
+     * @returns {Boolean} True if an action was used. False if there was no action left.
+     */
+    useAction()
+    {
+        if(!this.hasAction())
+            return false;
+        this.actionCount--;
+        this.updateView();
+        return true;
+    }
+
+    /**
+     * 
+     * @param {*} actionCount 
+     */
+    setAction(actionCount)
+    {
+        this.actionCount = actionCount;
         this.updateView();
     }
 

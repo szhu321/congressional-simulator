@@ -18,9 +18,25 @@ export default class DeckModel
         this.updateViewCallback = null;
     }
 
+    /**
+     * Get all the cards in this deck.
+     * @returns {CardModel[]} the array of cards.
+     */
     getCards()
     {
         return this.deck;
+    }
+
+    /**
+     * Gets a card at the specified index.
+     * @param idx - the index of the card to get.
+     * @returns {CardModel} The card. null if index is out of bounds.
+     */
+    getCardAt(idx)
+    {
+        if(idx < 0 || idx >= this.deck.length)
+            return null;
+        return this.deck[idx];
     }
 
     /**
@@ -73,7 +89,7 @@ export default class DeckModel
 
     /**
      * @param idx - the index of the card to remove.
-     * @returns {CardModel} The card that was removed.
+     * @returns {CardModel} The card that was removed. null if index is out of bounds.
      */
     removeAtIdx(idx)
     {
@@ -84,6 +100,35 @@ export default class DeckModel
             this.cardCount--;
         this.updateView();
         return card;
+    }
+
+    /**
+     * @returns {CardModel[]} - all the cards that were removed.
+     */
+    removeAllCards()
+    {
+        let cards = [];
+        while(this.deck.length > 0)
+        {
+            cards.push(this.deck.pop());
+            this.cardCount--;
+        }
+        this.updateView();
+        return cards;
+    }
+
+    /**
+     * Adds an array of cards to the deck.
+     * @param {CardModel[]} cards - all the cards that are to be added to the deck.
+     */
+    addAllCards(cards)
+    {
+        for(let i = 0; i < cards.length; i++)
+        {
+            this.deck.push(cards[i]);
+            this.cardCount++;
+        }
+        this.updateView();
     }
 
     /**

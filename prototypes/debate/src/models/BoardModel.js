@@ -66,13 +66,136 @@ export default class BoardModel
     getPoliticalStance(){return this.politicalStance}
 
     /**@param {Number} votes - The number of votes */
-    setPlayer1Votes(votes){this.player1Votes = votes}
+    setPlayer1Votes(votes){
+        this.player1Votes = votes;
+        this.updateView();
+    }
     /**@param {Number} votes - The number of votes */
-    setPlayer2Votes(votes){this.player2Votes = votes}
+    setPlayer2Votes(votes){
+        this.player2Votes = votes;
+        this.updateView();
+    }
     /**@param {Number} money - The number of votes */
-    getPlayer1Money(money){this.player1Money = money}
+    setPlayer1Money(money){
+        this.player1Money = money;
+        this.updateView();
+    }
     /**@param {Number} money - The number of votes */
-    getPlayer2Money(money){this.player2Money = money}
+    setPlayer2Money(money){
+        this.player2Money = money
+        this.updateView();
+    }
+
+    /**
+     * Transfer a certain amount of votes from player1 to player2.
+     * @param {Number} amount - the amount of votes to transfer.
+     */
+    transferVotesPlayer1ToPlayer2(amount)
+    {
+        if(this.player1Votes - amount < 0)
+        {
+            let excess = Math.abs(this.player1Votes - amount);
+            this.player1Votes -= amount - excess;
+            this.player2Votes += amount - excess;
+        }
+        else
+        {
+            this.player1Votes -= amount;
+            this.player2Votes += amount;
+        }
+        this.updateView();
+    }
+
+    /**
+     * Transfer a certain amount of votes from player2 to player1.
+     * @param {Number} amount - the amount of votes to transfer.
+     */
+    transferVotesPlayer2ToPlayer1(amount)
+    {
+        if(this.player2Votes - amount < 0)
+        {
+            let excess = Math.abs(this.player2Votes - amount);
+            this.player2Votes -= amount - excess;
+            this.player1Votes += amount - excess;
+        }
+        else
+        {
+            this.player2Votes -= amount;
+            this.player1Votes += amount;
+        }
+        this.updateView();
+    }
+
+    /**
+     * @returns {Boolean} True if at least one of the worker cards is on attacking mode.
+     */
+    isPlayer2OnOffensive()
+    {
+        let cards = this.getPlayer2Board().getCards();
+        for(let i = 0; i < cards.length; i++)
+        {
+            let card = cards[i];
+            if(card.getIsWorker() && card.getIsAttacking())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @returns {Boolean} True if at least one of the worker cards is on attacking mode.
+     */
+    isPlayer1OnOffensive()
+    {
+        let cards = this.getPlayer1Board().getCards();
+        for(let i = 0; i < cards.length; i++)
+        {
+            let card = cards[i];
+            if(card.getIsWorker() && card.getIsAttacking())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @returns {Boolean} True if at least one of the worker cards is on defense mode.
+     */
+    isPlayer1OnDefensive()
+    {
+        let cards = this.getPlayer1Board().getCards();
+        for(let i = 0; i < cards.length; i++)
+        {
+            let card = cards[i];
+            if(card.getIsWorker() && !card.getIsAttacking())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * @returns {Boolean} True if at least one of the worker cards is on defense mode.
+     */
+    isPlayer2OnDefensive()
+    {
+        let cards = this.getPlayer2Board().getCards();
+        for(let i = 0; i < cards.length; i++)
+        {
+            let card = cards[i];
+            if(card.getIsWorker() && !card.getIsAttacking())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
 
     /**The return value is a string, can be player1 or player2 */
     getTurn(){return this.turn}
@@ -87,7 +210,10 @@ export default class BoardModel
     }
 
     /**@param {String} turn - can be 'player1' or 'player2' */
-    setTurn(turn){this.turn = turn}
+    setTurn(turn){
+        this.turn = turn;
+        this.updateView();
+    }
 
     /**.
      * The updateViewCallback is a function that can be called when this model gets updated.
