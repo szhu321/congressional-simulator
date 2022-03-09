@@ -12,7 +12,7 @@ export default class CardModel
         this.politicalView = "";
         this.description = "";
         this.rank = 1;//rarity of the card.
-        this.updateViewCallback = null;
+        this.view = null;
         this.actionCount = 0;
         this.stars = 1;//number of starts this card has.
 
@@ -49,6 +49,12 @@ export default class CardModel
         this.updateView();
     }
 
+    clone()
+    {
+        let cardModel = new CardModel();
+        cardModel.setConfig(this);
+        return cardModel;
+    }
 
     getIsWorker()
     {
@@ -222,20 +228,20 @@ export default class CardModel
     }
 
     /**
-     * The updateViewCallback is a function that can be called when this model gets updated.
+     * The view has a function called updateViewCallback(model) can be called when this model gets updated.
      * It should accept one argument that contains information about the updated model.
-     * @param {Function} updateViewCallback - The function that is called when this model gets updated.
+     * @param {Function} view - The view for this model.
      */
-    setUpdateViewCallback(updateViewCallback)
+    setView(view)
     {
-        this.updateViewCallback = updateViewCallback;
+        this.view = view;
     }
 
     updateView()
     {
-        if(this.updateViewCallback)
+        if(this.view)
         {
-            this.updateViewCallback(this);
+            this.view.updateViewCallback(this);
         }
     }
 }

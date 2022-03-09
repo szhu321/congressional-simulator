@@ -30,7 +30,7 @@ export default class BoardModel
         //the game state.
         this.turn = this.TURN.PLAYER1;
 
-        this.updateViewCallback = null;
+        this.view = null;
 
         this.politicalStance = {
             ecomony : Math.round(((Math.random() * 2) - 1) * 100) / 100,
@@ -215,21 +215,21 @@ export default class BoardModel
         this.updateView();
     }
 
-    /**.
-     * The updateViewCallback is a function that can be called when this model gets updated.
+    /**
+     * The view has a function called updateViewCallback(model) can be called when this model gets updated.
      * It should accept one argument that contains information about the updated model.
-     * @param {Function} updateViewCallback - The function that is called when this model gets updated.
+     * @param {Function} view - The view for this model.
      */
-    setUpdateViewCallback(updateViewCallback)
+    setView(view)
     {
-        this.updateViewCallback = updateViewCallback;
+        this.view = view;
     }
 
     updateView()
     {
-        if(this.updateViewCallback)
+        if(this.view)
         {
-            this.updateViewCallback(this);
+            this.view.updateViewCallback(this);
         }
     }
 }

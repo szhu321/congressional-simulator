@@ -15,7 +15,7 @@ export default class DeckModel
     {
         this.deck = [];
         this.cardCount = 0;
-        this.updateViewCallback = null;
+        this.view = null;
     }
 
     /**
@@ -147,19 +147,21 @@ export default class DeckModel
     }
 
     /**
-     * The updateViewCallback is a function that can be called when this model gets updated.
+     * The view has a function called updateViewCallback(model) can be called when this model gets updated.
      * It should accept one argument that contains information about the updated model.
-     * @param {Function} updateViewCallback - The function that is called when this model gets updated.
+     * @param {Function} view - The view for this model.
      */
-    setUpdateViewCallback(updateViewCallback)
+    setView(view)
     {
-        this.updateViewCallback = updateViewCallback;
+        this.view = view;
     }
 
     updateView()
     {
-        if(this.updateViewCallback)
-            this.updateViewCallback(this);
+        if(this.view)
+        {
+            this.view.updateViewCallback(this);
+        }
     }
 
 }
