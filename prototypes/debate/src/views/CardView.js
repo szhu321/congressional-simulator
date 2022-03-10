@@ -12,11 +12,13 @@ export default class CardView extends Phaser.GameObjects.Container{
         this.maxWidth = 118;
         this.textAmount = 6;
         this.cardColor = 0xf7e9c3;
+        this.cardColorDark = 0xaba187;
     }
 
     initialize(){
         let rect = this.scene.add.rectangle(0, 0, 0, 0, this.cardColor);
         this.add(rect);
+        this.background = rect;
         for(let i = 0; i < this.textAmount; i++){
             let text = this.scene.add.text(0, 0, "", {});
             text.setFontSize(this.fontSize);
@@ -93,5 +95,9 @@ export default class CardView extends Phaser.GameObjects.Container{
         children[4].setText(model.getAbility());
         children[5].setText(model.getHealth());
         children[6].setText(model.getAttack());
+        if(model.actionCount > 0)
+            this.background.setFillStyle(this.cardColor);
+        else
+            this.background.setFillStyle(this.cardColorDark);
     }
 }
