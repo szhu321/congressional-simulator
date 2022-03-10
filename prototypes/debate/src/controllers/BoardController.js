@@ -89,20 +89,9 @@ export default class BoardController
     {
         //TODO: next turn.
         this.model.switchTurn();
-        if(this.model.getTurn() === this.model.TURN.PLAYER1)
+        if(this.model.getTurn() === this.model.TURN.PLAYER2)
         {
-            let cards = this.model.getPlayer1Board().getCards();
-            for(let card of cards)
-            {
-                if(!card.getIsWorker())
-                {
-                    card.setAction(1);
-                }
-            }
-            this.model.setPlayer1Money(this.model.getPlayer1Money() + 100);
-        }
-        else
-        {
+
             let cards = this.model.getPlayer2Board().getCards();
             for(let card of cards)
             {
@@ -116,6 +105,16 @@ export default class BoardController
             //run the player2 ai;
             this.runAi();
             this.model.switchTurn();
+
+            cards = this.model.getPlayer1Board().getCards();
+            for(let card of cards)
+            {
+                if(!card.getIsWorker())
+                {
+                    card.setAction(1);
+                }
+            }
+            this.model.setPlayer1Money(this.model.getPlayer1Money() + 100);
         }
     }
 
@@ -131,6 +130,22 @@ export default class BoardController
         for(let i = 0; i < 5; i++)
         {
             this.playCardPlayer2(0);
+        }
+
+        let cardsOnBoard = this.model.getPlayer2Board().getCards();
+        for(let i = 0; i < cardsOnBoard.length; i++)
+        {
+            let ran = Math.floor(Math.random() * 2);
+            if(ran === 0)
+            {
+                this.attackPlayer1(i);
+            }
+            else
+            {
+                let player1Cards = this.model.getPlayer1Board().getCards();
+                let ran2 = Math.floor(Math.random() * player1Cards.length);
+                this.attackPlayer1Card(i, ran2);
+            }
         }
     }
     
