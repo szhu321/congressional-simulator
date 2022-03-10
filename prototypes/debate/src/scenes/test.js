@@ -33,6 +33,46 @@ export default class Test extends Phaser.Scene {
         boardController.drawCardPlayer1();
         boardController.drawCardPlayer1();
         boardController.drawCardPlayer1();
+
+        
+
+
+        //player 1 plays a card
+        boardController.playCardPlayer1(0);
+
+        //player 1 attacks player 2, fails becuase you cannot attack when the card is placed.
+        boardController.attackPlayer2(0);
+
+        //player 1 end turn.
+        boardController.nextTurn();
+
+        //player 2 draw cards.
+        boardController.drawCardPlayer2();
+        boardController.drawCardPlayer2();
+        boardController.drawCardPlayer2();
+        boardController.drawCardPlayer2();
+        boardController.drawCardPlayer2();
+
+        //player 2 play card
+        boardController.playCardPlayer2(2);
+        boardController.playCardPlayer2(0);
+        boardController.playCardPlayer2(0);
+        boardController.playCardPlayer2(0);
+        
+        //player 2 end turn.
+        boardController.nextTurn();
+
+        //player 1 attack player 2. NOTE: check for active worker cards.
+        boardController.attackPlayer2(0);
+        boardController.attackPlayer2(0);
+
+        //player 1 end turn
+        boardController.nextTurn();
+
+        //player 2 attack player 1 card.
+        boardController.attackPlayer1Card(0, 0);
+
+        console.log(boardModel);
     }
 
     createBoard()

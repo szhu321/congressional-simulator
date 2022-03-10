@@ -45,6 +45,7 @@ export default class BoardController
             return false;
         }
         this.model.setPlayer1Money(player1Money - cardCost);
+        this.model.getPlayer1Hand().removeAtIdx(idx);
         this.model.player1Board.addCard(card);
     }
 
@@ -77,6 +78,7 @@ export default class BoardController
             return false;
         }
         this.model.setPlayer2Money(player2Money - cardCost);
+        this.model.getPlayer2Hand().removeAtIdx(idx);
         this.model.player2Board.addCard(card);
     }
 
@@ -112,8 +114,13 @@ export default class BoardController
     //draw a card for player1.
     drawCardPlayer1()
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        {
+            console.log("drawCardPlayer1() Failed: not player1's turn");
+            return false;
+        }
         //make sure that the hand has 5 card already.
-        if(this.model.getPlayer1Hand().getCards().length <= 5)
+        if(this.model.getPlayer1Hand().getCards().length > 5)
         {
             console.log("drawCardPlayer1() Failed: cannot draw card maximum card is 5");
             return false;
@@ -125,6 +132,7 @@ export default class BoardController
             console.log("drawCardPlayer1() Failed: shuffling discard cards back into player deck.");
             let cards = this.model.getPlayer1DiscardDeck().removeAllCards();
             this.model.getPlayer1DrawDeck().addAllCards(cards);
+            this.model.getPlayer1DrawDeck().restoreAllCardsToDefault();
             this.model.getPlayer1DrawDeck().shuffle();
             return true;
         }
@@ -142,8 +150,13 @@ export default class BoardController
     //draw a card for player2.
     drawCardPlayer2()
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        {
+            console.log("drawCardPlayer2() Failed: not player2's turn");
+            return false;
+        }
         //make sure that the hand has 5 card already.
-        if(this.model.getPlayer2Hand().getCards().length <= 5)
+        if(this.model.getPlayer2Hand().getCards().length > 5)
         {
             console.log("drawCardPlayer2() Failed: cannot draw card maximum card is 5");
             return false;
@@ -155,12 +168,13 @@ export default class BoardController
             console.log("drawCardPlayer2() Failed: shuffling discard cards back into player deck.");
             let cards = this.model.getPlayer2DiscardDeck().removeAllCards();
             this.model.getPlayer2DrawDeck().addAllCards(cards);
+            this.model.getPlayer2DrawDeck().restoreAllCardsToDefault();
             this.model.getPlayer2DrawDeck().shuffle();
             return true;
         }
         
         //if there are still no cards then we cannot draw.
-        if(this.model.getPlayerDrawDeck().getCards().length == 0)
+        if(this.model.getPlayer2DrawDeck().getCards().length == 0)
         {
             console.log("drawCardPlayer2() Failed: Failed to draw a card. no cards in draw and discard deck.");
         }
@@ -172,6 +186,11 @@ export default class BoardController
     //player1 card attack player2 card.
     attackPlayer2Card(player1CardIdx, player2CardIdx)
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        {
+            console.log("attackPlayer2Card() Failed: not player1's turn");
+            return false;
+        }
         let player1Card = this.model.getPlayer1Board().getCardAt(player1CardIdx);
         let player2Card = this.model.getPlayer2Board().getCardAt(player2CardIdx);
         if(!player1Card)
@@ -209,6 +228,11 @@ export default class BoardController
     //player2 card attack player1 card.
     attackPlayer1Card(player2CardIdx, player1CardIdx)
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        {
+            console.log("attackPlayer1Card() Failed: not player2's turn");
+            return false;
+        }
         let player1Card = this.model.getPlayer1Board().getCardAt(player1CardIdx);
         let player2Card = this.model.getPlayer2Board().getCardAt(player2CardIdx);
         if(!player1Card)
@@ -247,6 +271,11 @@ export default class BoardController
     //player1 card attack opponent.
     attackPlayer2(cardIdx)
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        {
+            console.log("attackPlayer2() Failed: not player1's turn");
+            return false;
+        }
         //only allowed if the opponent have no worker card on defense mode.
         let player1Card = this.model.getPlayer1Board().getCardAt(cardIdx);
         if(!player1Card)
@@ -277,6 +306,11 @@ export default class BoardController
     //player2 card attack us.
     attackPlayer1(cardIdx)
     {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        {
+            console.log("attackPlayer1() Failed: not player2's turn");
+            return false;
+        }
         //only allowed if we have no worker card on defense mode.
         let player2Card = this.model.getPlayer2Board().getCardAt(cardIdx);
         if(!player2Card)
@@ -302,6 +336,50 @@ export default class BoardController
         {
             console.log("*********GAME OVER: Player 2 wins*************");
         }
+    }
+
+    //toggle player1's worker card from offensive to defensive mode.
+    togglePlayer1Worker(cardIdx)
+    {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        {
+            console.log("togglePlayer1Worker() Failed: not player1's turn");
+            return false;
+        }
+        let player1Card = this.model.getPlayer1Board().getCardAt(cardIdx);
+        if(!player1Card)
+        {
+            console.log("togglePlayer1Worker() Failed: Player 1 card does not exist");
+            return;
+        }
+        if(!player1Card.isWorker())
+        {
+            console.log("togglePlayer1Worker() Failed: Selected card is not a worker card");
+            return;
+        }
+        player1Card.setIsAttacking(!player1Card.getIsAttacking());
+    }
+
+    //toggle player2's worker card from offensive to defensive mode.
+    togglePlayer2Worker(cardIdx)
+    {
+        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        {
+            console.log("togglePlayer2Worker() Failed: not player2's turn");
+            return false;
+        }
+        let player2Card = this.model.getPlayer2Board().getCardAt(cardIdx);
+        if(!player2Card)
+        {
+            console.log("togglePlayer2Worker() Failed: Player 2 card does not exist");
+            return;
+        }
+        if(!player2Card.isWorker())
+        {
+            console.log("togglePlayer2Worker() Failed: Selected card is not a worker card");
+            return;
+        }
+        player2Card.setIsAttacking(!player2Card.getIsAttacking());
     }
 
     //queue system for abilites.

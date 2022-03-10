@@ -20,6 +20,21 @@ export default class CardModel
         //stars, cost, name, isAttacking, health. isWorker.
         this.isAttacking = false;
         this.isWorker = false;
+
+        this.default = {
+            cost : 100,
+            health : 30,
+            attack : 0,
+            ability : "",
+            name : "Unnamed",
+            politicalIssue : "",
+            politicalView : "",
+            description : "",
+            rank : 1,//rarity of the card.
+            view : null,
+            actionCount : 0,
+            stars: 1//number of starts this card has.
+        }
     }
 
     /**
@@ -46,7 +61,33 @@ export default class CardModel
         if(stars) this.stars = stars;
         if(isAttacking !== undefined) this.isAttacking = isAttacking;
         if(isWorker !== undefined) this.isWorker = isWorker;
+        this.updateDefaults(configObject);
         this.updateView();
+    }
+
+    updateDefaults(configObject)
+    {
+        let {name, cost, health, attack, ability, politicalIssue, politicalView, 
+            descirption, rank, updateViewCallback, actionCount, stars, isAttacking, isWorker} = configObject;
+        if(name) this.default.name = name;
+        if(cost) this.default.cost = cost;
+        if(health) this.default.health = health;
+        if(attack) this.default.attack = attack;
+        if(ability) this.default.ability = ability;
+        if(politicalIssue) this.default.politicalIssue = politicalIssue;
+        if(politicalView) this.default.politicalView = politicalView;
+        if(descirption) this.default.description = descirption;
+        if(rank) this.default.rank = rank;
+        if(updateViewCallback) this.default.updateViewCallback = updateViewCallback;
+        if(actionCount) this.default.actionCount = actionCount;
+        if(stars) this.default.stars = stars;
+        if(isAttacking !== undefined) this.default.isAttacking = isAttacking;
+        if(isWorker !== undefined) this.default.isWorker = isWorker;
+    }
+
+    restoreToDefault()
+    {
+        this.setConfig(this.default);
     }
 
     clone()

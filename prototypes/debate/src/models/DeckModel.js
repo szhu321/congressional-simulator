@@ -146,6 +146,14 @@ export default class DeckModel
         this.updateView();
     }
 
+    restoreAllCardsToDefault()
+    {
+        for(let card of this.deck)
+        {
+            card.restoreToDefault();
+        }
+    }
+
     /**
      * The view has a function called updateViewCallback(model) can be called when this model gets updated.
      * It should accept one argument that contains information about the updated model.
