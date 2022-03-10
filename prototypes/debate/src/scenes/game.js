@@ -46,6 +46,9 @@ export default class MyGame extends Phaser.Scene {
         let deckView = new DeckView(this);
         deckView.initialize();
         deckModel.setView(deckView);
+        deckView.updateDisplay("");
+        deckView.setInteractive(new Phaser.Geom.Rectangle(-1 * deckView.maxWidth / 2, 
+            -1 * deckView.maxHeight / 2, deckView.maxWidth, deckView.maxHeight), Phaser.Geom.Rectangle.Contains);
         deckModel.updateView();
         return deckModel;
     }

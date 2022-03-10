@@ -39,7 +39,10 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let dealText = this.scene.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
         // let playerDeckZone = this.createDeck(20, true);
         let playerDeckZone = model.getPlayer1DrawDeck().getView();
+        console.log(playerDeckZone);
         this.scene.add.existing(playerDeckZone);
+        // playerDeckZone.updateDisplay("");
+        // playerDeckZone.setInteractive();
         playerDeckZone.setPosition(1300, 640);
 
         // let opponentDeckZone = this.createDeck(20, false);
@@ -197,8 +200,8 @@ export default class BoardView extends Phaser.GameObjects.Layer{
     createDeck(deckSize, interactive){
         let deck = new DeckView(this.scene);
         deck.initialize();
-        this.scene.add.existing(deckSize);
-        deck.updateDisplay();
+        this.scene.add.existing(deck);
+        deck.updateDisplay(deckSize);
         if(interactive)
             deck.setInteractive(new Phaser.Geom.Rectangle(-1 * deck.maxWidth / 2, -1 * deck.maxHeight / 2, deck.maxWidth, deck.maxHeight), Phaser.Geom.Rectangle.Contains);
         return deck;
