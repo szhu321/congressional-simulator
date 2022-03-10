@@ -105,8 +105,8 @@ export default class MyGame extends Phaser.Scene {
         boardModel.player1Board = this.createHand();
         boardModel.player2Board = this.createHand();
         
-        boardModel.setPlayer1Money(5000);
-        boardModel.setPlayer2Money(500);
+        boardModel.setPlayer1Money(300);
+        boardModel.setPlayer2Money(300);
         
         boardModel.setPlayer1Votes(10);
         boardModel.setPlayer2Votes(10);
@@ -122,13 +122,15 @@ export default class MyGame extends Phaser.Scene {
         }
         
         let cards2 = [];
-        for(let card of cards)
+        for(let i = 0; i < cardsData.length; i++)
         {
-            cards2.push(card.clone());
+            let card = this.createNewCard(cardsData[i]);
+            card.view.disableInteractive();
+            cards2.push(card);
         }
 
         boardModel.getPlayer1DrawDeck().addAllCards(cards);
-        boardModel.getPlayer2DrawDeck().addAllCards(cards);
+        boardModel.getPlayer2DrawDeck().addAllCards(cards2);
         boardModel.getPlayer1DrawDeck().shuffle();
         boardModel.getPlayer2DrawDeck().shuffle();
 

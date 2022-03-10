@@ -81,8 +81,8 @@ export default class HandView extends Phaser.GameObjects.Container{
         
         this.repositionCards(this.cardsView, 0, 0, 1);
         //this.repositionCards(this.cardsView, 0, 0, 1);
-        console.log("HELLO");
-        console.log(model.getCards());
-        console.log(this.cardsView);
+        // console.log("HELLO");
+        // console.log(model.getCards());
+        // console.log(this.cardsView);
     }
 }

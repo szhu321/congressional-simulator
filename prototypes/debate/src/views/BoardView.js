@@ -78,6 +78,13 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.scene.add.existing(playerBoardZone);
         playerBoardZone.setPosition(this.scene.game.canvas.width / 4, this.scene.game.canvas.height - 240);
 
+        let opponentHandZone = model.getPlayer2Hand().getView();
+        this.scene.add.existing(opponentHandZone);
+        opponentHandZone.setPosition(this.scene.game.canvas.width / 4, 80);
+
+        let opponentBoardZone = model.getPlayer2Board().getView();
+        this.scene.add.existing(opponentBoardZone);
+        opponentBoardZone.setPosition(this.scene.game.canvas.width / 4, 240);
 
         playerDeckZone.on('pointerdown', () => {
             // console.log("Draw 1 card");
@@ -161,9 +168,9 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                         gameObject.y = gameObject.input.dragStartY;
                     }
 
-                    gameObject.data.values.dropZoneName = dropZone.name;
-                    gameObject.data.values.dropZoneX = gameObject.x;
-                    gameObject.data.values.dropZoneY = gameObject.y;
+                    // gameObject.data.values.dropZoneName = dropZone.name;
+                    // gameObject.data.values.dropZoneX = gameObject.x;
+                    // gameObject.data.values.dropZoneY = gameObject.y;
                     console.log(model)
                     
                 }else{
@@ -174,7 +181,8 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         })
 
         endTurnText.on('pointerdown', () => {
-            this.getChildren()[9].setText(['player2\'s Turn']);
+            // this.getChildren()[9].setText(['player2\'s Turn']);
+            this.controller.nextTurn();
         })
 
         endTurnText.on('pointerover', () => {

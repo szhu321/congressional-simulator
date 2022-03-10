@@ -47,6 +47,7 @@ export default class BoardController
         this.model.setPlayer1Money(player1Money - cardCost);
         this.model.getPlayer1Hand().removeAtIdx(idx);
         this.model.getPlayer1Board().addCard(card);
+        return true;
     }
 
     /**
@@ -80,6 +81,7 @@ export default class BoardController
         this.model.setPlayer2Money(player2Money - cardCost);
         this.model.getPlayer2Hand().removeAtIdx(idx);
         this.model.getPlayer2Board().addCard(card);
+        return true;
     }
 
     //clicked on next turn.
@@ -97,6 +99,7 @@ export default class BoardController
                     card.setAction(1);
                 }
             }
+            this.model.setPlayer1Money(this.model.getPlayer1Money() + 100);
         }
         else
         {
@@ -108,8 +111,11 @@ export default class BoardController
                     card.setAction(1);
                 }
             }
+            this.model.setPlayer2Money(this.model.getPlayer2Money() + 100);
+
             //run the player2 ai;
             this.runAi();
+            this.model.switchTurn();
         }
     }
 
@@ -121,10 +127,10 @@ export default class BoardController
             this.drawCardPlayer2();
         }
 
-        let player2Hand = this.model.getPlayer2Hand().getCards();
-        for(let i = 0; i < player2Hand.length; i++)
+        //play cards
+        for(let i = 0; i < 5; i++)
         {
-            player2Hand.length++;
+            this.playCardPlayer2(0);
         }
     }
     
