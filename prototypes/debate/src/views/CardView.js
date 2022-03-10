@@ -1,3 +1,6 @@
+import CardModel from "../models/CardModel";
+import Phaser from "phaser";
+
 export default class CardView extends Phaser.GameObjects.Container{
     constructor(scene){
         super(scene);
@@ -35,25 +38,30 @@ export default class CardView extends Phaser.GameObjects.Container{
             for(let i = 0; i < this.textAmount; i++){
                 children[i + 1].setText(textArray[i]);
             }
-    
+            // Card Level
             children[1].setPosition(-1 * this.maxWidth / 2, -1 * this.maxHeight / 2);
-    
+
+            // Card Cost
             children[2].setPosition(this.maxWidth / 2, -1 * this.maxHeight / 2);
             children[2].setOrigin(1, 0);
-    
+
+            // Card Name
             children[3].setOrigin(0.5, 0);
             children[3].setWordWrapWidth(this.maxWidth, true).setAlign('center');
             children[3].setPosition(0, children[1].height - this.maxHeight / 2);
             children[3].setFontStyle('bold');
-    
+
+            // Card Ability
             children[4].setOrigin(0.5, 0);
             children[4].setWordWrapWidth(this.maxWidth, true).setAlign('center');
             children[4].setPosition(0, children[3].height + children[1].height - this.maxHeight / 2);
             children[4].setFontSize(this.abilityFontSize);
-    
+
+            // Card Health
             children[5].setPosition(-1 * this.maxWidth / 2, this.maxHeight / 2);
             children[5].setOrigin(0, 1);
-    
+
+            // Card Attack
             children[6].setPosition(this.maxWidth / 2, this.maxHeight / 2);
             children[6].setOrigin(1, 1);
         }else{
@@ -66,5 +74,24 @@ export default class CardView extends Phaser.GameObjects.Container{
             children[2].setPosition(0, this.maxHeight / 2);
             children[2].setOrigin(0.5, 1);
         }
+    }
+
+    /**
+     * Update card display based on model information
+     * @param {CardModel} model 
+     */
+    updateViewCallback(model){
+        let children = this.getAll();
+        let level = model.getStar();
+        let levelStr = "";
+        for(let i = 0; i < level; i++){
+            levelStr += "\u{2605}";
+        }
+        children[1].setText(levelStr);
+        children[2].setText(model.getCost());
+        children[3].setText(model.getName());
+        children[4].setText(model.getAbility());
+        children[5].setText(model.getHealth());
+        children[6].setText(model.getAttack());
     }
 }
