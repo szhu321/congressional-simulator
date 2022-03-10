@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import Zone from '../helpers/zone';
 import CardView from './CardView';
 import DeckView from './DeckView';
+import BoardController from '../controllers/BoardController';
 
 export default class BoardView extends Phaser.GameObjects.Layer{
     constructor(scene){
@@ -88,7 +89,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                 // gameObject.y = gameObject.data.values.dropZoneY;
                 // gameObject.disableInteractive();
                 // gameObject.getAt(0).setFillStyle(0x9d7915)
-                
+                this.controller.attackPlayer2(this.getChildren()[2].data.values.cardList.indexOf(gameObject));
             }else{
                 console.log("Drop detected");
                 console.log(this.playerBattleFunds);

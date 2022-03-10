@@ -3,6 +3,8 @@ import Zone from '../helpers/zone';
 import CardView from '../views/CardView';
 import Phaser from 'phaser';
 import BoardView from '../views/BoardView';
+import BoardController from '../controllers/BoardController';
+import BoardModel from '../models/BoardModel';
 
 export default class MyGame extends Phaser.Scene {
     constructor() {
@@ -22,9 +24,15 @@ export default class MyGame extends Phaser.Scene {
     }
 
     create() {
-        this.board = new BoardView(this);
-        this.board.initialize();
-        this.add.existing(this.board);
+        this.boardController = new BoardController();
+        this.boardModel = new BoardModel();
+        this.boardView = new BoardView(this);
+        this.boardController.model = this.boardModel;
+        this.boardModel.view = this.boardView;
+        this.boardView.controller = this.boardController;
+        this.boardView.initialize();
+        this.boardModel.updateView();
+        this.add.existing(this.boardView);
     }
 
     update() {
