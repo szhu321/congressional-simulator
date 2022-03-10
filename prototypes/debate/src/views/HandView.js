@@ -74,10 +74,10 @@ export default class HandView extends Phaser.GameObjects.Container{
             console.log(card.view);
             this.cardsView.push(card.view);
             this.add(card.view);
-            this.scene.add.existing(card.view);
+            // this.scene.add.existing(card.view);
             card.view.setVisible(true);
         }
         console.log(this.cardsView);
-        this.repositionCards(this.cardsView, 400, 640, 1);
+        this.repositionCards(this.cardsView, 0, 0, 1);
     }
 }

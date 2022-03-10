@@ -89,7 +89,7 @@ export default class CardView extends Phaser.GameObjects.Container{
         }
         children[1].setText(levelStr);
         children[2].setText(model.getCost());
-        children[3].setText(model.getName());
+        children[3].setText(model.getPoliticalIssue() + " " + model.getPoliticalView());
         children[4].setText(model.getAbility());
         children[5].setText(model.getHealth());
         children[6].setText(model.getAttack());

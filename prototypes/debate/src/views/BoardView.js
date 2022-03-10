@@ -52,6 +52,11 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
         let playerHandZone = model.getPlayer1Hand().getView();
         this.scene.add.existing(playerHandZone);
+        playerHandZone.setPosition(this.scene.game.canvas.width / 2, this.scene.game.canvas.height - 100);
+
+        let playerBoardZone = model.getPlayer1Board().getView();
+        this.scene.add.existing(playerBoardZone);
+        playerBoardZone.setPosition(this.scene.game.canvas.width / 2, this.scene.game.canvas.height - 400);
 
         let zone = new Zone(this.scene);
         let playerDropZone = zone.renderZone(700, 460).setName("playerZone");
@@ -114,16 +119,19 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             }else{
                 console.log("Drop detected");
                 console.log(this.playerBattleFunds);
-                if(gameObject.data.values.cost <= this.playerBattleFunds && dropZone.name === 'playerZone'){
-                    console.log("Place card");
-                    this.playerBattleFunds -= gameObject.data.values.cost;
-                    this.getChildren()[5].setText([`Current Funds: $${this.playerBattleFunds}`]);
-                    dropZone.data.values.cards++;
-                    dropZone.data.values.cardList.push(gameObject);
-                    console.log(this.playerCards.indexOf(gameObject));
-                    this.playerCards.splice(this.playerCards.indexOf(gameObject), 1);
-                    this.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y, 1);
-                    this.repositionCards(this.playerCards, 400, 640, 1);
+                if(dropZone.name === 'playerZone'){
+                    // console.log("Place card");
+                    // this.playerBattleFunds -= gameObject.data.values.cost;
+                    // this.getChildren()[5].setText([`Current Funds: $${this.playerBattleFunds}`]);
+                    // dropZone.data.values.cards++;
+                    // dropZone.data.values.cardList.push(gameObject);
+                    // console.log(this.playerCards.indexOf(gameObject));
+                    // this.playerCards.splice(this.playerCards.indexOf(gameObject), 1);
+                    // this.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y, 1);
+                    // this.repositionCards(this.playerCards, 400, 640, 1);
+                    
+                    this.controller.playCardPlayer1(model.getPlayer1Hand().getView().cardsView.indexOf(gameObject));
+                    console.log(model)
                     gameObject.data.values.dropZoneName = dropZone.name;
                     gameObject.data.values.dropZoneX = gameObject.x;
                     gameObject.data.values.dropZoneY = gameObject.y;
