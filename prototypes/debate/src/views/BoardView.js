@@ -50,6 +50,9 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.scene.add.existing(opponentDeckZone);
         opponentDeckZone.setPosition(120, 80).setRotation(Math.PI);
 
+        let playerHandZone = model.getPlayer1Hand().getView();
+        this.scene.add.existing(playerHandZone);
+
         let zone = new Zone(this.scene);
         let playerDropZone = zone.renderZone(700, 460).setName("playerZone");
         /* let playerOutline = */zone.renderOutline(playerDropZone);
@@ -266,7 +269,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             this.getChildren()[2].data.values.cardList.push(card.view);
             this.add(card.view);
         }
-        this.repositionCards(this.getChildren()[2].data.values.cardList, this.getChildren()[2].x - 350, this.getChildren()[2].y, -1);
+        this.repositionCards(this.getChildren()[2].data.values.cardList, this.getChildren()[2].x - 350, this.getChildren()[2].y, 1);
         // Opponent Board
         for(let card of this.getChildren()[3].data.values.cardList){
             this.remove(card);
@@ -276,7 +279,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             this.getChildren()[3].data.values.cardList.push(card.view);
             this.add(card.view);
         }
-        this.repositionCards(this.getChildren()[3].data.values.cardList, this.getChildren()[3].x - 350, this.getChildren()[3].y, -1);
+        this.repositionCards(this.getChildren()[3].data.values.cardList, this.getChildren()[3].x - 350, this.getChildren()[3].y, 1);
         // Player Money Text
         this.getChildren()[5].setText([`Current Funds: $${model.getPlayer1Money()}`]);
         // Opponent Money Text

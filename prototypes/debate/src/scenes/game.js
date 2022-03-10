@@ -8,6 +8,7 @@ import BoardModel from '../models/BoardModel';
 import CardModel from '../models/CardModel';
 import DeckModel from '../models/DeckModel';
 import DeckView from '../views/DeckView';
+import HandView from '../views/HandView';
 
 export default class MyGame extends Phaser.Scene {
     constructor() {
@@ -53,6 +54,18 @@ export default class MyGame extends Phaser.Scene {
         return deckModel;
     }
 
+    createHand(){
+        let deckModel = new DeckModel();
+        let deckView = new HandView(this);
+        // deckView.initialize();
+        deckModel.setView(deckView);
+        // deckView.updateDisplay("");
+        // deckView.setInteractive(new Phaser.Geom.Rectangle(-1 * deckView.maxWidth / 2, 
+        //     -1 * deckView.maxHeight / 2, deckView.maxWidth, deckView.maxHeight), Phaser.Geom.Rectangle.Contains);
+        deckModel.updateView();
+        return deckModel;
+    }
+
     createNewCard(jsonObject)
     {
         let cardModel = new CardModel();
@@ -82,8 +95,8 @@ export default class MyGame extends Phaser.Scene {
         boardModel.player2DiscardDeck = this.createDeck();
 
         //The cards on the hand is what the player's can play each round.
-        boardModel.player1Hand = this.createDeck();
-        boardModel.player2Hand = this.createDeck();
+        boardModel.player1Hand = this.createHand();
+        boardModel.player2Hand = this.createHand();
 
         //The cards on the board is the cards the player have on action.
         boardModel.player1Board = this.createDeck();
