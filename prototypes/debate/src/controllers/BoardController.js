@@ -126,12 +126,13 @@ export default class BoardController
             this.drawCardPlayer2();
         }
 
-        //play cards
+        //play cards 5 times.
         for(let i = 0; i < 5; i++)
         {
             this.playCardPlayer2(0);
         }
 
+        //attack randomly.
         let cardsOnBoard = this.model.getPlayer2Board().getCards();
         for(let i = 0; i < cardsOnBoard.length; i++)
         {
@@ -258,7 +259,7 @@ export default class BoardController
             this.model.getPlayer1Board().removeAtIdx(player1CardIdx);
             this.model.getPlayer1DiscardDeck().addCard(player1Card);
         }
-        if(player2Card.getHealth <= 0)
+        if(player2Card.getHealth() <= 0)
         {
             this.model.getPlayer2Board().removeAtIdx(player2CardIdx);
             this.model.getPlayer2DiscardDeck().addCard(player2Card);
@@ -301,7 +302,7 @@ export default class BoardController
             this.model.getPlayer1Board().removeAtIdx(player1CardIdx);
             this.model.getPlayer1DiscardDeck().addCard(player1Card);
         }
-        if(player2Card.getHealth <= 0)
+        if(player2Card.getHealth() <= 0)
         {
             this.model.getPlayer2Board().removeAtIdx(player2CardIdx);
             this.model.getPlayer2DiscardDeck().addCard(player2Card);
