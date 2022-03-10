@@ -50,8 +50,8 @@ export default class HandView extends Phaser.GameObjects.Container{
 
     repositionCards = (dropZoneCards, x, y, sign) => {
         for(let i = 0; i < dropZoneCards.length; i++){
-            dropZoneCards[i].x = x + sign * 150 * i;
-            dropZoneCards[i].y = y;
+            dropZoneCards[i].setX(x + sign * 150 * i);
+            dropZoneCards[i].setY(y);
             console.log(dropZoneCards[i].x + ", " + dropZoneCards[i].y)
         }
     }
@@ -70,14 +70,19 @@ export default class HandView extends Phaser.GameObjects.Container{
         this.cardsView.splice(0, this.cardsView.length);
         let cards = model.getCards();
         for(let card of cards){
-            console.log(card);
-            console.log(card.view);
+            // console.log(card);
+            // console.log(card.view);
             this.cardsView.push(card.view);
             this.add(card.view);
             // this.scene.add.existing(card.view);
             card.view.setVisible(true);
+            this.scene.children.bringToTop(card.view);
         }
-        console.log(this.cardsView);
+        
         this.repositionCards(this.cardsView, 0, 0, 1);
+        //this.repositionCards(this.cardsView, 0, 0, 1);
+        console.log("HELLO");
+        console.log(model.getCards());
+        console.log(this.cardsView);
     }
 }

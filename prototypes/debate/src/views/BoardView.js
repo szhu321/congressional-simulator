@@ -38,28 +38,10 @@ export default class BoardView extends Phaser.GameObjects.Layer{
     initialize(model){
         let dealText = this.scene.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
         // let playerDeckZone = this.createDeck(20, true);
-        let playerDeckZone = model.getPlayer1DrawDeck().getView();
-        console.log(playerDeckZone);
-        this.scene.add.existing(playerDeckZone);
-        // playerDeckZone.updateDisplay("");
-        // playerDeckZone.setInteractive();
-        playerDeckZone.setPosition(1300, 640);
-
-        // let opponentDeckZone = this.createDeck(20, false);
-        let opponentDeckZone = model.getPlayer2DrawDeck().getView();
-        this.scene.add.existing(opponentDeckZone);
-        opponentDeckZone.setPosition(120, 80).setRotation(Math.PI);
-
-        let playerHandZone = model.getPlayer1Hand().getView();
-        this.scene.add.existing(playerHandZone);
-        playerHandZone.setPosition(this.scene.game.canvas.width / 2, this.scene.game.canvas.height - 100);
-
-        let playerBoardZone = model.getPlayer1Board().getView();
-        this.scene.add.existing(playerBoardZone);
-        playerBoardZone.setPosition(this.scene.game.canvas.width / 2, this.scene.game.canvas.height - 400);
-
+        
         let zone = new Zone(this.scene);
         let playerDropZone = zone.renderZone(700, 460).setName("playerZone");
+        this.scene.input.setTopOnly(false);
         /* let playerOutline = */zone.renderOutline(playerDropZone);
         let opponentDropZone = zone.renderZone(700, 260).setName("opponentZone");
         /* let opponentOutline = */zone.renderOutline(opponentDropZone);
@@ -75,6 +57,28 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let currentTurnText = this.scene.add.text(1300, 350, ['player1\'s Turn']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0);
         let endTurnText = this.scene.add.text(1300, 450, ['END TURN']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive().setOrigin(0.5, 0);
 
+        //ADD THE DECK AND HAND VIEW ZONES. -------------------------------------
+        let playerDeckZone = model.getPlayer1DrawDeck().getView();
+        console.log(playerDeckZone);
+        this.scene.add.existing(playerDeckZone);
+        // playerDeckZone.updateDisplay("");
+        // playerDeckZone.setInteractive();
+        playerDeckZone.setPosition(1300, 640);
+
+        // let opponentDeckZone = this.createDeck(20, false);
+        let opponentDeckZone = model.getPlayer2DrawDeck().getView();
+        this.scene.add.existing(opponentDeckZone);
+        opponentDeckZone.setPosition(120, 80).setRotation(Math.PI);
+
+        let playerHandZone = model.getPlayer1Hand().getView();
+        this.scene.add.existing(playerHandZone);
+        playerHandZone.setPosition(this.scene.game.canvas.width / 4, this.scene.game.canvas.height - 80);
+
+        let playerBoardZone = model.getPlayer1Board().getView();
+        this.scene.add.existing(playerBoardZone);
+        playerBoardZone.setPosition(this.scene.game.canvas.width / 4, this.scene.game.canvas.height - 240);
+
+
         playerDeckZone.on('pointerdown', () => {
             // console.log("Draw 1 card");
             // console.log(this);
@@ -87,10 +91,12 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
             gameObject.x = dragX;
             gameObject.y = dragY;
+            //console.log(`Dragging: ${dragX}, ${dragY}`);
         })
 
         this.scene.input.on('dragstart', (pointer, gameObject) => {
             this.scene.children.bringToTop(gameObject);
+            console.log(`DRAG STARTTTT`);
         })
 
         this.scene.input.on('dragend', function (pointer, gameObject, dropped) {
@@ -116,6 +122,8 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                 // gameObject.disableInteractive();
                 // gameObject.getAt(0).setFillStyle(0x9d7915)
                 this.controller.attackPlayer2(this.getChildren()[2].data.values.cardList.indexOf(gameObject));
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
             }else{
                 console.log("Drop detected");
                 console.log(this.playerBattleFunds);
@@ -130,15 +138,34 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                     // this.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y, 1);
                     // this.repositionCards(this.playerCards, 400, 640, 1);
                     
-                    let played = this.controller.playCardPlayer1(model.getPlayer1Hand().getView().cardsView.indexOf(gameObject));
+                    let cards = model.getPlayer1Hand().getCards();
+                    let idx = -1;
+                    for(let i = 0; i < cards.length; i++)
+                    {
+                        if(cards[i].view === gameObject)
+                        {
+                            idx = i;
+                            break;
+                        }
+                    }
+
+                    let played = false;
+                    if(idx !== -1)
+                    {
+                        played = this.controller.playCardPlayer1(idx);
+                    }
+
+                    
                     if(!played){
                         gameObject.x = gameObject.input.dragStartX;
                         gameObject.y = gameObject.input.dragStartY;
                     }
-                    console.log(model)
+
                     gameObject.data.values.dropZoneName = dropZone.name;
                     gameObject.data.values.dropZoneX = gameObject.x;
                     gameObject.data.values.dropZoneY = gameObject.y;
+                    console.log(model)
+                    
                 }else{
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
@@ -159,7 +186,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         })
 
         dealText.on('pointerdown', () => {
-            this.dealCards();
+            //this.dealCards();
         })
 
         dealText.on('pointerover', () => {
@@ -197,51 +224,51 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.add(dealText);
     }
 
-    createCard(frontFacing, deckSize){
-        let card = new CardView(this.scene);
-        card.initialize();
-        this.scene.add.existing(card);
-        if(frontFacing){
-            card.updateDisplay(["\u{2605}", "$100", "Environment Liberal", "When played deal 1 damage to a random opponent card", "1", "1"], frontFacing);
-        }else{
-            card.updateDisplay(["" + deckSize], frontFacing);
-        }
-        card.setInteractive(new Phaser.Geom.Rectangle(-1 * card.maxWidth / 2, -1 * card.maxHeight / 2, card.maxWidth, card.maxHeight), Phaser.Geom.Rectangle.Contains);
-        this.scene.input.setDraggable(card);
-        return card;
-        // this.input.enableDebug(this.card);
-    }
+    // createCard(frontFacing, deckSize){
+    //     let card = new CardView(this.scene);
+    //     card.initialize();
+    //     this.scene.add.existing(card);
+    //     if(frontFacing){
+    //         card.updateDisplay(["\u{2605}", "$100", "Environment Liberal", "When played deal 1 damage to a random opponent card", "1", "1"], frontFacing);
+    //     }else{
+    //         card.updateDisplay(["" + deckSize], frontFacing);
+    //     }
+    //     card.setInteractive(new Phaser.Geom.Rectangle(-1 * card.maxWidth / 2, -1 * card.maxHeight / 2, card.maxWidth, card.maxHeight), Phaser.Geom.Rectangle.Contains);
+    //     this.scene.input.setDraggable(card);
+    //     return card;
+    //     // this.input.enableDebug(this.card);
+    // }
 
-    createDeck(deckSize, interactive){
-        let deck = new DeckView(this.scene);
-        deck.initialize();
-        this.scene.add.existing(deck);
-        deck.updateDisplay(deckSize);
-        if(interactive)
-            deck.setInteractive(new Phaser.Geom.Rectangle(-1 * deck.maxWidth / 2, -1 * deck.maxHeight / 2, deck.maxWidth, deck.maxHeight), Phaser.Geom.Rectangle.Contains);
-        return deck;
-    }
+    // createDeck(deckSize, interactive){
+    //     let deck = new DeckView(this.scene);
+    //     deck.initialize();
+    //     this.scene.add.existing(deck);
+    //     deck.updateDisplay(deckSize);
+    //     if(interactive)
+    //         deck.setInteractive(new Phaser.Geom.Rectangle(-1 * deck.maxWidth / 2, -1 * deck.maxHeight / 2, deck.maxWidth, deck.maxHeight), Phaser.Geom.Rectangle.Contains);
+    //     return deck;
+    // }
 
-    repositionCards = (dropZoneCards, x, y, sign) => {
-        for(let i = 0; i < dropZoneCards.length; i++){
-            dropZoneCards[i].x = x + sign * 150 * i;
-            dropZoneCards[i].y = y;
-        }
-    }
+    // repositionCards = (dropZoneCards, x, y, sign) => {
+    //     for(let i = 0; i < dropZoneCards.length; i++){
+    //         dropZoneCards[i].x = x + sign * 150 * i;
+    //         dropZoneCards[i].y = y;
+    //     }
+    // }
 
-    dealCards = () => {
-        for (let i = 0; i < 5; i++) {
-            let playerCard = this.createCard(true);
-            let opponentCard = this.createCard(true);
-            opponentCard.disableInteractive();
-            opponentCard.setRotation(Math.PI);
-            console.log('hello');
-            this.playerCards.push(playerCard);
-            this.opponentCards.push(opponentCard);
-        }
-        this.repositionCards(this.playerCards, 400, 640, 1);
-        this.repositionCards(this.opponentCards, 1000, 80, -1);
-    }
+    // dealCards = () => {
+    //     for (let i = 0; i < 5; i++) {
+    //         let playerCard = this.createCard(true);
+    //         let opponentCard = this.createCard(true);
+    //         opponentCard.disableInteractive();
+    //         opponentCard.setRotation(Math.PI);
+    //         console.log('hello');
+    //         this.playerCards.push(playerCard);
+    //         this.opponentCards.push(opponentCard);
+    //     }
+    //     this.repositionCards(this.playerCards, 400, 640, 1);
+    //     this.repositionCards(this.opponentCards, 1000, 80, -1);
+    // }
 
     /**
      * Update board display based on model information
@@ -249,49 +276,49 @@ export default class BoardView extends Phaser.GameObjects.Layer{
      */
     updateViewCallback(model){
         // Player Hand
-        for(let card of this.playerCards){
-            this.remove(card);
-        }
-        this.playerCards.splice(0, this.playerCards.length);
-        for(let card of model.getPlayer1Hand().getCards()){
-            this.playerCards.push(card.view);
-            this.add(card.view);
-        }
-        this.repositionCards(this.playerCards, 400, 640, 1);
+        // for(let card of this.playerCards){
+        //     this.remove(card);
+        // }
+        // this.playerCards.splice(0, this.playerCards.length);
+        // for(let card of model.getPlayer1Hand().getCards()){
+        //     this.playerCards.push(card.view);
+        //     this.add(card.view);
+        // }
+        //this.repositionCards(this.playerCards, 400, 640, 1);
         // Opponent Hand
-        for(let card of this.opponentCards){
-            this.remove(card);
-        }
-        this.opponentCards.splice(0, this.opponentCards.length);
-        for(let card of model.getPlayer2Hand().getCards()){
-            this.opponentCards.push(card.view);
-            this.add(card.view);
-        }
-        this.repositionCards(this.opponentCards, 1000, 80, -1);
+        // for(let card of this.opponentCards){
+        //     this.remove(card);
+        // }
+        // this.opponentCards.splice(0, this.opponentCards.length);
+        // for(let card of model.getPlayer2Hand().getCards()){
+        //     this.opponentCards.push(card.view);
+        //     this.add(card.view);
+        // }
+        //this.repositionCards(this.opponentCards, 1000, 80, -1);
         // Player Deck
-        this.getChildren()[0].updateViewCallback(model.getPlayer1DrawDeck());
-        // Opponent Deck
-        this.getChildren()[1].updateViewCallback(model.getPlayer2DrawDeck());
+        // this.getChildren()[0].updateViewCallback(model.getPlayer1DrawDeck());
+        // // Opponent Deck
+        // this.getChildren()[1].updateViewCallback(model.getPlayer2DrawDeck());
         // Player Board
-        for(let card of this.getChildren()[2].data.values.cardList){
-            this.remove(card);
-        }
-        this.getChildren()[2].data.values.cardList.splice(0, this.getChildren()[2].data.values.cardList.length);
-        for(let card of model.getPlayer2Hand().getCards()){
-            this.getChildren()[2].data.values.cardList.push(card.view);
-            this.add(card.view);
-        }
-        this.repositionCards(this.getChildren()[2].data.values.cardList, this.getChildren()[2].x - 350, this.getChildren()[2].y, 1);
+        // for(let card of this.getChildren()[2].data.values.cardList){
+        //     this.remove(card);
+        // }
+        // this.getChildren()[2].data.values.cardList.splice(0, this.getChildren()[2].data.values.cardList.length);
+        // for(let card of model.getPlayer2Hand().getCards()){
+        //     this.getChildren()[2].data.values.cardList.push(card.view);
+        //     this.add(card.view);
+        // }
+        //this.repositionCards(this.getChildren()[2].data.values.cardList, this.getChildren()[2].x - 350, this.getChildren()[2].y, 1);
         // Opponent Board
-        for(let card of this.getChildren()[3].data.values.cardList){
-            this.remove(card);
-        }
-        this.getChildren()[3].data.values.cardList.splice(0, this.getChildren()[3].data.values.cardList.length);
-        for(let card of model.getPlayer2Hand().getCards()){
-            this.getChildren()[3].data.values.cardList.push(card.view);
-            this.add(card.view);
-        }
-        this.repositionCards(this.getChildren()[3].data.values.cardList, this.getChildren()[3].x - 350, this.getChildren()[3].y, 1);
+        // for(let card of this.getChildren()[3].data.values.cardList){
+        //     this.remove(card);
+        // }
+        // this.getChildren()[3].data.values.cardList.splice(0, this.getChildren()[3].data.values.cardList.length);
+        // for(let card of model.getPlayer2Hand().getCards()){
+        //     this.getChildren()[3].data.values.cardList.push(card.view);
+        //     this.add(card.view);
+        // }
+        //this.repositionCards(this.getChildren()[3].data.values.cardList, this.getChildren()[3].x - 350, this.getChildren()[3].y, 1);
         // Player Money Text
         this.getChildren()[5].setText([`Current Funds: $${model.getPlayer1Money()}`]);
         // Opponent Money Text

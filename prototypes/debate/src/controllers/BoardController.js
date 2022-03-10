@@ -46,7 +46,7 @@ export default class BoardController
         }
         this.model.setPlayer1Money(player1Money - cardCost);
         this.model.getPlayer1Hand().removeAtIdx(idx);
-        this.model.player1Board.addCard(card);
+        this.model.getPlayer1Board().addCard(card);
     }
 
     /**
@@ -79,7 +79,7 @@ export default class BoardController
         }
         this.model.setPlayer2Money(player2Money - cardCost);
         this.model.getPlayer2Hand().removeAtIdx(idx);
-        this.model.player2Board.addCard(card);
+        this.model.getPlayer2Board().addCard(card);
     }
 
     //clicked on next turn.
@@ -108,6 +108,23 @@ export default class BoardController
                     card.setAction(1);
                 }
             }
+            //run the player2 ai;
+            this.runAi();
+        }
+    }
+
+    runAi()
+    {
+        //draw cards 5 times.
+        for(let i = 0; i < 5; i++)
+        {
+            this.drawCardPlayer2();
+        }
+
+        let player2Hand = this.model.getPlayer2Hand().getCards();
+        for(let i = 0; i < player2Hand.length; i++)
+        {
+            player2Hand.length++;
         }
     }
     

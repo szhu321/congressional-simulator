@@ -105,7 +105,7 @@ export default class MyGame extends Phaser.Scene {
         boardModel.player1Board = this.createHand();
         boardModel.player2Board = this.createHand();
         
-        boardModel.setPlayer1Money(500);
+        boardModel.setPlayer1Money(5000);
         boardModel.setPlayer2Money(500);
         
         boardModel.setPlayer1Votes(10);
