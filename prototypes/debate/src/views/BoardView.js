@@ -6,6 +6,12 @@ import DeckView from './DeckView';
 import BoardController from '../controllers/BoardController';
 
 export default class BoardView extends Phaser.GameObjects.Layer{
+
+    /**
+     * @type {BoardController}
+     */
+    controller
+
     constructor(scene){
         super(scene);
         this.fontSize = 15;
@@ -25,12 +31,20 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.controller = null;
     }
 
-    initialize(){
+    /**
+     * 
+     * @param {BoardModel} model 
+     */
+    initialize(model){
         let dealText = this.scene.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
-        let playerDeckZone = this.createDeck(20, true);
+        // let playerDeckZone = this.createDeck(20, true);
+        let playerDeckZone = model.getPlayer1DrawDeck().getView();
+        this.scene.add.existing(playerDeckZone);
         playerDeckZone.setPosition(1300, 640);
 
-        let opponentDeckZone = this.createDeck(20, false);
+        // let opponentDeckZone = this.createDeck(20, false);
+        let opponentDeckZone = model.getPlayer2DrawDeck().getView();
+        this.scene.add.existing(opponentDeckZone);
         opponentDeckZone.setPosition(120, 80).setRotation(Math.PI);
 
         let zone = new Zone(this.scene);
@@ -51,11 +65,12 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let endTurnText = this.scene.add.text(1300, 450, ['END TURN']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive().setOrigin(0.5, 0);
 
         playerDeckZone.on('pointerdown', () => {
-            console.log("Draw 1 card");
-            console.log(this);
-            let playerCard = this.createCard(true);
-            this.playerCards.push(playerCard);
-            this.repositionCards(this.playerCards, 400, 640, 1);
+            // console.log("Draw 1 card");
+            // console.log(this);
+            // let playerCard = this.createCard(true);
+            // this.playerCards.push(playerCard);
+            // this.repositionCards(this.playerCards, 400, 640, 1);
+            this.controller.drawCardPlayer1();
         })
 
         this.scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
@@ -264,9 +279,9 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         // Opponent Money Text
         this.getChildren()[7].setText([`Current Funds: $${model.getPlayer2Money()}`]);
         // Player Votes Text
-        this.getChildren()[6].setText([`${model.getPlayer1Votes} Votes`]);
+        this.getChildren()[6].setText([`${model.getPlayer1Votes()} Votes`]);
         // Opponent Votes Text
-        this.getChildren()[8].setText([`${model.getPlayer2Votes} Votes`]);
+        this.getChildren()[8].setText([`${model.getPlayer2Votes()} Votes`]);
         // Current Turn Text
         this.getChildren()[9].setText(`${model.getTurn()}'s Turn`);
     }

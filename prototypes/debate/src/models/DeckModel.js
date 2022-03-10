@@ -154,6 +154,10 @@ export default class DeckModel
         }
     }
 
+    getView(){
+        return this.view;
+    }
+
     /**
      * The view has a function called updateViewCallback(model) can be called when this model gets updated.
      * It should accept one argument that contains information about the updated model.
