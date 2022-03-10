@@ -71,6 +71,9 @@ export default class MyGame extends Phaser.Scene {
         let cardModel = new CardModel();
         let cardView = new CardView(this);
         cardView.initialize();
+        cardView.updateDisplay(["\u{2605}", "$100", "Environment Liberal", "When played deal 1 damage to a random opponent card", "1", "1"], true);
+        cardView.setInteractive(new Phaser.Geom.Rectangle(-1 * cardView.maxWidth / 2, -1 * cardView.maxHeight / 2, cardView.maxWidth, cardView.maxHeight), Phaser.Geom.Rectangle.Contains);
+        this.input.setDraggable(cardView);
         // this.add.existing(cardView);
         cardModel.setView(cardView);
         cardModel.setConfig(jsonObject);
@@ -99,8 +102,8 @@ export default class MyGame extends Phaser.Scene {
         boardModel.player2Hand = this.createHand();
 
         //The cards on the board is the cards the player have on action.
-        boardModel.player1Board = this.createDeck();
-        boardModel.player2Board = this.createDeck();
+        boardModel.player1Board = this.createHand();
+        boardModel.player2Board = this.createHand();
         
         boardModel.setPlayer1Money(500);
         boardModel.setPlayer2Money(500);

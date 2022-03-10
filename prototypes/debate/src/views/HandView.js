@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import DeckModel from "../models/DeckModel";
 
 export default class HandView extends Phaser.GameObjects.Container{
     constructor(scene){
@@ -51,6 +52,7 @@ export default class HandView extends Phaser.GameObjects.Container{
         for(let i = 0; i < dropZoneCards.length; i++){
             dropZoneCards[i].x = x + sign * 150 * i;
             dropZoneCards[i].y = y;
+            console.log(dropZoneCards[i].x + ", " + dropZoneCards[i].y)
         }
     }
 
@@ -63,13 +65,19 @@ export default class HandView extends Phaser.GameObjects.Container{
         // children[2].setText(model.getCards().length);
         for(let card of this.cardsView){
             this.remove(card);
+            card.setVisible(false);
         }
         this.cardsView.splice(0, this.cardsView.length);
-        for(let card of model.getCards()){
+        let cards = model.getCards();
+        for(let card of cards){
+            console.log(card);
+            console.log(card.view);
             this.cardsView.push(card.view);
             this.add(card.view);
             this.scene.add.existing(card.view);
+            card.view.setVisible(true);
         }
+        console.log(this.cardsView);
         this.repositionCards(this.cardsView, 400, 640, 1);
     }
 }
