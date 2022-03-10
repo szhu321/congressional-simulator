@@ -168,6 +168,7 @@ export default class BoardController
 
         let card = this.model.getPlayer1DrawDeck().removeFirst();
         this.model.getPlayer1Hand().addCard(card);
+        return true;
     }
     
     //draw a card for player2.
@@ -204,6 +205,7 @@ export default class BoardController
 
         let card = this.model.getPlayer2DrawDeck().removeFirst();
         this.model.getPlayer2Hand().addCard(card);
+        return true;
     }
     
     //player1 card attack player2 card.
@@ -219,17 +221,17 @@ export default class BoardController
         if(!player1Card)
         {
             console.log("attackPlayer2Card() Failed: Player 1 card does not exist");
-            return;
+            return false;
         }
         if(!player2Card)
         {
             console.log("attackPlayer2Card() Failed: Player 2 card does not exist");
-            return;
+            return false;
         }
         if(!player1Card.hasAction())
         {
             console.log("attackPlayer2Card() Failed: Player 1 card has no action; cannot attack");
-            return;
+            return false;
         }
         let damage1 = player1Card.getAttack();
         let damage2 = player2Card.getAttack();
@@ -246,6 +248,7 @@ export default class BoardController
             this.model.getPlayer2Board().removeAtIdx(player2CardIdx);
             this.model.getPlayer2DiscardDeck().addCard(player2Card);
         }
+        return true;
     }
 
     //player2 card attack player1 card.
@@ -261,17 +264,17 @@ export default class BoardController
         if(!player1Card)
         {
             console.log("attackPlayer1Card() Failed: Player 1 card does not exist");
-            return;
+            return false;
         }
         if(!player2Card)
         {
             console.log("attackPlayer1Card() Failed: Player 2 card does not exist");
-            return;
+            return false;
         }
         if(!player2Card.hasAction())
         {
             console.log("attackPlayer1Card() Failed: Player 2 card has no action; cannot attack");
-            return;
+            return false;
         }
         let damage1 = player1Card.getAttack();
         let damage2 = player2Card.getAttack();
@@ -288,6 +291,7 @@ export default class BoardController
             this.model.getPlayer2Board().removeAtIdx(player2CardIdx);
             this.model.getPlayer2DiscardDeck().addCard(player2Card);
         }
+        return true;
     }
     
     
@@ -304,17 +308,17 @@ export default class BoardController
         if(!player1Card)
         {
             console.log("attackPlayer2() Failed: Player 1 card does not exist");
-            return;
+            return false;
         }
         if(!player1Card.hasAction())
         {
             console.log("attackPlayer2() Failed: Player 1 card has no action; cannot attack");
-            return;
+            return false;
         }
         if(this.model.isPlayer2OnDefensive())
         {
             console.log("attackPlayer2() Failed: Player 2 has at lease one worker on defensive.");
-            return;
+            return false;
         }
         let damage = player1Card.getAttack();
         this.model.transferVotesPlayer2ToPlayer1(damage);
@@ -324,6 +328,7 @@ export default class BoardController
         {
             console.log("*********GAME OVER: Player 1 wins*************");
         }
+        return true;
     }
 
     //player2 card attack us.
@@ -339,17 +344,17 @@ export default class BoardController
         if(!player2Card)
         {
             console.log("attackPlayer1() Failed: Player 2 card does not exist");
-            return;
+            return false;
         }
         if(!player2Card.hasAction())
         {
             console.log("attackPlayer1() Failed: Player 2 card has no action; cannot attack");
-            return;
+            return false;
         }
         if(this.model.isPlayer1OnDefensive())
         {
             console.log("attackPlayer1() Failed: Player 1 has at lease one worker on defensive.");
-            return;
+            return false;
         }
         let damage = player2Card.getAttack();
         this.model.transferVotesPlayer1ToPlayer2(damage);
@@ -359,6 +364,7 @@ export default class BoardController
         {
             console.log("*********GAME OVER: Player 2 wins*************");
         }
+        return true;
     }
 
     //toggle player1's worker card from offensive to defensive mode.
@@ -373,14 +379,15 @@ export default class BoardController
         if(!player1Card)
         {
             console.log("togglePlayer1Worker() Failed: Player 1 card does not exist");
-            return;
+            return false;
         }
         if(!player1Card.isWorker())
         {
             console.log("togglePlayer1Worker() Failed: Selected card is not a worker card");
-            return;
+            return false;
         }
         player1Card.setIsAttacking(!player1Card.getIsAttacking());
+        return true;
     }
 
     //toggle player2's worker card from offensive to defensive mode.
@@ -395,14 +402,15 @@ export default class BoardController
         if(!player2Card)
         {
             console.log("togglePlayer2Worker() Failed: Player 2 card does not exist");
-            return;
+            return false;
         }
         if(!player2Card.isWorker())
         {
             console.log("togglePlayer2Worker() Failed: Selected card is not a worker card");
-            return;
+            return false;
         }
         player2Card.setIsAttacking(!player2Card.getIsAttacking());
+        return true;
     }
 
     //queue system for abilites.

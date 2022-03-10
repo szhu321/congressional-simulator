@@ -125,7 +125,8 @@ export default class MyGame extends Phaser.Scene {
         for(let i = 0; i < cardsData.length; i++)
         {
             let card = this.createNewCard(cardsData[i]);
-            card.view.disableInteractive();
+            this.input.setDraggable(card.view, false);
+            //card.view.disableInteractive();
             cards2.push(card);
         }
 
