@@ -168,9 +168,9 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                         gameObject.y = gameObject.input.dragStartY;
                     }
 
-                    // gameObject.data.values.dropZoneName = dropZone.name;
-                    // gameObject.data.values.dropZoneX = gameObject.x;
-                    // gameObject.data.values.dropZoneY = gameObject.y;
+                    gameObject.data.values.dropZoneName = dropZone.name;
+                    gameObject.data.values.dropZoneX = gameObject.x;
+                    gameObject.data.values.dropZoneY = gameObject.y;
                     console.log(model)
                     
                 }else{
