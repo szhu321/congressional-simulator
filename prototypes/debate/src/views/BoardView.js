@@ -130,7 +130,11 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                     // this.repositionCards(dropZone.data.values.cardList, dropZone.x - 350, dropZone.y, 1);
                     // this.repositionCards(this.playerCards, 400, 640, 1);
                     
-                    this.controller.playCardPlayer1(model.getPlayer1Hand().getView().cardsView.indexOf(gameObject));
+                    let played = this.controller.playCardPlayer1(model.getPlayer1Hand().getView().cardsView.indexOf(gameObject));
+                    if(!played){
+                        gameObject.x = gameObject.input.dragStartX;
+                        gameObject.y = gameObject.input.dragStartY;
+                    }
                     console.log(model)
                     gameObject.data.values.dropZoneName = dropZone.name;
                     gameObject.data.values.dropZoneX = gameObject.x;
