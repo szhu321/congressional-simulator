@@ -128,7 +128,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                 // gameObject.y = gameObject.data.values.dropZoneY;
                 // gameObject.disableInteractive();
                 // gameObject.getAt(0).setFillStyle(0x9d7915)
-                this.controller.attackPlayer2(this.getChildren()[2].data.values.cardList.indexOf(gameObject));
+                this.controller.attackPlayer2(model.getPlayer1Board().getCards().map(card => card.view).indexOf(gameObject));
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
             }else{
