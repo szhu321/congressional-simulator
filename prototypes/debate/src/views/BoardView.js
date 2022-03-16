@@ -29,6 +29,8 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.playerDeckSize = 20;
         this.opponentDeckSize = 20;
         this.controller = null;
+        this.selectedCard = null;
+        this.targetCard = null;
     }
 
     /**
@@ -103,18 +105,59 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
         this.scene.input.on('dragstart', (pointer, gameObject) => {
             this.scene.children.bringToTop(gameObject);
+            this.selectedCard = gameObject;
             console.log(`DRAG STARTTTT`);
         })
 
-        this.scene.input.on('dragend', function (pointer, gameObject, dropped) {
+        this.scene.input.on('dragend', (pointer, gameObject, dropped) => {
             if (!dropped) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
             }
+            this.selectedCard = null;
         })
 
+        // this.scene.input.on('dragenter', function (pointer, gameObject, target) {
+        //     gameObject.data.values.target = target;
+        //     if(target instanceof CardView){
+        //         console.log(target);
+        //     }
+        //   }
+        // );
+
+        this.scene.input.on('gameobjectover', (pointer, gameObject, event) => {
+            if(gameObject instanceof CardView){
+                console.log(gameObject)
+                if(this.selectedCard !== null){
+                    this.targetCard = gameObject;
+                }
+            }
+        })
+
+        this.scene.input.on('gameobjectout', (pointer, gameObject, event) => {
+            if(gameObject instanceof CardView){
+                console.log(gameObject)
+                if(this.selectedCard !== null){
+                    this.targetCard = null;
+                }
+            }
+        })
+
+        // this.scene.input.on('dragleave', function (pointer, gameObject, target) {
+        //     if(gameObject === target){
+        //         gameObject.setInteractive(new Phaser.Geom.Rectangle(-1 * gameObject.maxWidth / 2, 
+        //     -1 * gameObject.maxHeight / 2, gameObject.maxWidth, gameObject.maxHeight), Phaser.Geom.Rectangle.Contains, false);
+        //     }
+        //     gameObject.data.values.target = null;
+        //     if(target instanceof CardView){
+        //         console.log(target);
+        //     }
+        // })
+
         this.scene.input.on('drop', (pointer, gameObject, dropZone) => {
-            if(gameObject.data.values.dropZoneName === dropZone.name){
+            console.log(dropZone);
+            console.log(gameObject === dropZone);
+            if(gameObject.data.values.dropZoneName === dropZone.name && dropZone.name !== ""){
                 gameObject.x = gameObject.data.values.dropZoneX;
                 gameObject.y = gameObject.data.values.dropZoneY;
             }else if(dropZone.name === 'opponentVotes' && gameObject.data.values.dropZoneName === 'playerZone'){
@@ -129,6 +172,17 @@ export default class BoardView extends Phaser.GameObjects.Layer{
                 // gameObject.disableInteractive();
                 // gameObject.getAt(0).setFillStyle(0x9d7915)
                 this.controller.attackPlayer2(model.getPlayer1Board().getCards().map(card => card.view).indexOf(gameObject));
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
+                gameObject.disableInteractive();
+            }else if(dropZone.name === 'opponentZone' && gameObject.data.values.dropZoneName === 'playerZone'){
+                if(this.targetCard !== null){
+                    console.log("attack");
+                    let playerIndex = model.getPlayer1Board().getCards().map(card => card.view).indexOf(gameObject);
+                    let opponentIndex = model.getPlayer2Board().getCards().map(card => card.view).indexOf(this.targetCard);
+                    this.controller.attackPlayer2Card(playerIndex, opponentIndex);
+                    gameObject.disableInteractive();
+                }
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
             }else{
