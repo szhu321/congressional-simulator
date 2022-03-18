@@ -1,3 +1,4 @@
+import Ability from "./Ability.js";
 
 /**
  * Abilites are activated by playing cards. These abilites have 
@@ -6,5 +7,13 @@
  */
 export default class AbilityModel
 {
-    
+    /**
+     * @type {Ability[]}
+     */
+    startOfTurnQueue;
+
+    constructor()
+    {
+        this.startOfTurnQueue = new Array();
+    }
 }

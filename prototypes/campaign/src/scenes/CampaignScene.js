@@ -4,16 +4,19 @@ import TimeController from "../controller/TimeController";
 import TileMap from "../model/tilemap";
 import LeftPanelContainer from "../view/LeftPanelContainer.js";
 import chroma from 'chroma-js';
+import BottomPanelContainer from "../view/BottomPanelContainer.js";
 
 export default class CampaignScene extends Phaser.Scene
 {
     preload()
     {
         this.tileMap = new TileMap(6, 6);
+        this.screenSize = this.game.scale;
         this.tileMapTiles;
         this.sidePanel;
         this.dayDisplay;
         this.mapController;
+        this.bottomPanel;
     }
 
     create()
@@ -21,6 +24,7 @@ export default class CampaignScene extends Phaser.Scene
         this.initializeSidePanel();
         this.initializeDayDisplay();
         this.initializeMapController();
+        this.initializeBottomPanel();
         // this.add.text(200, 200, 'Hello World');
         // let polygon = this.add.polygon(300, 300, this.polygonPoints(100), 0xffffff);
         // polygon.setOrigin(0.5, 0.5);
@@ -29,6 +33,14 @@ export default class CampaignScene extends Phaser.Scene
         // let polygon3 = this.add.polygon(300 + this.polygonCalcHorizonalDiameter(100) * 2, 300, this.polygonPoints(100), 0xffffff);
         // polygon3.setOrigin(0.5, 0.5);
         this.tileMap.setViews(this);
+    }
+
+    initializeBottomPanel()
+    {
+        this.bottomPanel = new BottomPanelContainer(this);
+        this.bottomPanel.initialize();
+        this.add.existing(this.bottomPanel);
+        this.bottomPanel.setPosition(this.game.scale.width, this.game.scale.height);
     }
 
     polygonPoints(verticalDiameter)
@@ -100,40 +112,12 @@ export default class CampaignScene extends Phaser.Scene
         this.sidePanel = new LeftPanelContainer(this);
         this.add.existing(this.sidePanel);
         this.sidePanel.initialize();
-        // let vgap = 50;
-        // let fontSize = 20;
-        // let locationText = this.add.text(0, 0 * vgap, "Location(row, col): ");
-        // let symbolText = this.add.text(0, 1 * vgap, "Symbol: ");
-        // let politicalStanceText = this.add.text(0, 2 * vgap, "(-1 <- Liberal Conservative -> 1):");
-        // let economyText = this.add.text(0, 3* vgap, "Economy: ");
-        // let healthcareText = this.add.text(0, 4* vgap, "Healthcare: ");
-        // let educationText = this.add.text(0, 5* vgap, "Education: ");
-        // let taxesText = this.add.text(0, 6* vgap, "taxes: ");
-        // let environmentText = this.add.text(0, 7* vgap, "Environment: ");
-        
-        // this.sidePanel = {
-        //     group: this.add.group([locationText, symbolText, politicalStanceText,
-        //     economyText, healthcareText, educationText, taxesText, environmentText]),
-        //     locationText,
-        //     symbolText,
-        //     politicalStanceText,
-        //     economyText,
-        //     healthcareText,
-        //     educationText,
-        //     taxesText,
-        //     environmentText
-        // }
-
-        // for(let text of this.sidePanel.group.getChildren())
-        // {
-        //     text.setFontSize(fontSize);
-        // }
     }
 
     initializeTileObjects(tileMap)
     {
         let startX = 700;
-        let startY = 200;
+        let startY = 110;
         let verticalDiameter = 90;
         let gapBetweenTiles = 6;
         let tileStrokeSize = 5;

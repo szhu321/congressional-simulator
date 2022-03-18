@@ -13,7 +13,7 @@ export default class ActionController
     model;
 
     /**
-     * @param {BoardModel} model - the model of the deck, if left empty it will create a new model.
+     * @param {ActionModel} model - the model of the deck, if left empty it will create a new model.
      */
     constructor(model)
     {

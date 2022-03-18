@@ -5,8 +5,8 @@ import TitleScene from './scenes/TitleScene.js';
 
 let config = {
     type: Phaser.AUTO,
-    width: 1200,
-    height: 700,
+    width: 1400,
+    height: 720,
     physics: {
         default: 'arcade',
         arcade: {
