@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import MyGame from './scenes/game';
+import DebateScene from './scenes/DebateScene';
 
 var config = {
     type: Phaser.AUTO,
@@ -11,14 +11,17 @@ var config = {
             gravity: { y: 200 }
         }
     },
-    scene: [
+    // scene: [
         // preload: preload,
         // create: create
-        MyGame
-    ]
+        // MyGame
+    // ]
 };
 
 var game = new Phaser.Game(config);
+
+game.scene.add('debateScene', DebateScene);
+game.scene.start('debateScene');
 
 // function preload ()
 // {

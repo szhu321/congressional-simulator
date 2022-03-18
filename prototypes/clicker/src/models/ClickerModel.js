@@ -1,5 +1,5 @@
-import Worker from "./Worker.js";
-import Upgrade from "./Upgrade.js";
+import WorkerModel from "./WorkerModel.js";
+import UpgradeModel from "./UpgradeModel.js";
 
 export default class ClickerModel{
     constructor(){
@@ -11,19 +11,46 @@ export default class ClickerModel{
         this.upgrades = [];
     }
 
+    getCurrentFunds(){
+        return this.currentFunds;
+    }
+
+    getRevenueRate(){
+        return this.revenueRate;
+    }
+
     setView(initView){
         this.view = initView;
     }
 
-    setWorkers(clickerData){
-        let coldCaller = new Worker("cold_caller", 0.1 / 60, 10);
-        let leafleter = new Worker("leafleter", 1 / 60, 30);
-        this.workers.push(coldCaller);
-        this.workers.push(leafleter);
-        let coldCallerUpgrade = new Upgrade("office_equipment", 2, 250);
-        let leafleterUpgrade = new Upgrade("demographic_targeting", 2, 500);
-        this.upgrades.push(coldCallerUpgrade);
-        this.upgrades.push(leafleterUpgrade);
+    // setWorkersAndUpgrades(clickerData){
+
+    //     for(let i = 0; i < clickerData.workers.length; i++){
+
+    //         let newWorker = clickerData.workers[i];
+    //         let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate / 60, newWorker.cost);
+    //         this.workers.push(newWorkerModel);
+    //     }
+
+    //     for(let i = 0; i < clickerData.upgrades.length; i++){
+
+    //     }
+    // }
+
+    getWorkers(){
+        return this.workers;
+    }
+
+    getUpgrades(){
+        return this.upgrades;
+    }
+
+    addWorker(worker){
+        this.workers.push(worker);
+    }
+
+    addUpgrade(upgrade){
+        this.upgrades.push(upgrade);
     }
 
     purchaseWorker(workerIndex){
@@ -43,8 +70,8 @@ export default class ClickerModel{
           
     clickCallText(){
         this.currentFunds += this.clickRevenue;
-        this.checkWorkerCosts();
-        this.view.updateCurrentFundsDisplay(this.currentFunds);
+        //this.checkWorkerCosts();
+        this.updateView();
     }
 
     checkWorkerCosts(){
@@ -73,5 +100,13 @@ export default class ClickerModel{
         })
         this.revenueRate = newRevenueRate;
         this.view.updateRevenueRateDisplay(this.revenueRate * 60);
+    }
+
+    updateView()
+    {
+        if(this.view)
+        {
+            this.view.updateViewCallback(this);
+        }
     }
 }

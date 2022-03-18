@@ -1,0 +1,30 @@
+{
+    "workers": [
+        {
+            "name": "Cold Caller",
+            "revenue_rate": 0.1,
+            "cost": 10
+        },
+        {
+            "name": "Leafleter",
+            "revenue_rate": 1,
+            "cost": 30
+        }
+    ],
+    "upgrades": [
+        {
+            "name": "Office Equipment",
+            "cost": 250,
+            "description": "Cold Callers are 2x more effective",
+            "target": 1,
+            "multiplier": 2
+        },
+        {
+            "name": "Demographic Targeting",
+            "cost": 500,
+            "description": "Leafleters are 2x more effective",
+            "target": 2,
+            "multiplier": 2
+        }
+    ]
+}

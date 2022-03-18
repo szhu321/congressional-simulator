@@ -57,7 +57,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let opponentVotesText = this.scene.add.text(1300, 80, [`${this.opponentVotes} Votes`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
 
         let currentTurnText = this.scene.add.text(1300, 350, ['player1\'s Turn']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0);
-        let endTurnText = this.scene.add.text(1300, 450, ['END TURN']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive().setOrigin(0.5, 0);
+        let endTurnText = this.scene.add.text(1300, 450, ['END TURN']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive({useHandCursor: true}).setOrigin(0.5, 0);
 
         //ADD THE DECK AND HAND VIEW ZONES. -------------------------------------
         let playerDeckZone = model.getPlayer1DrawDeck().getView();
