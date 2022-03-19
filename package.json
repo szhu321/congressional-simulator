@@ -1,0 +1,25 @@
+{
+  "name": "congressional-simulator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html -p 3000 --no-cache",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szhu321/congressional-simulator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/szhu321/congressional-simulator/issues"
+  },
+  "homepage": "https://github.com/szhu321/congressional-simulator#readme",
+  "dependencies": {
+    "chroma-js": "^2.4.2",
+    "parcel": "^2.3.2",
+    "phaser": "^3.55.2"
+  }
+}

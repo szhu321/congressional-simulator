@@ -1,0 +1,104 @@
+import Phaser from "phaser";
+import ClickerModel from "../models/ClickerModel";
+import ClickerController from "../controllers/ClickerController";
+import ClickerView from "../views/ClickerView";
+import WorkerModel from "../models/WorkerModel";
+import WorkerView from "../views/WorkerView";
+import UpgradeModel from "../models/UpgradeModel";
+import UpgradeView from "../views/UpgradeView";
+
+export default class ClickerScene extends Phaser.Scene{
+    preload(){
+        this.model;
+        this.view;
+        this.controller;
+    }
+
+    create(){
+        this.model = this.createClickerModel();
+        this.controller = new ClickerController();
+        this.view = new ClickerView(this);
+
+        this.model.setView(this.view);
+        this.view.setController(this.controller);
+        this.controller.setModel(this.model);
+
+        this.view.initialize(this.model);
+
+        this.add.existing(this.view);
+    }
+
+    createClickerModel(){
+        let model = new ClickerModel();
+        let clickerData = this.getClickerData();
+        this.createWorkersandUpgrades(clickerData, model);
+        return model;
+    }
+
+    createWorkersandUpgrades(clickerData, model){
+        for(let i = 0; i < clickerData.workers.length; i++){
+            let newWorker = clickerData.workers[i];
+            let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate / 60, newWorker.cost);
+            let newWorkerView = new WorkerView(this);
+            newWorkerView.initialize();
+            newWorkerModel.setView(newWorkerView);
+            newWorkerView.updateDisplay();
+            newWorkerView.setInteractive(new Phaser.Geom.Rectangle(-1 * newWorkerView.maxWidth / 2, 
+            -1 * newWorkerView.maxHeight / 2, newWorkerView.maxWidth, newWorkerView.maxHeight), Phaser.Geom.Rectangle.Contains);
+            newWorkerModel.updateView();
+            model.addWorker(newWorkerModel);
+        }
+
+        for(let i = 0; i < clickerData.upgrades.length; i++){
+            let newUpgrade = clickerData.upgrades[i];
+            let newUpgradeModel = new UpgradeModel(newUpgrade.name, newUpgrade.multiplier, newUpgrade.cost, newUpgrade.description);
+            let newUpgradeView = new UpgradeView(this);
+            newUpgradeView.initialize();
+            newUpgradeModel.setView(newUpgradeView);
+            newUpgradeView.updateDisplay();
+            newUpgradeView.setInteractive(new Phaser.Geom.Rectangle(-1 * newUpgradeView.maxWidth / 2, 
+            -1 * newUpgradeView.maxHeight / 2, newUpgradeView.maxWidth, newUpgradeView.maxHeight), Phaser.Geom.Rectangle.Contains);
+            newUpgradeModel.updateView();
+            model.addUpgrade(newUpgradeModel);
+        }
+    }
+
+    getClickerData(){
+        // fetch("../ClickerData.json")
+        // .then(response => response.text())
+        // .then(json => console.log(json));
+
+        let clickerData = {
+            workers: [
+                {
+                    name: "Cold Caller",
+                    revenue_rate: 0.1,
+                    cost: 10
+                },
+                {
+                    name: "Leafleter",
+                    revenue_rate: 1,
+                    cost: 30
+                }
+            ],
+            upgrades: [
+                {
+                    name: "Office Equipment",
+                    cost: 250,
+                    description: "Cold Callers are 2x more effective",
+                    target: 1,
+                    multiplier: 2
+                },
+                {
+                    name: "Demographic Targeting",
+                    cost: 500,
+                    description: "Leafleters are 2x more effective",
+                    target: 2,
+                    multiplier: 2
+                }
+            ]
+        };
+
+        return clickerData;
+    }
+}

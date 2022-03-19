@@ -1,0 +1,1 @@
+{"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA","sources":["src/app.css"],"sourcesContent":["body\r\n{\r\n    font-family: 'Courier New', Courier, monospace;\r\n    font-size: larger;\r\n    font-weight: bolder;\r\n}"],"names":[],"version":3,"file":"index.4a5519d3.css.map","sourceRoot":"/__parcel_source_root/"}
