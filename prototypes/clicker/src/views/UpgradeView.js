@@ -60,4 +60,14 @@ export default class UpgradeView extends Phaser.GameObjects.Container{
         children[2].setText(`$${model.getCost().toFixed(2)}`);
         children[3].setText(model.getDescription());
     }
+
+    setCanPurchase(canPurchase){
+        if(canPurchase){
+            this.setInteractive();
+            this.getAll()[0].setFillStyle(this.buttonColor);
+        }else{
+            this.disableInteractive();
+            this.getAll()[0].setFillStyle(this.buttonColorDark);
+        }
+    }
 }

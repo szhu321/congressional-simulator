@@ -26,6 +26,8 @@ export default class ClickerScene extends Phaser.Scene{
         this.view.initialize(this.model);
 
         this.add.existing(this.view);
+
+        this.controller.startAutomatedRevenue();
     }
 
     createClickerModel(){
@@ -43,8 +45,9 @@ export default class ClickerScene extends Phaser.Scene{
             newWorkerView.initialize();
             newWorkerModel.setView(newWorkerView);
             newWorkerView.updateDisplay();
-            newWorkerView.setInteractive(new Phaser.Geom.Rectangle(-1 * newWorkerView.maxWidth / 2, 
-            -1 * newWorkerView.maxHeight / 2, newWorkerView.maxWidth, newWorkerView.maxHeight), Phaser.Geom.Rectangle.Contains);
+            newWorkerView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newWorkerView.maxWidth / 2, 
+            -1 * newWorkerView.maxHeight / 2, newWorkerView.maxWidth, newWorkerView.maxHeight), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
+        useHandCursor: true});
             newWorkerModel.updateView();
             model.addWorker(newWorkerModel);
         }
@@ -56,8 +59,9 @@ export default class ClickerScene extends Phaser.Scene{
             newUpgradeView.initialize();
             newUpgradeModel.setView(newUpgradeView);
             newUpgradeView.updateDisplay();
-            newUpgradeView.setInteractive(new Phaser.Geom.Rectangle(-1 * newUpgradeView.maxWidth / 2, 
-            -1 * newUpgradeView.maxHeight / 2, newUpgradeView.maxWidth, newUpgradeView.maxHeight), Phaser.Geom.Rectangle.Contains);
+            newUpgradeView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newUpgradeView.maxWidth / 2, 
+            -1 * newUpgradeView.maxHeight / 2, newUpgradeView.maxWidth, newUpgradeView.maxHeight), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
+        useHandCursor: true});
             newUpgradeModel.updateView();
             model.addUpgrade(newUpgradeModel);
         }
@@ -72,12 +76,12 @@ export default class ClickerScene extends Phaser.Scene{
             workers: [
                 {
                     name: "Cold Caller",
-                    revenue_rate: 0.1,
+                    revenueRate: 0.1,
                     cost: 10
                 },
                 {
                     name: "Leafleter",
-                    revenue_rate: 1,
+                    revenueRate: 1,
                     cost: 30
                 }
             ],

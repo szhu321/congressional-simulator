@@ -42,6 +42,7 @@ export default class WorkerView extends Phaser.GameObjects.Container{
         
         // Worker Cost
         children[3].setPosition(0, children[2].height - this.maxHeight / 2);
+        children[3].setWordWrapWidth(this.maxWidth / 2, true).setAlign('center');
     }
 
     /**
@@ -54,5 +55,15 @@ export default class WorkerView extends Phaser.GameObjects.Container{
         children[1].setText(model.getName());
         children[2].setText("Hired: " + model.getAmount());
         children[3].setText("Cost: $" + model.getCost().toFixed(2));
+    }
+
+    setCanPurchase(canPurchase){
+        if(canPurchase){
+            this.setInteractive();
+            this.getAll()[0].setFillStyle(this.buttonColor);
+        }else{
+            this.disableInteractive();
+            this.getAll()[0].setFillStyle(this.buttonColorDark);
+        }
     }
 }

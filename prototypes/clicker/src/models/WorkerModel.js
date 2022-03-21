@@ -22,6 +22,7 @@ export default class WorkerModel{
     addWorker(){
         this.amount++;
         this.cost = Math.round(this.cost * 1.1 * 100) / 100;
+        this.updateView();
     }
 
     getName(){

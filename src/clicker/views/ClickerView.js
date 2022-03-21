@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import ClickerModel from "../models/ClickerModel";
+import WorkerView from "./WorkerView";
 
 export default class ClickerView extends Phaser.GameObjects.Layer{
     constructor(scene){
@@ -8,6 +9,9 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         this.workerStatIds = [];
         this.workerButtonIds = [];
         this.upgradeButtonIds = [];
+
+        this.workerViews = [];
+        this.upgradeViews = [];
     }
 
     setController(initController){
@@ -52,21 +56,26 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
             let workerView = workers[i].getView();
             console.log(workerView);
             workerView.setPosition(625, 150 + 110 * i);
-            workerView.setInteractive({useHandCursor: true});
+            workerView.setCanPurchase(model.getCurrentFunds() >= workers[i].cost);
+            workerView.on('pointerup', (pointer, localX, localY, event) => {
+                this.controller.processPurchaseWorker(i);
+            });
             this.add(workerView);
+            this.workerViews.push(workerView);
         }
 
         let upgrades = model.getUpgrades();
         for(let i = 0; i < upgrades.length; i++){
             let upgradeView = upgrades[i].getView();
             upgradeView.setPosition(1075, 150 + 110 * i);
-            upgradeView.setInteractive({useHandCursor: true});
+            upgradeView.setCanPurchase(model.getCurrentFunds() >= upgrades[i].cost);
             this.add(upgradeView);
+            this.upgradeViews.push(upgradeView);
         }
 
-        this.scene.input.on('gameobjectup', (pointer, gameObject, event) => {
-            console.log(gameObject);
-        })
+        // this.scene.input.on('gameobjectup', (pointer, gameObject, event) => {
+        //     console.log(gameObject);
+        // })
     }
 
     /**
@@ -76,7 +85,12 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
     updateViewCallback(model){
         let children = this.getAll();
         children[1].setText(`Current Funds: $${model.getCurrentFunds().toFixed(2)}`);
-        children[2].setText(`Automated Rate of Revenue: $${model.getRevenueRate().toFixed(2)}`);
+        // console.log(model.getRevenueRate() * 60);
+        children[2].setText(`Automated Rate of Revenue: $${(model.getRevenueRate() * 60).toFixed(2)}`);
+
+        for(let i = 0; i < model.getWorkers().length; i++){
+            this.workerViews[i].setCanPurchase(model.getCurrentFunds() >= model.getWorkers()[i].cost);
+        }
     }
 
     setGUIIds(){

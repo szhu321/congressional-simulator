@@ -57,15 +57,15 @@ export default class ClickerModel{
         let worker = this.workers[workerIndex];
         this.currentFunds -= worker.cost;
         worker.addWorker();
-        this.checkWorkerCosts();
-        this.view.updateWorkerStatId(workerIndex, worker.amount, worker.cost);
         this.updateRevenueRate();
+        this.updateView();
     }
 
     updateCurrentFunds = () => {
         this.currentFunds += this.revenueRate;
-        this.checkWorkerCosts();
-        this.view.updateCurrentFundsDisplay(this.currentFunds);
+        // this.checkWorkerCosts();
+        // this.view.updateCurrentFundsDisplay(this.currentFunds);
+        this.updateView();
     }
           
     clickCallText(){
@@ -96,10 +96,11 @@ export default class ClickerModel{
     updateRevenueRate(){
         let newRevenueRate = 0;
         this.workers.forEach((element) => {
+            // console.log(element.amount + ", " + element.revenueRate);
             newRevenueRate += element.amount * element.revenueRate;
         })
         this.revenueRate = newRevenueRate;
-        this.view.updateRevenueRateDisplay(this.revenueRate * 60);
+        // this.view.updateRevenueRateDisplay(this.revenueRate * 60);
     }
 
     updateView()
