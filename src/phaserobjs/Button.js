@@ -11,7 +11,7 @@ export default class Button extends Phaser.GameObjects.Container
         this.width = width;
         this.height = height;
         this.color = color;
-        this.fontSize = 24;
+        this.fontSize = 18;
         this.initialize();
     }
 

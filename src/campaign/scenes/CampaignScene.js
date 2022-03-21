@@ -5,6 +5,7 @@ import TileMap from "../model/tilemap";
 import LeftPanelContainer from "../view/LeftPanelContainer.js";
 import chroma from 'chroma-js';
 import BottomPanelContainer from "../view/BottomPanelContainer.js";
+import { SCENE_CONFIG } from "../../gameconfig";
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -21,6 +22,9 @@ export default class CampaignScene extends Phaser.Scene
 
     create()
     {
+        //used to size the scene camera correctly because of the menu on the top.
+        this.initializeCamera();
+
         this.initializeSidePanel();
         this.initializeDayDisplay();
         this.initializeMapController();
@@ -33,6 +37,15 @@ export default class CampaignScene extends Phaser.Scene
         // let polygon3 = this.add.polygon(300 + this.polygonCalcHorizonalDiameter(100) * 2, 300, this.polygonPoints(100), 0xffffff);
         // polygon3.setOrigin(0.5, 0.5);
         this.tileMap.setViews(this);
+    }
+
+    initializeCamera()
+    {
+        let x = SCENE_CONFIG.scene_camera_viewport_x;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        this.cameras.main.setViewport(0, y, width, height);
     }
 
     initializeBottomPanel()
