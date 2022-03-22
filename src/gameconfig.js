@@ -7,7 +7,7 @@
  */
 const GAME_CONFIG = {
     game_width: 1400,
-    game_height: 720
+    game_height: 800
 }
 
 /**
@@ -26,6 +26,7 @@ const SCENE_CONFIG = {
     scene_width: GAME_CONFIG.game_width,
     scene_camera_viewport_x: 0,
     scene_camera_viewport_y: MENU_CONFIG.menu_height,
+    scene_background_color: 0x2F2F2F
 }
 
 module.exports.MENU_CONFIG = MENU_CONFIG;

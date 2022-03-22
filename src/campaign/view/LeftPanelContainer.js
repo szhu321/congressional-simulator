@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { SCENE_CONFIG } from '../../gameconfig';
 
 export default class LeftPanelContainer extends Phaser.GameObjects.Container
 {
@@ -9,7 +10,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         this.vgap = 50;
         this.fontSize = 20;
         this.width = 350;
-        this.height = 720;
+        this.height = SCENE_CONFIG.scene_height;
         this.backgroundColor = 0x4d4d4d;
         this.backgroundBorderWidth = 3;
         this.backgroundBorderColor = 0xffffff;

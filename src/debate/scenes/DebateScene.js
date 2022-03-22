@@ -9,6 +9,7 @@ import CardModel from '../models/CardModel';
 import DeckModel from '../models/DeckModel';
 import DeckView from '../views/DeckView';
 import HandView from '../views/HandView';
+import { SCENE_CONFIG } from '../../gameconfig';
 
 export default class DebateScene extends Phaser.Scene {
     // constructor() {
@@ -31,6 +32,9 @@ export default class DebateScene extends Phaser.Scene {
     }
 
     create() {
+        this.initializeBackground();
+        this.initializeCamera();
+
         this.boardModel = this.createBoard();
         this.boardController = new BoardController(this.boardModel);
         this.boardView = new BoardView(this);
@@ -39,6 +43,26 @@ export default class DebateScene extends Phaser.Scene {
         this.boardView.initialize(this.boardModel);
         this.boardModel.updateView();
         this.add.existing(this.boardView);
+    }
+
+    initializeCamera()
+    {
+        let x = SCENE_CONFIG.scene_camera_viewport_x;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        this.cameras.main.setViewport(x, y, width, height);
+    }
+
+    initializeBackground()
+    {
+        let x = 0;
+        let y = 0;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        let backgroundColor = SCENE_CONFIG.scene_background_color;
+        let background = this.add.rectangle(x, y, width, height, backgroundColor);
+        background.setOrigin(0, 0);
     }
 
     // update() {

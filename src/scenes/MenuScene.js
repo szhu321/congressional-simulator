@@ -26,7 +26,7 @@ export default class MenuScene extends Phaser.Scene {
         let buttonWidth = 120;
         let buttonHeight = 30;
         let buttonHGap = 50;
-        let firstButtonStartX = 200;
+        let firstButtonStartX = 250;
         let backgroundColor = 0x1976D2;
         this.cameras.main.setViewport(menubarX, menubarY, width, height);
 
@@ -70,6 +70,17 @@ export default class MenuScene extends Phaser.Scene {
             this.scene.bringToTop('debateScene');
         });
         this.add.existing(this.debateButton);
+
+        //button4 hub
+        this.hubButton = new Button(this, 80, height/2, buttonWidth, buttonHeight);
+        this.hubButton.text.setText("HOME");
+        this.hubButton.setOnclickCallback(() => {
+            //this.scene.switch('debateScene');
+            if(!this.scene.isActive('hubScene'))
+                this.scene.launch('hubScene');
+            this.scene.bringToTop('hubScene');
+        });
+        this.add.existing(this.hubButton);
     }
 
     initializeCamera()

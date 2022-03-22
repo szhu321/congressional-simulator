@@ -4,6 +4,7 @@ import Zone from '../helpers/zone';
 import CardView from './CardView';
 import DeckView from './DeckView';
 import BoardController from '../controllers/BoardController';
+import { SCENE_CONFIG } from '../../gameconfig';
 
 export default class BoardView extends Phaser.GameObjects.Layer{
 
@@ -65,7 +66,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         this.scene.add.existing(playerDeckZone);
         // playerDeckZone.updateDisplay("");
         // playerDeckZone.setInteractive();
-        playerDeckZone.setPosition(1300, 640);
+        playerDeckZone.setPosition(1300, SCENE_CONFIG.scene_height - 100);
 
         // let opponentDeckZone = this.createDeck(20, false);
         let opponentDeckZone = model.getPlayer2DrawDeck().getView();
@@ -74,11 +75,11 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
         let playerHandZone = model.getPlayer1Hand().getView();
         this.scene.add.existing(playerHandZone);
-        playerHandZone.setPosition(this.scene.game.canvas.width / 4, this.scene.game.canvas.height - 80);
+        playerHandZone.setPosition(this.scene.game.canvas.width / 4, SCENE_CONFIG.scene_height - 85);
 
         let playerBoardZone = model.getPlayer1Board().getView();
         this.scene.add.existing(playerBoardZone);
-        playerBoardZone.setPosition(this.scene.game.canvas.width / 4, this.scene.game.canvas.height - 240);
+        playerBoardZone.setPosition(this.scene.game.canvas.width / 4, SCENE_CONFIG.scene_height - 270);
 
         let opponentHandZone = model.getPlayer2Hand().getView();
         this.scene.add.existing(opponentHandZone);

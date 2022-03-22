@@ -24,6 +24,7 @@ export default class CampaignScene extends Phaser.Scene
     {
         //used to size the scene camera correctly because of the menu on the top.
         this.initializeCamera();
+        this.initializeBackground();
 
         this.initializeSidePanel();
         this.initializeDayDisplay();
@@ -45,7 +46,18 @@ export default class CampaignScene extends Phaser.Scene
         let y = SCENE_CONFIG.scene_camera_viewport_y;
         let width = SCENE_CONFIG.scene_width;
         let height = SCENE_CONFIG.scene_height;
-        this.cameras.main.setViewport(0, y, width, height);
+        this.cameras.main.setViewport(x, y, width, height);
+    }
+
+    initializeBackground()
+    {
+        let x = 0;
+        let y = 0;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        let backgroundColor = SCENE_CONFIG.scene_background_color;
+        let background = this.add.rectangle(x, y, width, height, backgroundColor);
+        background.setOrigin(0, 0);
     }
 
     initializeBottomPanel()
@@ -53,7 +65,9 @@ export default class CampaignScene extends Phaser.Scene
         this.bottomPanel = new BottomPanelContainer(this);
         this.bottomPanel.initialize();
         this.add.existing(this.bottomPanel);
-        this.bottomPanel.setPosition(this.game.scale.width, this.game.scale.height);
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        this.bottomPanel.setPosition(width, height);
     }
 
     polygonPoints(verticalDiameter)
@@ -123,6 +137,9 @@ export default class CampaignScene extends Phaser.Scene
     initializeSidePanel()
     {
         this.sidePanel = new LeftPanelContainer(this);
+        // let width = SCENE_CONFIG.scene_width;
+        // let height = SCENE_CONFIG.scene_height;
+        // this.sidePanel.setSize(width, height);
         this.add.existing(this.sidePanel);
         this.sidePanel.initialize();
     }
