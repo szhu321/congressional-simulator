@@ -77,6 +77,12 @@ export default class PlayerModel {
      */
     dailyIncome;
 
+    /**
+     * The amount of money the player has spent.
+     * @type {Number}
+     */
+    moneySpent;
+
     constructor() {
         this.name = "Sheng Wei";
         this.money = 0;
@@ -90,12 +96,14 @@ export default class PlayerModel {
         this.staffMembers = [];
         this.job = "NONE";
         this.dailyIncome = 0;
+        this.moneySpent = 0;
     }
 
     setConfig(configObject)
     {
         let {name, age, gender, politicalParty, district, money, districtPopularity, 
-            partyPopularity, totalTimePlaying, staffMembers, job, dailyIncome} = configObject;
+            partyPopularity, totalTimePlaying, staffMembers, job, dailyIncome,
+            moneySpent} = configObject;
         if(name) this.name = name;
         if(age) this.age = age;
         if(gender) this.gender = gender;
@@ -107,7 +115,8 @@ export default class PlayerModel {
         if(totalTimePlaying) this.totalTimePlaying = totalTimePlaying;
         if(staffMembers) this.staffMembers = staffMembers;
         if(job) this.job = job;
-        if(dailyIncome) this.dailyIncome = this.dailyIncome;
+        if(dailyIncome) this.dailyIncome = dailyIncome;
+        if(moneySpent) this.moneySpent = moneySpent;
     }
 
     getName()
@@ -170,5 +179,9 @@ export default class PlayerModel {
         return this.dailyIncome;
     }
 
+    getMoneySpent()
+    {
+        return this.moneySpent;
+    }
 
 }

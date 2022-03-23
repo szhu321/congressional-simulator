@@ -17,7 +17,7 @@ export default class TimeController
             this.day++;
             this.timerDisplay.setText(`Day: ${this.day}`);
             this.passTime();
-        }, 1000);
+        }, 3000);
     }
 
     stopTimer()

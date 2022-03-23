@@ -9,6 +9,16 @@ import { SCENE_CONFIG } from "../../gameconfig";
 
 export default class CampaignScene extends Phaser.Scene
 {
+    selectedTile = {
+        row: -1,
+        col: -1
+    }
+
+    /**
+     * @type {Phaser.GameObjects.Polygon[][]}
+     */
+    tileMapTiles;
+
     preload()
     {
         this.tileMap = new TileMap(6, 6);
@@ -18,6 +28,7 @@ export default class CampaignScene extends Phaser.Scene
         this.dayDisplay;
         this.mapController;
         this.bottomPanel;
+        this.selectedHexagonOverlay;
     }
 
     create()
@@ -38,6 +49,29 @@ export default class CampaignScene extends Phaser.Scene
         // let polygon3 = this.add.polygon(300 + this.polygonCalcHorizonalDiameter(100) * 2, 300, this.polygonPoints(100), 0xffffff);
         // polygon3.setOrigin(0.5, 0.5);
         this.tileMap.setViews(this);
+    }
+
+    update()
+    {
+        if(this.selectedTile && this.selectedTile.row !== -1)
+        {
+            let tileView = this.tileMapTiles[this.selectedTile.row][this.selectedTile.col];
+            this.selectedHexagonOverlay.setVisible(true);
+            this.selectedHexagonOverlay.setPosition(tileView.x, tileView.y);
+            //let tile = this.tileMap.getTileAt(row, col);
+            this.drawTile(this.tileMap.getTileAt(this.selectedTile.row,this.selectedTile.col));
+            //tile.addWorkerToTile();
+        }
+        else
+        {
+            this.clearSidePanel();
+            this.selectedHexagonOverlay.setVisible(false);
+        }
+    }
+
+    deselectTile()
+    {
+        this.selectedTile = null;
     }
 
     initializeCamera()
@@ -104,6 +138,22 @@ export default class CampaignScene extends Phaser.Scene
             this.initializeSidePanel();
         this.updateSidePanel(tile);
     }
+    
+    clearSidePanel()
+    {
+        this.sidePanel.updateDisplay([]);
+    }
+
+    addWorkerAtSelectedTile()
+    {
+        if(this.selectedTile && this.selectedTile.row !== -1)
+        {
+            let row = this.selectedTile.row;
+            let col = this.selectedTile.col;
+            let tile = this.tileMap.getTileAt(row, col);
+            tile.addWorkerToTile();
+        }
+    }
 
     updateSidePanel(tile)
     {
@@ -159,6 +209,14 @@ export default class CampaignScene extends Phaser.Scene
             this.tileMapTiles[i] = new Array(tileMap[i].length);
         }
 
+        //selected hexagon
+        let selectedStrokeColor = 0xedeb4e;
+        this.selectedHexagonOverlay = this.add.polygon(0, 0, points, 0x000000, 0.1);
+        this.selectedHexagonOverlay.setOrigin(0.5, 0.5);
+        this.selectedHexagonOverlay.setStrokeStyle(tileStrokeSize, selectedStrokeColor);
+        this.selectedHexagonOverlay.setVisible(false);
+        this.selectedHexagonOverlay.setDepth(2);
+
         for(let row = 0; row < tileMap.length; row++)
         {
             for(let col = 0; col < tileMap[row].length; col++)
@@ -176,7 +234,7 @@ export default class CampaignScene extends Phaser.Scene
                     let hexagon = this.add.polygon(x, y, points, color);
                     hexagon.setOrigin(0.5, 0.5);
                     hexagon.setStrokeStyle(tileStrokeSize, 0xaaaaaa);
-                    hexagon.setInteractive(hitarea, Phaser.Geom.Polygon.Contains);
+                    hexagon.setInteractive({hitArea: hitarea, hitAreaCallback: Phaser.Geom.Polygon.Contains ,useHandCursor: true});
                     //let scale = chroma.scale(["white", "blue"]);
                     //chroma('#D4F880').darken().hex();
                     hexagon.updateView = function(tile) { 
@@ -202,14 +260,18 @@ export default class CampaignScene extends Phaser.Scene
                     }
                     hexagon.on("pointerover", () => {
                         hexagon.setAlpha(0.8);
-                        this.drawTile(this.tileMap.getTileAt(row,col));
+                        //this.drawTile(this.tileMap.getTileAt(row,col));
                     });
                     hexagon.on("pointerout", ()=>{
                         hexagon.setAlpha(1);
                     });
-                    hexagon.on("pointerdown", ()=>{
-                        let tile = this.tileMap.getTileAt(row, col);
-                        tile.addWorkerToTile();
+                    hexagon.on("pointerup", ()=>{
+                        if(this.selectedTile && this.selectedTile.row === row && this.selectedTile.col === col)
+                            this.deselectTile();
+                        else
+                            this.selectedTile = {row: row, col: col};
+                        //let tile = this.tileMap.getTileAt(row, col);
+                        //tile.addWorkerToTile();
                         console.log("Pressed");
                     })
                     tileMap[row][col].setView(hexagon);

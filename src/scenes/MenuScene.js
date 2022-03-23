@@ -43,7 +43,8 @@ export default class MenuScene extends Phaser.Scene {
     {
         //updates the data on the menu.
         let money = PlayerData.getPlayer().getMoney();
-        this.playerMoneyText.setText(`$${money.toFixed(2)}`);
+        let moneySpent = PlayerData.getPlayer().getMoneySpent();
+        this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
     }
 
     hideScenes()
