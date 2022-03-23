@@ -33,6 +33,7 @@ export default class HubScene extends Phaser.Scene {
         {
             this.load.image(imageData.key, imageData.url);
         }
+        //this.scene.get('menuScene').playerData.setMoney();
         // this.boardModel;
         // this.boardView;
         // this.boardController;

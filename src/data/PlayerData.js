@@ -5,20 +5,16 @@ export default class PlayerData
     /**
      * @type {PlayerModel}
      */
-    player;
+    static #player;
 
-    constructor()
+    /**
+     * Gets the singleton player model.
+     * @returns {PlayerModel} - the player model.
+     */
+    static getPlayer()
     {
-
-    }
-
-    getPlayer()
-    {
-        return this.player;
-    }
-
-    setPlayer(player)
-    {
-        this.player = player;
+        if(!PlayerData.#player)
+            PlayerData.#player = new PlayerModel();
+        return this.#player;
     }
 }

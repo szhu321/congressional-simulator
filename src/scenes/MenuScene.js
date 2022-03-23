@@ -23,10 +23,10 @@ export default class MenuScene extends Phaser.Scene {
     {
         this.initializeMenu();
 
-        //set the player data.
-        let player = new PlayerModel();
-        this.playerData = new PlayerData();
-        this.playerData.setPlayer(player);
+        // //set the player data.
+        // let player = new PlayerModel();
+        // this.playerData = new PlayerData();
+        // this.playerData.setPlayer(player);
 
         //player name.
         this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "Sheng Wei");
@@ -42,8 +42,16 @@ export default class MenuScene extends Phaser.Scene {
     update()
     {
         //updates the data on the menu.
-        let money = this.playerData.getPlayer().getMoney();
-        this.playerMoneyText.setText(`$${Math.round(money * 100) / 100}`);
+        let money = PlayerData.getPlayer().getMoney();
+        this.playerMoneyText.setText(`$${money.toFixed(2)}`);
+    }
+
+    hideScenes()
+    {
+        this.scene.get('campaignScene').scene.setVisible(false);
+        this.scene.get('hubScene').scene.setVisible(false);
+        this.scene.get('menuScene').scene.setVisible(false);
+        this.scene.get('debateScene').scene.setVisible(false);
     }
 
     initializeMenu()
@@ -71,7 +79,10 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('clickerScene');
             if(!this.scene.isActive('clickerScene'))
                 this.scene.launch('clickerScene');
-            this.scene.bringToTop('clickerScene');
+            this.hideScenes();
+            this.scene.get('clickerScene').scene.setVisible(true);
+            //this.scene.bringToTop('clickerScene');
+            
             //console.log(this.scene.get('clickerScene'));
         });
         this.add.existing(this.fundraisingButton);
@@ -84,7 +95,8 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('campaignScene');
             if(!this.scene.isActive('campaignScene'))
                 this.scene.launch('campaignScene');
-            this.scene.bringToTop('campaignScene');
+            this.hideScenes();
+            this.scene.get('clickerScene').scene.setVisible(true);
         });
         this.add.existing(this.campaignButton);
 
@@ -96,7 +108,8 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('debateScene'))
                 this.scene.launch('debateScene');
-            this.scene.bringToTop('debateScene');
+            this.hideScenes();
+            this.scene.get('clickerScene').scene.setVisible(true);
         });
         this.add.existing(this.debateButton);
 
