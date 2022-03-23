@@ -1,7 +1,8 @@
-import Tile from "./tile.js";
+import Tile from "./Tile.js";
 
 export default class TileMap
 {
+    
     /**Creates a empty hexagonal tile map.*/
     constructor(rows = 20, cols = 20)
     {

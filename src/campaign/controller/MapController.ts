@@ -1,15 +1,11 @@
-import TileMap from "../model/tilemap";
-import TitleScene from "../scenes/TitleScene";
-import Phaser from "phaser";
+import TileMap from "../model/TileMap";
 
 export default class MapController
 {
-    /**
-     * 
-     * @param {Phaser.Scene} scene 
-     * @param {TileMap} mapModel 
-     */
-    constructor(scene, mapModel)
+    private scene: Phaser.Scene;
+    private mapModel: TileMap;
+
+    constructor(scene: Phaser.Scene, mapModel:TileMap)
     {
         this.scene = scene;
         this.mapModel = mapModel;
