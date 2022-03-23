@@ -48,10 +48,49 @@ export default class MenuScene extends Phaser.Scene {
 
     hideScenes()
     {
-        this.scene.get('campaignScene').scene.setVisible(false);
-        this.scene.get('hubScene').scene.setVisible(false);
-        this.scene.get('menuScene').scene.setVisible(false);
-        this.scene.get('debateScene').scene.setVisible(false);
+        this.scene.pause('campaignScene');
+        this.scene.pause('hubScene');
+        this.scene.pause('clickerScene');
+        this.scene.pause('debateScene');
+    }
+
+    showScene(sceneName)
+    {
+        let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
+        for(let name of sceneNames)
+        {
+            let camera = this.scene.get(name).cameras.main;
+            if(camera)
+                this.changeCameraViewportOffScreen(camera);
+        }
+        let currentSceneCamera = this.scene.get(sceneName).cameras.main;
+        this.changeCameraViewportOnScreen(currentSceneCamera);
+    }
+
+    /**
+     * 
+     * @param {Phaser.Cameras.Scene2D.Camera} camera 
+     */
+    changeCameraViewportOffScreen(camera)
+    {
+        let x = SCENE_CONFIG.scene_width + 100;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        camera.setViewport(x, y, width, height);
+    }
+
+    /**
+     * 
+     * @param {Phaser.Cameras.Scene2D.Camera} camera 
+     */
+    changeCameraViewportOnScreen(camera)
+    {
+        let x = SCENE_CONFIG.scene_camera_viewport_x;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        camera.setViewport(x, y, width, height);
     }
 
     initializeMenu()
@@ -79,8 +118,10 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('clickerScene');
             if(!this.scene.isActive('clickerScene'))
                 this.scene.launch('clickerScene');
-            this.hideScenes();
-            this.scene.get('clickerScene').scene.setVisible(true);
+            this.showScene('clickerScene');
+            //this.scene.get('clickerScene').scene.resume();
+            //this.scene.bringToTop('clickerScene');
+            //this.scene.get('clickerScene').scene.setVisible(true);
             //this.scene.bringToTop('clickerScene');
             
             //console.log(this.scene.get('clickerScene'));
@@ -95,8 +136,7 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('campaignScene');
             if(!this.scene.isActive('campaignScene'))
                 this.scene.launch('campaignScene');
-            this.hideScenes();
-            this.scene.get('clickerScene').scene.setVisible(true);
+            this.showScene('campaignScene');
         });
         this.add.existing(this.campaignButton);
 
@@ -108,8 +148,7 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('debateScene'))
                 this.scene.launch('debateScene');
-            this.hideScenes();
-            this.scene.get('clickerScene').scene.setVisible(true);
+            this.showScene('debateScene');
         });
         this.add.existing(this.debateButton);
 
@@ -120,7 +159,7 @@ export default class MenuScene extends Phaser.Scene {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('hubScene'))
                 this.scene.launch('hubScene');
-            this.scene.bringToTop('hubScene');
+            this.showScene('hubScene');
         });
         this.add.existing(this.hubButton);
     }

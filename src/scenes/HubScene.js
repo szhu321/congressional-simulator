@@ -77,6 +77,45 @@ export default class HubScene extends Phaser.Scene {
         background.setOrigin(0, 0);
     }
 
+    showScene(sceneName)
+    {
+        let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
+        for(let name of sceneNames)
+        {
+            let camera = this.scene.get(name).cameras.main;
+            if(camera)
+                this.changeCameraViewportOffScreen(camera);
+        }
+        let currentSceneCamera = this.scene.get(sceneName).cameras.main;
+        this.changeCameraViewportOnScreen(currentSceneCamera);
+    }
+
+    /**
+     * 
+     * @param {Phaser.Cameras.Scene2D.Camera} camera 
+     */
+    changeCameraViewportOffScreen(camera)
+    {
+        let x = SCENE_CONFIG.scene_width + 100;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        camera.setViewport(x, y, width, height);
+    }
+ 
+    /**
+     * 
+     * @param {Phaser.Cameras.Scene2D.Camera} camera 
+     */
+    changeCameraViewportOnScreen(camera)
+    {
+        let x = SCENE_CONFIG.scene_camera_viewport_x;
+        let y = SCENE_CONFIG.scene_camera_viewport_y;
+        let width = SCENE_CONFIG.scene_width;
+        let height = SCENE_CONFIG.scene_height;
+        camera.setViewport(x, y, width, height);
+    }
+
     initializeHubButtons()
     {
         let height = SCENE_CONFIG.scene_height;
@@ -98,7 +137,7 @@ export default class HubScene extends Phaser.Scene {
             //this.scene.switch('clickerScene');
             if(!this.scene.isActive('clickerScene'))
                 this.scene.launch('clickerScene');
-            this.scene.bringToTop('clickerScene');
+            this.showScene('clickerScene');
             //console.log(this.scene.get('clickerScene'));
         });
         this.add.existing(this.fundraisingButton);
@@ -117,7 +156,7 @@ export default class HubScene extends Phaser.Scene {
             //this.scene.switch('campaignScene');
             if(!this.scene.isActive('campaignScene'))
                 this.scene.launch('campaignScene');
-            this.scene.bringToTop('campaignScene');
+            this.showScene('campaignScene');
         });
         this.add.existing(this.campaignButton);
         let campaignButtonText = this.add.text(this.campaignButton.x, this.campaignButton.y + ( this.campaignButton.height / 2 ) + buttonTextYOffset, "Campaign");
@@ -135,7 +174,7 @@ export default class HubScene extends Phaser.Scene {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('debateScene'))
                 this.scene.launch('debateScene');
-            this.scene.bringToTop('debateScene');
+            this.showScene('debateScene');
         });
         this.add.existing(this.debateButton);
         let debateButtonText = this.add.text(this.debateButton.x, this.debateButton.y + ( this.debateButton.height / 2 ) + buttonTextYOffset, "Debate");
