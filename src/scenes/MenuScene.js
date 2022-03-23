@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import Button from "../phaserobjs/Button.js";
-import { MENU_CONFIG } from "../gameconfig.js";
+import { MENU_CONFIG, SCENE_CONFIG } from "../gameconfig.js";
+import PlayerData from "../data/PlayerData.js";
+import PlayerModel from "../model/PlayerModel.js";
 
 export default class MenuScene extends Phaser.Scene {
 
@@ -18,6 +20,33 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create()
+    {
+        this.initializeMenu();
+
+        //set the player data.
+        let player = new PlayerModel();
+        this.playerData = new PlayerData();
+        this.playerData.setPlayer(player);
+
+        //player name.
+        this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "Sheng Wei");
+        this.playerNameText.setOrigin(1, 0);
+        this.playerNameText.setFontSize(20);
+
+        //player money.
+        this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 5, MENU_CONFIG.menu_height - 5, "$100");
+        this.playerMoneyText.setOrigin(1, 1);
+        this.playerMoneyText.setFontSize(20);
+    }
+
+    update()
+    {
+        //updates the data on the menu.
+        let money = this.playerData.getPlayer().getMoney();
+        this.playerMoneyText.setText(`$${Math.round(money * 100) / 100}`);
+    }
+
+    initializeMenu()
     {
         let height = MENU_CONFIG.menu_height;
         let width = MENU_CONFIG.menu_width;
@@ -81,10 +110,5 @@ export default class MenuScene extends Phaser.Scene {
             this.scene.bringToTop('hubScene');
         });
         this.add.existing(this.hubButton);
-    }
-
-    initializeCamera()
-    {
-        
     }
 }
