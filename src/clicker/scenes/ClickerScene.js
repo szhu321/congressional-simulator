@@ -78,7 +78,7 @@ export default class ClickerScene extends Phaser.Scene{
 
         for(let i = 0; i < clickerData.upgrades.length; i++){
             let newUpgrade = clickerData.upgrades[i];
-            let newUpgradeModel = new UpgradeModel(newUpgrade.name, newUpgrade.multiplier, newUpgrade.cost, newUpgrade.description);
+            let newUpgradeModel = new UpgradeModel(newUpgrade.name, newUpgrade.multiplier, newUpgrade.cost, newUpgrade.description, newUpgrade.target);
             let newUpgradeView = new UpgradeView(this);
             newUpgradeView.initialize();
             newUpgradeModel.setView(newUpgradeView);

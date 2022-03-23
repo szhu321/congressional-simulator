@@ -25,7 +25,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
     initialize(model){
         let statsText = this.scene.add.text(75, 50, [`Stats`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
         let currentFundsText = this.scene.add.text(75, 150, [`Current Funds: $${model.getCurrentFunds().toFixed(2)}`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
-        let rateOfRevenueText = this.scene.add.text(75, 250, [`Automated Rate of Revenue: $${model.getRevenueRate().toFixed(2)}`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
+        let rateOfRevenueText = this.scene.add.text(75, 250, [`Automated Rate of Revenue: $${model.getRevenueRate().toFixed(2)}/sec`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff');
         let clickCallText = this.scene.add.text(75, 350, [`Text/Call`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive({useHandCursor: true});
         let workersText = this.scene.add.text(575, 50, [`Workers`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
         let upgradesText = this.scene.add.text(1025, 50, [`Upgrades`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
@@ -69,6 +69,11 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
             let upgradeView = upgrades[i].getView();
             upgradeView.setPosition(1075, 150 + 110 * i);
             upgradeView.setCanPurchase(model.getCurrentFunds() >= upgrades[i].cost);
+            upgradeView.on('pointerup', (pointer, localX, localY, event) => {
+                // console.log(upgrades.map(upgrade => upgrade.getView()));
+                // console.log(upgrades.map(upgrade => upgrade.getView()).indexOf(upgradeView));
+                this.controller.processPurchaseUpgrade(upgrades.map(upgrade => upgrade.getView()).indexOf(upgradeView));
+            })
             this.add(upgradeView);
             this.upgradeViews.push(upgradeView);
         }
@@ -85,11 +90,27 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
     updateViewCallback(model){
         let children = this.getAll();
         children[1].setText(`Current Funds: $${model.getCurrentFunds().toFixed(2)}`);
+        // this.scene.get('menuScene').playerData.setMoney(model.getCurrentFunds());
         // console.log(model.getRevenueRate() * 60);
-        children[2].setText(`Automated Rate of Revenue: $${(model.getRevenueRate() * 60).toFixed(2)}`);
+        children[2].setText(`Automated Rate of Revenue: $${(model.getRevenueRate() * 60).toFixed(2)}/sec`);
 
-        for(let i = 0; i < model.getWorkers().length; i++){
-            this.workerViews[i].setCanPurchase(model.getCurrentFunds() >= model.getWorkers()[i].cost);
+        let workers = model.getWorkers();
+        for(let i = 0; i < workers.length; i++){
+            this.workerViews[i].setCanPurchase(model.getCurrentFunds() >= workers[i].cost);
+        }
+
+        for(let i = 0; i < this.upgradeViews.length; i++){
+            this.remove(this.upgradeViews[i]);
+        }
+        this.upgradeViews.splice(0, this.upgradeViews.length);
+
+        let upgrades = model.getUpgrades();
+        for(let i = 0; i < upgrades.length; i++){
+            let upgradeView = upgrades[i].getView();
+            upgradeView.setPosition(1075, 150 + 110 * i);
+            this.add(upgradeView);
+            this.upgradeViews.push(upgradeView);
+            upgradeView.setCanPurchase(model.getCurrentFunds() >= upgrades[i].cost);
         }
     }
 

@@ -59,11 +59,11 @@ export default class CardView extends Phaser.GameObjects.Container{
             children[4].setPosition(0, children[3].height + children[1].height - this.maxHeight / 2);
             children[4].setFontSize(this.abilityFontSize);
 
-            // Card Health
+            // Card Attack
             children[5].setPosition(-1 * this.maxWidth / 2, this.maxHeight / 2);
             children[5].setOrigin(0, 1);
 
-            // Card Attack
+            // Card Health
             children[6].setPosition(this.maxWidth / 2, this.maxHeight / 2);
             children[6].setOrigin(1, 1);
         }else{
@@ -93,8 +93,8 @@ export default class CardView extends Phaser.GameObjects.Container{
         children[2].setText(model.getCost());
         children[3].setText(model.getPoliticalIssue() + " " + model.getPoliticalView());
         children[4].setText(model.getAbility());
-        children[5].setText(model.getHealth());
-        children[6].setText(model.getAttack());
+        children[5].setText(model.getAttack());
+        children[6].setText(model.getHealth());
         if(model.actionCount > 0)
             this.background.setFillStyle(this.cardColor);
         else

@@ -86,11 +86,22 @@ export default class ClickerModel{
         this.view.updateWorkerButtons(enableWorkerArray, enableUpgradeArray);
     }
 
-    applyUpgrade(workerIndex, upgradeId){
-        let worker = this.workers[workerIndex];
-        worker.setRevenueRate(worker.revenueRate * this.upgrades[workerIndex].multiplier);
-        this.updateRevenueRate();
-        this.view.removeUpgrade(upgradeId);
+    applyUpgrade(upgradeIndex){
+        // let worker = this.workers[workerIndex];
+        // worker.setRevenueRate(worker.revenueRate * this.upgrades[workerIndex].multiplier);
+        // this.updateRevenueRate();
+        // this.view.removeUpgrade(upgradeId);
+        if(this.upgrades[upgradeIndex].target == 0){
+
+        }else{
+            // console.log(this.upgrades[upgradeIndex].target - 1);
+            let worker = this.workers[this.upgrades[upgradeIndex].target - 1];
+            this.currentFunds -= this.upgrades[upgradeIndex].cost;
+            worker.setRevenueRate(worker.revenueRate * this.upgrades[upgradeIndex].multiplier);
+            this.updateRevenueRate();
+            this.upgrades.splice(upgradeIndex, 1);
+            this.updateView();
+        }
     }
 
     updateRevenueRate(){

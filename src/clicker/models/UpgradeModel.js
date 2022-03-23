@@ -1,9 +1,10 @@
 export default class UpgradeModel{
-    constructor(name, multiplier, cost, description){
+    constructor(name, multiplier, cost, description, target){
         this.name = name;
         this.cost = cost;
         this.multiplier = multiplier;
         this.description = description;
+        this.target = target;
         this.view = null;
     }
 
@@ -25,6 +26,10 @@ export default class UpgradeModel{
 
     getDescription(){
         return this.description;
+    }
+
+    getTarget(){
+        return this.target;
     }
 
     updateView()

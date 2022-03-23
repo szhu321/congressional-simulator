@@ -29,8 +29,8 @@ export default class ClickerController{
         this.model.purchaseWorker(workerIndex);
     }
 
-    processPurchaseUpgrade = (workerIndex, upgradeId) => {
-        this.model.applyUpgrade(workerIndex, upgradeId);
+    processPurchaseUpgrade = (upgradeIndex) => {
+        this.model.applyUpgrade(upgradeIndex);
     }
 
     test = (value) => {
