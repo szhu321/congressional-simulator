@@ -92,7 +92,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         children[1].setText(`Current Funds: $${model.getCurrentFunds().toFixed(2)}`);
         // this.scene.get('menuScene').playerData.setMoney(model.getCurrentFunds());
         // console.log(model.getRevenueRate() * 60);
-        children[2].setText(`Automated Rate of Revenue: $${(model.getRevenueRate() * 60).toFixed(2)}/sec`);
+        children[2].setText(`Automated Rate of Revenue: $${model.getRevenueRate().toFixed(2)}/sec`);
 
         let workers = model.getWorkers();
         for(let i = 0; i < workers.length; i++){

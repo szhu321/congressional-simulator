@@ -1,6 +1,8 @@
 export default class ClickerController{
     constructor(){
         this.model = null;
+        this.frameRate = 1000/60;
+        this.totalTimePassed = 0;
     }
 
     setModel(initModel){
@@ -19,6 +21,15 @@ export default class ClickerController{
 
     startAutomatedRevenue(){
         setInterval(this.model.updateCurrentFunds, 1000/60);
+    }
+
+    passTime(deltaT){
+        // this.totalTimePassed += deltaT;
+        // if(this.totalTimePassed >= this.frameRate){
+        //     this.model.updateCurrentFunds();
+        //     this.totalTimePassed -= this.frameRate;
+        // }
+        this.model.updateCurrentFunds(deltaT);
     }
 
     processClickCallText = () => {

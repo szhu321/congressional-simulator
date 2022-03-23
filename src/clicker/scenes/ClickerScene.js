@@ -31,7 +31,11 @@ export default class ClickerScene extends Phaser.Scene{
 
         this.add.existing(this.view);
 
-        this.controller.startAutomatedRevenue();
+        // this.controller.startAutomatedRevenue();
+    }
+
+    update(time, delta){
+        this.controller.passTime(delta);
     }
 
     initializeCamera()
@@ -64,7 +68,7 @@ export default class ClickerScene extends Phaser.Scene{
     createWorkersandUpgrades(clickerData, model){
         for(let i = 0; i < clickerData.workers.length; i++){
             let newWorker = clickerData.workers[i];
-            let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate / 60, newWorker.cost);
+            let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate, newWorker.cost);
             let newWorkerView = new WorkerView(this);
             newWorkerView.initialize();
             newWorkerModel.setView(newWorkerView);

@@ -1,5 +1,6 @@
 import WorkerModel from "./WorkerModel.js";
 import UpgradeModel from "./UpgradeModel.js";
+import PlayerData from "../../data/PlayerData.js"
 
 export default class ClickerModel{
     constructor(){
@@ -56,13 +57,15 @@ export default class ClickerModel{
     purchaseWorker(workerIndex){
         let worker = this.workers[workerIndex];
         this.currentFunds -= worker.cost;
+        PlayerData.getPlayer().setConfig({money: this.currentFunds});
         worker.addWorker();
         this.updateRevenueRate();
         this.updateView();
     }
 
-    updateCurrentFunds = () => {
-        this.currentFunds += this.revenueRate;
+    updateCurrentFunds = (deltaT) => {
+        this.currentFunds += this.revenueRate * (deltaT / 1000);
+        PlayerData.getPlayer().setConfig({money: this.currentFunds});
         // this.checkWorkerCosts();
         // this.view.updateCurrentFundsDisplay(this.currentFunds);
         this.updateView();
@@ -70,6 +73,7 @@ export default class ClickerModel{
           
     clickCallText(){
         this.currentFunds += this.clickRevenue;
+        PlayerData.getPlayer().setConfig({money: this.currentFunds});
         //this.checkWorkerCosts();
         this.updateView();
     }
@@ -97,6 +101,7 @@ export default class ClickerModel{
             // console.log(this.upgrades[upgradeIndex].target - 1);
             let worker = this.workers[this.upgrades[upgradeIndex].target - 1];
             this.currentFunds -= this.upgrades[upgradeIndex].cost;
+            PlayerData.getPlayer().setConfig({money: this.currentFunds});
             worker.setRevenueRate(worker.revenueRate * this.upgrades[upgradeIndex].multiplier);
             this.updateRevenueRate();
             this.upgrades.splice(upgradeIndex, 1);

@@ -104,10 +104,13 @@ export default class CardView extends Phaser.GameObjects.Container{
             children[3].setText(model.getPoliticalIssue() + " " + model.getPoliticalView());
             children[4].setText(model.getAbility());
             children[5].setText(model.getAttack());
+            children[7].setVisible(false);
         }
         children[6].setText(model.getHealth());
-        if(model.actionCount > 0)
+        if(model.actionCount > 0){
             this.background.setFillStyle(this.cardColor);
+            this.setInteractive();
+        }
         else
             this.background.setFillStyle(this.cardColorDark);
     }
