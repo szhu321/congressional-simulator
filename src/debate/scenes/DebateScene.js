@@ -26,6 +26,8 @@ export default class DebateScene extends Phaser.Scene {
     preload() {
         // this.load.image('issueCard', 'assets/issue_card.png');
         // this.load.image('workerCard', 'assets/worker_card.png');
+        this.load.image('sword', 'assets/sword.png');
+        this.load.image('shield', 'assets/shield.png');
         this.boardModel;
         this.boardView;
         this.boardController;

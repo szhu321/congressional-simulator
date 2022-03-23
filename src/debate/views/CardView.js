@@ -25,6 +25,8 @@ export default class CardView extends Phaser.GameObjects.Container{
             text.setColor("black")
             this.add(text);
         }
+        let image = this.scene.add.image(0, 0, '');
+        this.add(image);
         this.setDataEnabled();
         this.setData({dropZoneName : "", dropZoneX: 0, dropZoneY: 0, cost: 100});
     }
@@ -63,6 +65,10 @@ export default class CardView extends Phaser.GameObjects.Container{
             children[5].setPosition(-1 * this.maxWidth / 2, this.maxHeight / 2);
             children[5].setOrigin(0, 1);
 
+            // Or Card Image
+            children[7].setPosition(-1 * this.maxWidth / 2, this.maxHeight / 2);
+            children[7].setOrigin(0,1);
+
             // Card Health
             children[6].setPosition(this.maxWidth / 2, this.maxHeight / 2);
             children[6].setOrigin(1, 1);
@@ -91,9 +97,14 @@ export default class CardView extends Phaser.GameObjects.Container{
         }
         children[1].setText(levelStr);
         children[2].setText(model.getCost());
-        children[3].setText(model.getPoliticalIssue() + " " + model.getPoliticalView());
-        children[4].setText(model.getAbility());
-        children[5].setText(model.getAttack());
+        if(model.isWorker){
+            children[3].setText(model.getName());
+            children[7].setTexture(model.getIsAttacking() ? 'sword' : 'shield');
+        }else{
+            children[3].setText(model.getPoliticalIssue() + " " + model.getPoliticalView());
+            children[4].setText(model.getAbility());
+            children[5].setText(model.getAttack());
+        }
         children[6].setText(model.getHealth());
         if(model.actionCount > 0)
             this.background.setFillStyle(this.cardColor);
