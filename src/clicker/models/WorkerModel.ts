@@ -1,5 +1,13 @@
+import WorkerView from "../views/WorkerView";
+
 export default class WorkerModel{
-    constructor(name, revenueRate, cost){
+    private name: string;
+    private amount: number;
+    private cost: number;
+    private revenueRate: number;
+    private view: WorkerView;
+
+    constructor(name: string, revenueRate: number, cost: number){
         this.name = name;
         this.amount = 0;
         this.cost = cost;
@@ -7,11 +15,11 @@ export default class WorkerModel{
         this.view = null;
     }
 
-    setRevenueRate(newRevenueRate){
+    setRevenueRate(newRevenueRate: number){
         this.revenueRate = newRevenueRate;
     }
 
-    setView(view){
+    setView(view: WorkerView){
         this.view = view;
     }
 

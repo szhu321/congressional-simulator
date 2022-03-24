@@ -6,10 +6,7 @@
     "exclude": [
         "node_modules",
         "src/campaign",
-        "src/clicker",
-        "src/data",
         "src/debate",
-        "src/model",
         "src/phaserobj",
         "src/scenes"
     ],
