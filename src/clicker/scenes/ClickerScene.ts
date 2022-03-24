@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import "phaser";
 import ClickerModel from "../models/ClickerModel";
 import ClickerController from "../controllers/ClickerController";
 import ClickerView from "../views/ClickerView";
@@ -9,11 +9,9 @@ import UpgradeView from "../views/UpgradeView";
 import { SCENE_CONFIG } from "../../gameconfig";
 
 export default class ClickerScene extends Phaser.Scene{
-    preload(){
-        this.model;
-        this.view;
-        this.controller;
-    }
+    private model: ClickerModel;
+    private view: ClickerView;
+    private controller: ClickerController;
 
     create(){
         this.initializeBackground();
@@ -30,11 +28,9 @@ export default class ClickerScene extends Phaser.Scene{
         this.view.initialize(this.model);
 
         this.add.existing(this.view);
-
-        // this.controller.startAutomatedRevenue();
     }
 
-    update(time, delta){
+    update(time: number, delta: number){
         this.controller.passTime(delta);
     }
 
@@ -65,7 +61,7 @@ export default class ClickerScene extends Phaser.Scene{
         return model;
     }
 
-    createWorkersandUpgrades(clickerData, model){
+    createWorkersandUpgrades(clickerData: ClickerData, model: ClickerModel){
         for(let i = 0; i < clickerData.workers.length; i++){
             let newWorker = clickerData.workers[i];
             let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate, newWorker.cost);
@@ -73,8 +69,8 @@ export default class ClickerScene extends Phaser.Scene{
             newWorkerView.initialize();
             newWorkerModel.setView(newWorkerView);
             newWorkerView.updateDisplay();
-            newWorkerView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newWorkerView.maxWidth / 2, 
-            -1 * newWorkerView.maxHeight / 2, newWorkerView.maxWidth, newWorkerView.maxHeight), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
+            newWorkerView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newWorkerView.getMaxWidth() / 2, 
+            -1 * newWorkerView.getMaxHeight() / 2, newWorkerView.getMaxWidth(), newWorkerView.getMaxHeight()), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
         useHandCursor: true});
             newWorkerModel.updateView();
             model.addWorker(newWorkerModel);
@@ -87,8 +83,8 @@ export default class ClickerScene extends Phaser.Scene{
             newUpgradeView.initialize();
             newUpgradeModel.setView(newUpgradeView);
             newUpgradeView.updateDisplay();
-            newUpgradeView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newUpgradeView.maxWidth / 2, 
-            -1 * newUpgradeView.maxHeight / 2, newUpgradeView.maxWidth, newUpgradeView.maxHeight), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
+            newUpgradeView.setInteractive({hitArea: new Phaser.Geom.Rectangle(-1 * newUpgradeView.getMaxWidth() / 2, 
+            -1 * newUpgradeView.getMaxHeight() / 2, newUpgradeView.getMaxWidth(), newUpgradeView.getMaxHeight()), hitAreaCallback: Phaser.Geom.Rectangle.Contains, 
         useHandCursor: true});
             newUpgradeModel.updateView();
             model.addUpgrade(newUpgradeModel);
@@ -96,41 +92,45 @@ export default class ClickerScene extends Phaser.Scene{
     }
 
     getClickerData(){
-        // fetch("../ClickerData.json")
-        // .then(response => response.text())
-        // .then(json => console.log(json));
-
-        let clickerData = {
-            workers: [
-                {
-                    name: "Cold Caller",
-                    revenueRate: 0.1,
-                    cost: 10
-                },
-                {
-                    name: "Leafleter",
-                    revenueRate: 1,
-                    cost: 30
-                }
-            ],
-            upgrades: [
-                {
-                    name: "Office Equipment",
-                    cost: 250,
-                    description: "Cold Callers are 2x more effective",
-                    target: 1,
-                    multiplier: 2
-                },
-                {
-                    name: "Demographic Targeting",
-                    cost: 500,
-                    description: "Leafleters are 2x more effective",
-                    target: 2,
-                    multiplier: 2
-                }
-            ]
-        };
+        let clickerData = new ClickerData();
+        clickerData.workers.push(new WorkerData("Cold Caller", 0.1, 10));
+        clickerData.workers.push(new WorkerData("Leafleter", 1, 30));
+        clickerData.upgrades.push(new UpgradeData("Office Equipment", 2, 250, "Cold Callers are 2x more effective", 1));
+        clickerData.upgrades.push(new UpgradeData("Demographic Targeting", 2, 500, "Leafleters are 2x more effective", 2));
 
         return clickerData;
+    }
+}
+
+class ClickerData{
+    workers: WorkerData[];
+    upgrades: UpgradeData[];
+}
+
+class WorkerData{
+    name: string;
+    revenueRate: number;
+    cost: number;
+
+    constructor(name: string, revenueRate: number, cost: number){
+        this.name = name;
+        this.revenueRate = revenueRate;
+        this.cost = cost;
+    }
+}
+
+class UpgradeData{
+    name: string;
+    multiplier: number;
+    cost: number;
+    description: string;
+    target: number;
+
+    constructor(name: string, multiplier: number, cost: number, description: string, target: number){
+        this.name = name;
+        this.multiplier = multiplier;
+        this.cost = cost;
+        this.description = description;
+        this.target = target;
     }
 }

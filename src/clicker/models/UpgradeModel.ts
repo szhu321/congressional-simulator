@@ -1,14 +1,23 @@
+import UpgradeView from "../views/UpgradeView";
+
 export default class UpgradeModel{
-    constructor(name, multiplier, cost, description, target){
+    private name: string;
+    private multiplier: number;
+    private cost: number;
+    private description: string;
+    private target: number;
+    private view: UpgradeView
+
+    constructor(name: string, multiplier: number, cost: number, description: string, target: number){
         this.name = name;
-        this.cost = cost;
         this.multiplier = multiplier;
+        this.cost = cost;
         this.description = description;
         this.target = target;
         this.view = null;
     }
 
-    setView(view){
+    setView(view: UpgradeView){
         this.view = view;
     }
 
@@ -18,6 +27,10 @@ export default class UpgradeModel{
 
     getName(){
         return this.name;
+    }
+
+    getMultiplier(){
+        return this.multiplier;
     }
 
     getCost(){
@@ -34,8 +47,7 @@ export default class UpgradeModel{
 
     updateView()
     {
-        if(this.view)
-        {
+        if(this.view){
             this.view.updateViewCallback(this);
         }
     }

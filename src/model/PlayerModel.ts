@@ -1,87 +1,76 @@
-import GAME_ENUM from "../gameenums";
+import { GAME_ENUM } from "../gameenums";
 
 export default class PlayerModel {
 
     /**
      * Name of the player
-     * @type {String}
      */
-    name;
+    private name: String;
 
     /**
      * Age of the player
-     * @type {Number}
      */
-    age;
+    private age: number;
 
     /**
      * The player's gender
-     * @type {String}
      */
-    gender;
+    private gender: string;
 
     /**
      * The political pary the player is associated with.
-     * @type {String}
      */
-    politicalParty;
+    private politicalParty: string;
 
     /**
      * The district the player is running for.
      * @type {String}
      */
-    district;
+    private district: number;
 
     /**
      * How much money the player currently has.
-     * @type {Number}
      */
-    money;
+    private money: number;
 
     /**
      * Measures how popular the player is with the people in thir district.
-     * @type {Number}
      */
-    districtPopularity;
+    private districtPopularity: number;
 
     /**
      * Measures how popular the player is with their political party
-     * @type {Number}
      */
-    partyPopularity;
+    private partyPopularity: number;
 
     /**
      * The total amount of time player has been playing.
-     * @type {Number}
      */
-    totalTimePlaying;
+    private totalTimePlaying: number;
 
 
     /**
      * Congressional staff hired by the player
      * @type {Object[]}
      */
-    staffMembers;
+    private staffMembers: object[];
 
 
     /**
      * The player's occupation.
-     * @type {String}
      */
-    job;
+    private job: string;
 
 
     /**
      * The player's daily income.
-     * @type {Number}
      */
-    dailyIncome;
+    private dailyIncome: number;
 
     /**
      * The amount of money the player has spent.
-     * @type {Number}
      */
-    moneySpent;
+    private moneySpent: number;
 
     constructor() {
         this.name = "Sheng Wei";
@@ -99,7 +88,9 @@ export default class PlayerModel {
         this.moneySpent = 0;
     }
 
-    setConfig(configObject)
+    setConfig(configObject: {name?: string, age?: number, gender?: string, politicalParty?: string, district?: number,
+    money: number, districtPopularity?: number, partyPopularity?: number, totalTimePlaying?: number, staffMembers?: object[],
+    job?: string, dailyIncome?: number, moneySpent?: number})
     {
         let {name, age, gender, politicalParty, district, money, districtPopularity, 
             partyPopularity, totalTimePlaying, staffMembers, job, dailyIncome,
