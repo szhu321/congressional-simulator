@@ -1,14 +1,13 @@
-import Phaser from "phaser";
 import CampaignScene from "../scenes/CampaignScene";
 
 export default class TimeController
 {
-    /**
-     * 
-     * @param {CampaignScene} scene 
-     * @param {Phaser.GameObjects.Text} timerDisplay 
-     */
-    constructor(scene, timerDisplay)
+    private scene: CampaignScene; 
+    private timerDisplay: Phaser.GameObjects.Text;
+    private day: number;
+    private timerId: number;
+
+    constructor(scene: CampaignScene, timerDisplay: Phaser.GameObjects.Text)
     {
         this.scene = scene;
         this.timerDisplay = timerDisplay;
@@ -20,13 +19,13 @@ export default class TimeController
         }, 3000);
     }
 
-    stopTimer()
+    public stopTimer()
     {
         clearInterval(this.timerId);
     }
 
-    passTime()
+    public passTime()
     {
-        this.scene.mapController.passTime(1);
+        this.scene.getMapController().passTime(1);
     }
 }

@@ -5,6 +5,7 @@
     ],
     "exclude": [
         "node_modules",
+        "oldjs",
         "src/campaign",
         "src/debate",
         "src/phaserobj",

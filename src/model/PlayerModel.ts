@@ -1,4 +1,4 @@
-import { GAME_ENUM } from "../gameenums";
+import { GENDER, POLITICAL_PARTY } from "../gameenums";
 
 export default class PlayerModel {
 
@@ -76,8 +76,8 @@ export default class PlayerModel {
         this.name = "Sheng Wei";
         this.money = 0;
         this.age = 30;
-        this.gender = GAME_ENUM.GENDER.MALE;
-        this.politicalParty = GAME_ENUM.POLITICAL_PARTY.DEMOCRATIC_PARTY;
+        this.gender = GENDER.MALE;
+        this.politicalParty = POLITICAL_PARTY.DEMOCRATIC_PARTY;
         this.district = 0;
         this.districtPopularity = 0;
         this.partyPopularity = 0;
@@ -115,9 +115,19 @@ export default class PlayerModel {
         return this.name;
     }
 
+    setName(value: string)
+    {
+        this.name = value;
+    }
+
     getAge()
     {
         return this.age;
+    }
+
+    setAge(value: number)
+    {
+        this.age = value;
     }
 
     getGender()
@@ -125,9 +135,19 @@ export default class PlayerModel {
         return this.gender;
     }
 
+    setGender(value: GENDER)
+    {
+        this.gender = value;
+    }
+
     getPoliticalParty()
     {
         return this.politicalParty;
+    }
+
+    setPoliticalParty(value: POLITICAL_PARTY)
+    {
+        this.politicalParty = value;
     }
 
     getDistrict()
@@ -135,9 +155,19 @@ export default class PlayerModel {
         return this.district;
     }
 
+    setDistrict(value: number)
+    {
+        this.district = value;
+    }
+
     getMoney()
     {
         return this.money;
+    }
+
+    setMoney(value: number)
+    {
+        this.money = value;
     }
 
     getDistrictPopularity()
@@ -145,14 +175,29 @@ export default class PlayerModel {
         return this.districtPopularity;
     }
 
+    setDistrictPopularity(value: number)
+    {
+        this.districtPopularity = value;
+    }
+
     getPartyPopularity()
     {
         return this.getPartyPopularity;
     }
 
+    setPartyPopularity(value: number)
+    {
+        this.partyPopularity = value;
+    }
+
     getTotalTimePlaying()
     {
         return this.getTotalTimePlaying;
+    }
+
+    setTotalTimePlaying(value: number)
+    {
+        this.totalTimePlaying = value;
     }
 
     getStaffMembers()
@@ -165,14 +210,29 @@ export default class PlayerModel {
         return this.job;
     }
 
+    setJob(value: string)
+    {
+        this.job = value;
+    }
+
     getDailyIncome()
     {
         return this.dailyIncome;
     }
 
+    setDailyIncome(value: number)
+    {
+        this.dailyIncome = value;
+    }
+
     getMoneySpent()
     {
         return this.moneySpent;
+    }
+
+    setMoneySpent(value: number)
+    {
+        this.moneySpent = value;
     }
 
 }

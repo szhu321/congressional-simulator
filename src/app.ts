@@ -1,6 +1,6 @@
 import 'phaser';
 // import DebateScene from './debate/scenes/DebateScene.js';
-// import CampaignScene from './campaign/scenes/CampaignScene';
+import CampaignScene from './campaign/scenes/CampaignScene';
 // import ClickerScene from './clicker/scenes/ClickerScene.js';
 // import MenuScene from './scenes/MenuScene.js';
 // import HubScene from './scenes/HubScene.js';
@@ -22,7 +22,7 @@ var config = {
 var game = new Phaser.Game(config);
 
 // game.scene.add('debateScene', DebateScene);
-// game.scene.add('campaignScene', CampaignScene);
+game.scene.add('campaignScene', CampaignScene);
 // game.scene.add('clickerScene', ClickerScene);
 // game.scene.add('hubScene', HubScene);
 // game.scene.add('menuScene', MenuScene);
@@ -35,3 +35,4 @@ var game = new Phaser.Game(config);
 
 // game.scene.start('menuScene');
 // game.scene.start('hubScene');
+game.scene.start('campaignScene');

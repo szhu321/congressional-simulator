@@ -1,10 +1,16 @@
-import Tile from "./Tile.js";
+import TileMapView from "../view/TileMapView";
+import Tile from "./Tile";
 
 export default class TileMap
 {
-    
+    private map: Tile[][];
+    private view: TileMapView;
+    private rows: number;
+    private cols: number;
+    private displayMode: number;
+
     /**Creates a empty hexagonal tile map.*/
-    constructor(rows = 20, cols = 20)
+    constructor(rows: number = 20, cols: number = 20)
     {
         this.map = null;
         this.view = null;
@@ -14,7 +20,10 @@ export default class TileMap
         this.generateNewMap(rows, cols);
     }
 
-    generateNewMap(rows, cols)
+    public getRows(): number {return this.rows;}
+    public getCols(): number {return this.cols;}
+
+    public generateNewMap(rows: number, cols: number):void
     {
         this.map = Array(rows);
         //initialize the map hexagonal grid to 0,0.
@@ -28,44 +37,47 @@ export default class TileMap
                 else
                 {
                     let newTile = new Tile();
-                    newTile.row = i;
-                    newTile.col = j;
+                    newTile.setRow(i);
+                    newTile.setCol(j);
                     this.map[i][j] = newTile;
                 }  
             }
         }
     }
 
-    setViews(views)
+    public setViews(views: any)
     {
         this.view = views;
         this.updatesView();
     }
 
-    updatesView()
+    public updatesView()
     {
         if(this.view == null)
             return;
-        this.view.drawMap(this.map, this.displayMode);
+        this.view.drawMap(this, this.displayMode);
     }
 
     /**
      * Updates the tile at the specified row and col with the provided symbol.
-     * @param {*} row - row starting at 1.
-     * @param {*} col - col starting at 1.
-     * @param {*} symbol - the symbol.
      */
-    updateSymbolOfTileAt(row, col, symbol="O")
+    public updateSymbolOfTileAt(row: number, col: number, symbol: string = "O")
     {
         let tile = this.getTileAt(row - 1, col - 1);
         if(tile)
         {
-            tile.symbol = symbol;
+            tile.setSymbol(symbol);
+            // tile.symbol = symbol;
             this.updatesView();
         }
     }
 
-    getRowAndColOfTilesWithSymbol(symbol)
+    /**
+     * 
+     * @param {string} symbol - The symbol to find.
+     * @returns An array of [row, col] that tells which of the tiles have the provided symbol.
+     */
+    public getRowAndColOfTilesWithSymbol(symbol: string): number[][]
     {
         if(!symbol)
             return null;
@@ -74,7 +86,7 @@ export default class TileMap
         {
             for(let j = 0; j < this.cols; j++)
             {
-                if(this.map[i][j] && this.map[i][j].symbol == symbol)
+                if(this.map[i][j] && this.map[i][j].getSymbol() == symbol)
                 {
                     arr.push([i, j]);
                 }
@@ -83,136 +95,87 @@ export default class TileMap
         return arr;
     }
 
-    setDisplayModeFog()
+    public setDisplayModeFog()
     {
         this.displayMode = 0;
         this.updatesView();
     }
 
-    setDisplayModeVotes()
+    public setDisplayModeVotes()
     {
         this.displayMode = 1;
         this.updatesView();
     }
 
-    resetBoard()
+    public resetBoard()
     {
         this.generateNewMap(this.rows, this.cols);
         this.updatesView();
     }
 
-    // /**1 for fogOfWarMap, 2 for show all, 3 for occupy map.*/
-    // printMap(configNum)
-    // {
-    //     let str = "";
-    //     let htmlStr = "";
-    //     for(let i = 0; i < this.map.length; i++)
-    //     {
-    //         let rowStr = "";
-    //         for(let j = 0; j < this.map[0].length; j++)
-    //         {
-    //             if(this.map[i][j] != null)
-    //             {
-    //                 switch(configNum)
-    //                 {
-    //                     case 1: {
-    //                         if(this.map[i][j].visible)
-    //                             rowStr += this.map[i][j].numberOfVoters;
-    //                         else
-    //                             rowStr += this.map[i][j].symbol;
-    //                     }; break;
-    //                     case 2: 
-    //                         rowStr += this.map[i][j].numberOfVoters;
-    //                         break;
-    //                     case 3: 
-    //                         rowStr += this.map[i][j].numberOfVoters;
-    //                         break;
-    //                     default:
-    //                         rowStr += this.map[i][j].numberOfVoters;
-    //                 }
-    //             }
-    //             else 
-    //             rowStr += " ";
-    //             rowStr += " ";
-    //         }
-    //         if(i % 2 == 1)
-    //         {
-    //             str += " " + rowStr + "\n";
-    //             htmlStr += "&nbsp;" + rowStr + "<br>";
-    //         }
-    //         else
-    //         {
-    //             htmlStr += rowStr + "<br>"
-    //             str += rowStr + "\n";
-    //         }
-    //     }
-    //     console.log(str);
-    //     return htmlStr;
-    // }
-
-    getTileAt(row, col)
+    public getTileAt(row: number, col: number): Tile
     {
         if(this.isOutOfBounds(row, col))
             return null;
         return this.map[row][col];
     }
 
-    getLeftOfTile(tile)
+    public getLeftOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row;
-        let newCol = tile.col - 1;
+        let newRow = tile.getRow();
+        let newCol = tile.getCol() - 1;
         return this.getTileAt(newRow, newCol);
     }
 
-    getRightOfTile(tile)
+    public getRightOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row;
-        let newCol = tile.col + 1;
+        let newRow = tile.getRow();
+        let newCol = tile.getCol() + 1;
         return this.getTileAt(newRow, newCol);
     }
 
-    getTopLeftOfTile(tile)
+    public getTopLeftOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row - 1;
-        let newCol = tile.row % 2 == 0 ? tile.col - 1: tile.col;
+        let newRow = tile.getRow() - 1;
+        let newCol = tile.getRow() % 2 == 0 ? tile.getCol() - 1: tile.getCol();
         return this.getTileAt(newRow, newCol);
     }
 
-    getTopRightOfTile(tile)
+    public getTopRightOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row - 1;
-        let newCol = tile.row % 2 == 0 ? tile.col: tile.col + 1;
+        let newRow = tile.getRow() - 1;
+        let newCol = tile.getRow() % 2 == 0 ? tile.getCol(): tile.getCol() + 1;
         return this.getTileAt(newRow, newCol);
     }
 
-    getBottomLeftOfTile(tile)
+    public getBottomLeftOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row + 1;
-        let newCol = tile.row % 2 == 0 ? tile.col - 1: tile.col;
+        let newRow = tile.getRow() + 1;
+        let newCol = tile.getRow() % 2 == 0 ? tile.getCol() - 1: tile.getCol();
         return this.getTileAt(newRow, newCol);
     }
 
-    getBottomRightOfTile(tile)
+    public getBottomRightOfTile(tile: Tile): Tile
     {
         if(!tile)
             return null;
-        let newRow = tile.row + 1;
-        let newCol = tile.row % 2 == 0 ? tile.col: tile.col + 1;
+        let newRow = tile.getRow() + 1;
+        let newCol = tile.getRow() % 2 == 0 ? tile.getCol(): tile.getCol() + 1;
         return this.getTileAt(newRow, newCol);
     }
     
     /**Returns an array of neighbors starting from the top right going clockwise. */
-    getAllNeighbors(tile)
+    public getAllNeighbors(tile: Tile): Tile[]
     {
         if(tile == null)
             return null;
@@ -226,7 +189,7 @@ export default class TileMap
         return neighbors;
     }
 
-    isOutOfBounds(row, col)
+    public isOutOfBounds(row: number, col: number): boolean
     {
         return this.map.length <= row || row < 0 || this.map[row].length <= col || col < 0;
     }

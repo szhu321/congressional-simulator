@@ -5,26 +5,41 @@ export default class MapController
     private scene: Phaser.Scene;
     private mapModel: TileMap;
 
-    constructor(scene: Phaser.Scene, mapModel:TileMap)
+    constructor(scene: Phaser.Scene, mapModel: TileMap)
     {
         this.scene = scene;
         this.mapModel = mapModel;
     }
 
-    addWorkerToTile(row, col)
+    public getScene(): Phaser.Scene {return this.scene;}
+
+    public setMapModel(value: TileMap) {this.mapModel = value;}
+    public getMapModel(): TileMap {return this.mapModel;}
+
+    public addWorkerToTile(row: number, col: number)
     {
+        if(!this.mapModel)
+        {
+            console.error("MapController does not have a MapModel");
+            return;
+        }
         let tile = this.mapModel.getTileAt(row, col);
-        tile.workerOnTile = true;
+        tile.setWorkerOnTile(true);
     }
 
-    passTime(daysPassed)
+    public passTime(daysPassed: number)
     {
+        if(!this.mapModel)
+        {
+            console.error("MapController does not have a MapModel");
+            return;
+        }
         let votesPerday = 1;
         let neighborsVotesPerday = 0.1;
         //for every tile that has a worker, add a vote and add a vote to the surrounding tiles
-        for(let i = 0; i < this.mapModel.rows; i++)
+        for(let i = 0; i < this.mapModel.getRows(); i++)
         {
-            for(let j = 0; j < this.mapModel.cols; j++)
+            for(let j = 0; j < this.mapModel.getCols(); j++)
             {
                 let tile = this.mapModel.getTileAt(i, j);
                 if(tile)
@@ -40,7 +55,7 @@ export default class MapController
                             }
                         }
                     }
-                    if(tile.workerOnTile == true)
+                    if(tile.isWorkerOnTile() === true)
                     {
                         tile.occupy("player", votesPerday * daysPassed);
                     }

@@ -1,46 +1,46 @@
-import WorkerModel from "../model/WorkerModel.js";
 import Phaser from "phaser";
+import Worker from "../model/Worker";
 
 export default class WorkerView extends Phaser.GameObjects.Container{
-    constructor(scene){
+    constructor(scene) {
         super(scene);
-        // this.maxLines = 7;
-        // this.vgap = 10;
-        this.fontSize = 15;
-        this.abilityFontSize = 12;
-        this.maxHeight = 140;
-        this.maxWidth = 118;
-        this.textAmount = 6;
-        this.cardColor = 0x9f93e9;
-        this.cardColorDark = 0xaba187;
+        // // this.maxLines = 7;
+        // // this.vgap = 10;
+        // this.fontSize = 15;
+        // this.abilityFontSize = 12;
+        // this.maxHeight = 140;
+        // this.maxWidth = 118;
+        // this.textAmount = 6;
+        // this.cardColor = 0x9f93e9;
+        // this.cardColorDark = 0xaba187;
 
-        this.nameText;
-        this.workerIcon;
-        this.useButton;
+        // this.nameText;
+        // this.workerIcon;
+        // this.useButton;
     }
 
     initialize(){
-        //worker card's background
-        let rect = this.scene.add.rectangle(0, 0, 0, 0, this.cardColor);
-        this.add(rect);
-        this.background = rect;
+        // //worker card's background
+        // let rect = this.scene.add.rectangle(0, 0, 0, 0, this.cardColor);
+        // this.add(rect);
+        // this.background = rect;
 
-        //worker name
-        this.nameText = this.scene.add.text(this.width /2, 10, "Worker");
-        this.nameText.setOrigin(0.5, 0.5);
-        this.nameText.setAlign("center");
-        this.nameText.setFontSize(this.fontSize);
+        // //worker name
+        // this.nameText = this.scene.add.text(this.width /2, 10, "Worker");
+        // this.nameText.setOrigin(0.5, 0.5);
+        // this.nameText.setAlign("center");
+        // this.nameText.setFontSize(this.fontSize);
 
-        //worker icon
-        this.workerIcon = this.scene.add.rectangle(0, 0, 0, 0, 0xeeeeee);
-        this.add(this.workerIcon);
+        // //worker icon
+        // this.workerIcon = this.scene.add.rectangle(0, 0, 0, 0, 0xeeeeee);
+        // this.add(this.workerIcon);
 
-        //worker btn
-        this.useButton = this.scene.add.rectangle(this.width/2, this.height - 10, 30, 10, 0xaaaaaa);
-        this.useButton.setInteractive();
-        this.useButtonText = this.scene.add.text(this.useButton.x, this.useButton.y, "Campaign");
-        this.useButtonText.setAlign("center");
-        this.useButtonText.setOrigin(0.5, 0.5);
+        // //worker btn
+        // this.useButton = this.scene.add.rectangle(this.width/2, this.height - 10, 30, 10, 0xaaaaaa);
+        // this.useButton.setInteractive();
+        // this.useButtonText = this.scene.add.text(this.useButton.x, this.useButton.y, "Campaign");
+        // this.useButtonText.setAlign("center");
+        // this.useButtonText.setOrigin(0.5, 0.5);
 
         // for(let i = 0; i < this.textAmount; i++){
         //     let text = this.scene.add.text(0, 0, "", {});
@@ -103,9 +103,9 @@ export default class WorkerView extends Phaser.GameObjects.Container{
 
     /**
      * Update card display based on model information
-     * @param {WorkerModel} model 
+     * @param {Worker} model 
      */
-    updateViewCallback(model){
+    updateViewCallback(model: Worker){
         // let children = this.getAll();
         // let level = model.getStar();
         // let levelStr = "";

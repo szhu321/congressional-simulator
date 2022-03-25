@@ -1,59 +1,64 @@
-import Phaser from 'phaser';
 import PlayerData from '../../data/PlayerData';
 import Button from '../../phaserobjs/Button';
+import CampaignScene from '../scenes/CampaignScene';
 
 export default class BottomPanelContainer extends Phaser.GameObjects.Container
 {
-    /**
-     * @type {Button[]}
-     */
-    items;
+    private items: Button[];
+    private panelWidth: number;
+    private panelHeight: number;
+    private backgroundColor: number;
+    private backgroundBorderWidth: number;
+    private backgroundBorderColor: number;
+    private campaignScene: CampaignScene;
 
-    constructor(scene)
+    constructor(scene: CampaignScene)
     {
         super(scene);
-        this.width = 1050;
-        this.height = 220;
+        this.panelWidth = 1050;
+        this.panelHeight = 220;
         this.backgroundColor = 0x4d4d4d;
         this.backgroundBorderWidth = 3;
         this.backgroundBorderColor = 0xffffff;
         this.items = [];
+        this.campaignScene = scene;
+        this.initialize();
     }
 
-    initialize()
+    private initialize()
     {
-        console.log("Initializing bottom container..");
+        //console.log("Initializing bottom container..");
         //background rectangle.
-        let background = this.scene.add.rectangle(0,0, this.width, this.height, this.backgroundColor);
+        let background = this.scene.add.rectangle(0,0, this.panelWidth, this.panelHeight, this.backgroundColor);
         background.setOrigin(1, 1);
         background.setStrokeStyle(this.backgroundBorderWidth, this.backgroundBorderColor);
         this.add(background);
-
         //add worker buttons.
         this.initializeWorkerButtons();
-        
     }
 
-    initializeWorkerButtons()
+    private initializeWorkerButtons()
     {
-        let button = new Button(this.scene, -this.width + 150, -this.height/2, 200, 100);
-        button.text.setText("Cold Caller\n $30 \n\n Send");
+        let button = new Button(this.scene, -this.panelWidth + 150, -this.panelHeight/2, 200, 100);
+        button.getText().setText("Cold Caller\n $30 \n\n Send");
         button.setOnclickCallback(() => {
             console.log("Bottom panel button 1 clicked.");
-            this.scene.addWorkerAtSelectedTile();
-            PlayerData.getPlayer().moneySpent += 30;
+            this.campaignScene.addWorkerAtSelectedTile();
+            let moneySpent = PlayerData.getPlayer().getMoneySpent();
+            PlayerData.getPlayer().setMoneySpent(moneySpent + 30);
         });
         //button.setDepth(1);
         this.items.push(button);
         this.scene.add.existing(button);
         this.add(button);
 
-        button = new Button(this.scene, -this.width + 400, -this.height/2, 200, 100);
-        button.text.setText("leafleter\n $100 \n\n Send");
+        button = new Button(this.scene, -this.panelWidth + 400, -this.panelHeight/2, 200, 100);
+        button.getText().setText("leafleter\n $100 \n\n Send");
         button.setOnclickCallback(() => {
             console.log("Bottom panel button 2 clicked.");
-            this.scene.addWorkerAtSelectedTile();
-            PlayerData.getPlayer().moneySpent += 100;
+            this.campaignScene.addWorkerAtSelectedTile();
+            let moneySpent = PlayerData.getPlayer().getMoneySpent();
+            PlayerData.getPlayer().setMoneySpent(moneySpent + 100);
         });
         //button.setDepth(1);
         this.items.push(button);
