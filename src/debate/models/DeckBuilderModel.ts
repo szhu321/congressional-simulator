@@ -1,6 +1,11 @@
+import DeckModel from "./DeckModel";
 
 export default class DeckBuilderModel
 {
+    private allCardsDeck: DeckModel;
+    private chosenCardsDeck: DeckModel;
+    private view: Function;
+
     constructor()
     {
         this.allCardsDeck = new DeckModel();
@@ -23,7 +28,7 @@ export default class DeckBuilderModel
      * It should accept one argument that contains information about the updated model.
      * @param {Function} view - The view for this model.
      */
-    setView(view)
+    setView(view: Function)
     {
         this.view = view;
     }
@@ -32,7 +37,7 @@ export default class DeckBuilderModel
     {
         if(this.view)
         {
-            this.view.updateViewCallback(this);
+            /* this.view.updateViewCallback(this); */
         }
     }
 }

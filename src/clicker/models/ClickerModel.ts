@@ -1,6 +1,6 @@
 import WorkerModel from "./WorkerModel";
 import UpgradeModel from "./UpgradeModel";
-import PlayerData from "../../data/PlayerData.js"
+import PlayerData from "../../data/PlayerData"
 import ClickerView from "../views/ClickerView";
 
 export default class ClickerModel{

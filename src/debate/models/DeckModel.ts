@@ -1,3 +1,5 @@
+import DeckView from "../views/DeckView";
+import HandView from "../views/HandView";
 import CardModel from "./CardModel";
 
 export default class DeckModel
@@ -5,11 +7,12 @@ export default class DeckModel
     /**
      * @type {CardModel[]} - The array of cards.
      */
-    deck;
+    private deck: CardModel[];
     /**
      * @type {Number} - The number of cards in the deck.
      */
-    cardCount;
+    private cardCount: number;
+    private view: DeckView | HandView;
 
     constructor()
     {
@@ -22,7 +25,7 @@ export default class DeckModel
      * Get all the cards in this deck.
      * @returns {CardModel[]} the array of cards.
      */
-    getCards()
+    getCards(): CardModel[]
     {
         return this.deck;
     }
@@ -32,7 +35,7 @@ export default class DeckModel
      * @param idx - the index of the card to get.
      * @returns {CardModel} The card. null if index is out of bounds.
      */
-    getCardAt(idx)
+    getCardAt(idx: number): CardModel
     {
         if(idx < 0 || idx >= this.deck.length)
             return null;
@@ -43,7 +46,7 @@ export default class DeckModel
      * Add a card to the end of the deck.
      * @param {CardModel} card - The card to add to this deck.
      */
-    addCard(card)
+    addCard(card: CardModel)
     {
         if(card)
         {
@@ -58,7 +61,7 @@ export default class DeckModel
      * @param {CardModel} card - the card to insert.
      * @param {Number} idx - the idx to insert at (0 - deck.length).
      */
-    insertCard(card, idx)
+    insertCard(card: CardModel, idx: number)
     {
         if(card)
         {
@@ -68,7 +71,7 @@ export default class DeckModel
             }
             else
             {
-                this.deck.splice(idx, 0, [card]);
+                this.deck.splice(idx, 0, card);
                 this.updateView();
             }
         }
@@ -78,7 +81,7 @@ export default class DeckModel
      * 
      * @returns {CardModel} The first card on the deck, undefined if the deck is empty.
      */
-    removeFirst()
+    removeFirst(): CardModel
     {
         let card = this.deck.pop();
         if(card)
@@ -91,7 +94,7 @@ export default class DeckModel
      * @param idx - the index of the card to remove.
      * @returns {CardModel} The card that was removed. null if index is out of bounds.
      */
-    removeAtIdx(idx)
+    removeAtIdx(idx: number): CardModel
     {
         if(idx < 0 || idx >= this.deck.length)
             return null;
@@ -105,7 +108,7 @@ export default class DeckModel
     /**
      * @returns {CardModel[]} - all the cards that were removed.
      */
-    removeAllCards()
+    removeAllCards(): CardModel[]
     {
         let cards = [];
         while(this.deck.length > 0)
@@ -121,7 +124,7 @@ export default class DeckModel
      * Adds an array of cards to the deck.
      * @param {CardModel[]} cards - all the cards that are to be added to the deck.
      */
-    addAllCards(cards)
+    addAllCards(cards: CardModel[])
     {
         for(let i = 0; i < cards.length; i++)
         {
@@ -163,7 +166,7 @@ export default class DeckModel
      * It should accept one argument that contains information about the updated model.
      * @param {Function} view - The view for this model.
      */
-    setView(view)
+    setView(view: DeckView | HandView)
     {
         this.view = view;
     }

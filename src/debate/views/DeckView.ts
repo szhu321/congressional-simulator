@@ -2,6 +2,9 @@ import DeckModel from "../models/DeckModel";
 import Phaser from "phaser";
 
 export default class DeckView extends Phaser.GameObjects.Container{
+    private maxHeight: number;
+    private maxWidth: number;
+    
     constructor(scene){
         super(scene);
         // this.maxLines = 7;
@@ -12,6 +15,14 @@ export default class DeckView extends Phaser.GameObjects.Container{
         this.maxWidth = 118;
         this.textAmount = 2;
         this.cardColor = 0xf7e9c3;
+    }
+
+    getMaxHeight(){
+        return this.maxHeight;
+    }
+
+    getMaxWidth(){
+        return this.maxWidth;
     }
 
     initialize(){

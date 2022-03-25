@@ -20,19 +20,19 @@ export default class Ability
     /**
      * @type {String} - An Enum string obtained from Ability.TYPES.[name];
      */
-    type;
+    private type: string;
 
     /**
      * @type {Number} - A number used as an argument for some abilities. Ex. Gain ${num} damage.
      */
-    num;
+    private num: number;
     
     /**
      * @type {Boolean} - Does this ability repeat or not. If it does it will be requeued.
      */
-    repeat;
+    private repeat: boolean;
 
-    constructor(type, num, repeat)
+    constructor(type: string, num: number, repeat: boolean)
     {
         this.type = type;
         this.num = num;

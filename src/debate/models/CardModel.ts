@@ -1,6 +1,39 @@
+import CardView from "../views/CardView";
+import { CARD_RANK} from "../../gameenums"
 
 export default class CardModel
 {
+    private cost: number;
+    private health: number;
+    private attack: number;
+    private ability: string;
+    private name: string;
+    private politicalIssue: string;
+    private politicalView: string;
+    private description: string;
+    private rank: CARD_RANK;
+    private view: CardView;
+    private actionCount: number;
+    private stars: number;
+    private isAttacking: boolean;
+    private isWorker: boolean;
+    private default: {
+        cost: number,
+        health: number,
+        attack: number,
+        ability: string,
+        name: string,
+        politicalIssue: string,
+        politicalView: string,
+        description: string,
+        rank: CARD_RANK,
+        view: CardView,
+        actionCount: number,
+        stars: number,
+        isAttacking: boolean,
+        isWorker: boolean
+    };
+
     constructor()
     {
         this.cost = 100;
@@ -11,10 +44,10 @@ export default class CardModel
         this.politicalIssue = "";
         this.politicalView = "";
         this.description = "";
-        this.rank = 1;//rarity of the card.
+        this.rank = CARD_RANK.COMMON; //rarity of the card.
         this.view = null;
         this.actionCount = 0;
-        this.stars = 1;//number of starts this card has.
+        this.stars = 1; //number of stars this card has.
 
         //worker card properties
         //stars, cost, name, isAttacking, health. isWorker.
@@ -30,10 +63,12 @@ export default class CardModel
             politicalIssue : "",
             politicalView : "",
             description : "",
-            rank : 1,//rarity of the card.
+            rank : CARD_RANK.COMMON, //rarity of the card.
             view : null,
             actionCount : 0,
-            stars: 1//number of starts this card has.
+            stars: 1, //number of starts this card has.
+            isAttacking: false,
+            isWorker: false
         }
     }
 
@@ -43,10 +78,12 @@ export default class CardModel
      * a bunch of attributes at once instead of calling set methods individually.
      * @param {object} configObject - the configObject.
      */
-    setConfig(configObject)
+    setConfig(configObject: {cost: number, health: number, attack: number, ability: string, name?: string, politicalIssue: string,
+        politicalView: string, description?: string, rank: CARD_RANK, view?: CardView, actionCount?: number, stars?: number,
+        isAttacking?: boolean, isWorker: boolean})
     {
         let {name, cost, health, attack, ability, politicalIssue, politicalView, 
-            descirption, rank, updateViewCallback, actionCount, stars, isAttacking, isWorker} = configObject;
+            description, rank, /* updateViewCallback ,*/ actionCount, stars, isAttacking, isWorker} = configObject;
         if(name) this.name = name;
         if(cost) this.cost = cost;
         if(health) this.health = health;
@@ -54,9 +91,9 @@ export default class CardModel
         if(ability) this.ability = ability;
         if(politicalIssue) this.politicalIssue = politicalIssue;
         if(politicalView) this.politicalView = politicalView;
-        if(descirption) this.description = descirption;
+        if(description) this.description = description;
         if(rank) this.rank = rank;
-        if(updateViewCallback) this.updateViewCallback = updateViewCallback;
+        // if(updateViewCallback) this.updateViewCallback = updateViewCallback;
         if(actionCount) this.actionCount = actionCount;
         if(stars) this.stars = stars;
         if(isAttacking !== undefined) this.isAttacking = isAttacking;
@@ -65,10 +102,12 @@ export default class CardModel
         this.updateView();
     }
 
-    updateDefaults(configObject)
+    updateDefaults(configObject: {cost: number, health: number, attack: number, ability: string, name?: string, politicalIssue: string,
+        politicalView: string, description?: string, rank: CARD_RANK, view?: CardView, actionCount?: number, stars?: number,
+        isAttacking?: boolean, isWorker: boolean})
     {
         let {name, cost, health, attack, ability, politicalIssue, politicalView, 
-            descirption, rank, updateViewCallback, actionCount, stars, isAttacking, isWorker} = configObject;
+            description, rank/* , updateViewCallback*/, actionCount, stars, isAttacking, isWorker} = configObject;
         if(name) this.default.name = name;
         if(cost) this.default.cost = cost;
         if(health) this.default.health = health;
@@ -76,9 +115,9 @@ export default class CardModel
         if(ability) this.default.ability = ability;
         if(politicalIssue) this.default.politicalIssue = politicalIssue;
         if(politicalView) this.default.politicalView = politicalView;
-        if(descirption) this.default.description = descirption;
+        if(description) this.default.description = description;
         if(rank) this.default.rank = rank;
-        if(updateViewCallback) this.default.updateViewCallback = updateViewCallback;
+        // if(updateViewCallback) this.default.updateViewCallback = updateViewCallback;
         if(actionCount) this.default.actionCount = actionCount;
         if(stars) this.default.stars = stars;
         if(isAttacking !== undefined) this.default.isAttacking = isAttacking;
@@ -93,7 +132,9 @@ export default class CardModel
     clone()
     {
         let cardModel = new CardModel();
-        cardModel.setConfig(this);
+        cardModel.setConfig({cost: this.cost, health: this.health, attack: this.attack, ability: this.ability, name: this.name,
+        politicalIssue: this.politicalIssue, politicalView: this.politicalView, description: this.description, rank: this.rank,
+        view: this.view, actionCount: this.actionCount, stars: this.stars, isAttacking: this.isAttacking, isWorker: this.isWorker});
         return cardModel;
     }
 
@@ -102,7 +143,7 @@ export default class CardModel
         return this.isWorker;
     }
 
-    setIsWorker(isWorker)
+    setIsWorker(isWorker: boolean)
     {
         this.isWorker = isWorker;
         this.updateView();
@@ -113,7 +154,7 @@ export default class CardModel
         return this.isAttacking;
     }
 
-    setIsAttacking(isAttacking)
+    setIsAttacking(isAttacking: boolean)
     {
         this.isAttacking = isAttacking;
         this.updateView();
@@ -128,7 +169,7 @@ export default class CardModel
     /**
      * @param {Number} stars - the number of stars this card will be set to.
      */
-    setStars(stars)
+    setStars(stars: number)
     {
         this.stars = stars;
     }
@@ -142,7 +183,7 @@ export default class CardModel
      * Decrease the actionCount of this card by 1.
      * @returns {Boolean} True if an action was used. False if there was no action left.
      */
-    useAction()
+    useAction(): boolean
     {
         if(!this.hasAction())
             return false;
@@ -151,11 +192,7 @@ export default class CardModel
         return true;
     }
 
-    /**
-     * 
-     * @param {*} actionCount 
-     */
-    setAction(actionCount)
+    setAction(actionCount: number)
     {
         this.actionCount = actionCount;
         this.updateView();
@@ -166,13 +203,13 @@ export default class CardModel
         return this.name;
     }
 
-    setName(name)
+    setName(name: string)
     {
         this.name = name;
         this.updateView();
     }
 
-    setDescription(descirption)
+    setDescription(descirption: string)
     {
         this.description = descirption;
         this.updateView(); 
@@ -187,13 +224,13 @@ export default class CardModel
      * 
      * @param {Number} rank - 1, 2 or 3. One means normal, two means rare, 3 means legendary. 
      */
-    setRank(rank)
+    setRank(rank: CARD_RANK)
     {
         this.rank = rank;
-        if(this.rank > 3)
-            this.rank = 3;
-        if(this.rank < 1)
-            this.rank = 1;
+        // if(this.rank > CARD_RANK.LEGENDARY)
+        //     this.rank = CARD_RANK.LEGENDARY;
+        // if(this.rank < CARD_RANK.COMMON)
+        //     this.rank = CARD_RANK.COMMON;
         this.updateView();
     }
 
@@ -202,7 +239,7 @@ export default class CardModel
         return this.rank;
     }
 
-    setCost(cost)
+    setCost(cost: number)
     {
         this.cost = cost;
         this.updateView();
@@ -213,7 +250,7 @@ export default class CardModel
         return this.cost;
     }
 
-    setHealth(health)
+    setHealth(health: number)
     {
         this.health = health;
         this.updateView();
@@ -224,7 +261,7 @@ export default class CardModel
         return this.health;
     }
 
-    setAttack(attack)
+    setAttack(attack: number)
     {
         this.attack = attack;
         this.updateView();
@@ -235,7 +272,7 @@ export default class CardModel
         return this.attack;
     }
 
-    setAbility(ability)
+    setAbility(ability: string)
     {
         this.ability = ability;
         this.updateView();
@@ -246,7 +283,7 @@ export default class CardModel
         return this.ability;
     }
 
-    setPoliticalView(politicalView)
+    setPoliticalView(politicalView: string)
     {
         this.politicalView = politicalView;
         this.updateView();
@@ -257,7 +294,7 @@ export default class CardModel
         return this.politicalView;
     }
 
-    setPoliticalIssue(politicalIssue)
+    setPoliticalIssue(politicalIssue: string)
     {
         this.politicalIssue = politicalIssue;
         this.updateView();
@@ -273,9 +310,13 @@ export default class CardModel
      * It should accept one argument that contains information about the updated model.
      * @param {Function} view - The view for this model.
      */
-    setView(view)
+    setView(view: CardView)
     {
         this.view = view;
+    }
+
+    getView(){
+        return this.view;
     }
 
     updateView()

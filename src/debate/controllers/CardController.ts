@@ -2,12 +2,12 @@ import CardModel from "../models/CardModel";
 
 export default class CardController
 {
-    model;
+    private model: CardModel;
 
     /**
      * @param {CardModel} model - the model of the deck, if left empty it will create a new model.
      */
-    constructor(model)
+    constructor(model: CardModel)
     {
         if(model)
             this.model = model;
@@ -20,7 +20,7 @@ export default class CardController
      * @param {Number} damage - the damage that will be dealt to this card.
      * @returns {Boolean} true if the card was killed, false otherwise.
      */
-    takeDamage(damage)
+    takeDamage(damage: number): boolean
     {
         let health = this.model.getHealth();
         let newHealth = health - damage;
@@ -40,7 +40,7 @@ export default class CardController
      * @param {CardModel} card2 - the second card.
      * @returns {CardModel} The new card after combination. null if failed.
      */
-    static getCombinedCard(card1, card2)
+    static getCombinedCard(card1: CardModel, card2: CardModel): CardModel
     {
         if(card1 && card2)
             

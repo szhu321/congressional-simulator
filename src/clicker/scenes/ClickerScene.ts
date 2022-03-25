@@ -105,6 +105,11 @@ export default class ClickerScene extends Phaser.Scene{
 class ClickerData{
     workers: WorkerData[];
     upgrades: UpgradeData[];
+
+    constructor(){
+        this.workers = [];
+        this.upgrades = [];
+    }
 }
 
 class WorkerData{

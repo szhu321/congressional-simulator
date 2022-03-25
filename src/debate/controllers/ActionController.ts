@@ -1,4 +1,4 @@
-import ActionModel from "../models/ActionModel.js";
+import ActionModel from "../models/ActionModel";
 
 /**
  * The action controller is used to queue up actions, like playing a card, drawing a card, 
@@ -7,15 +7,12 @@ import ActionModel from "../models/ActionModel.js";
  */
 export default class ActionController
 {
-    /**
-     * @type {ActionModel}
-     */
-    model;
+    private model: ActionModel;
 
     /**
      * @param {ActionModel} model - the model of the deck, if left empty it will create a new model.
      */
-    constructor(model)
+    constructor(model: ActionModel)
     {
         if(model)
             this.model = model;
@@ -31,7 +28,7 @@ export default class ActionController
     /**
      * @returns {Function} - The function that was queued up.
      */
-    dequeueAction()
+    dequeueAction(): Function
     {
         return this.model.dequeue();
     }

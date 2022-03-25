@@ -1,8 +1,11 @@
-import Phaser from "phaser";
-import Button from "../phaserobjs/Button.js";
-import { SCENE_CONFIG } from "../gameconfig.js";
+import "phaser";
+import Button from "../phaserobjs/Button";
+import { SCENE_CONFIG } from "../gameconfig";
 
 export default class HubScene extends Phaser.Scene {
+    private fundraisingButton: Button;
+    private campaignButton: Button;
+    private debateButton: Button;
 
     init()
     {
@@ -77,11 +80,14 @@ export default class HubScene extends Phaser.Scene {
         background.setOrigin(0, 0);
     }
 
-    showScene(sceneName)
+    showScene(sceneName: string)
     {
         let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
         for(let name of sceneNames)
         {
+            if(this.scene.get(name) == null){
+                continue;
+            }
             let camera = this.scene.get(name).cameras.main;
             if(camera)
                 this.changeCameraViewportOffScreen(camera);
@@ -90,11 +96,7 @@ export default class HubScene extends Phaser.Scene {
         this.changeCameraViewportOnScreen(currentSceneCamera);
     }
 
-    /**
-     * 
-     * @param {Phaser.Cameras.Scene2D.Camera} camera 
-     */
-    changeCameraViewportOffScreen(camera)
+    changeCameraViewportOffScreen(camera: Phaser.Cameras.Scene2D.Camera)
     {
         let x = SCENE_CONFIG.scene_width + 100;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
@@ -103,11 +105,7 @@ export default class HubScene extends Phaser.Scene {
         camera.setViewport(x, y, width, height);
     }
  
-    /**
-     * 
-     * @param {Phaser.Cameras.Scene2D.Camera} camera 
-     */
-    changeCameraViewportOnScreen(camera)
+    changeCameraViewportOnScreen(camera: Phaser.Cameras.Scene2D.Camera)
     {
         let x = SCENE_CONFIG.scene_camera_viewport_x;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
@@ -128,7 +126,7 @@ export default class HubScene extends Phaser.Scene {
 
         //button1 Fundraising Game
         this.fundraisingButton = new Button(this, firstButtonStartX, height/2, buttonWidth, buttonHeight);
-        this.fundraisingButton.text.setText("");
+        this.fundraisingButton.getText().setText("");
         let fundraisingButtonImage = this.add.image(0,0,'fundraisingButton');
         fundraisingButtonImage.setDisplaySize(buttonWidth, buttonHeight);
         this.fundraisingButton.add(fundraisingButtonImage);
@@ -148,7 +146,7 @@ export default class HubScene extends Phaser.Scene {
 
         //button2 Campaign Game
         this.campaignButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 1, height/2, buttonWidth, buttonHeight);
-        this.campaignButton.text.setText("");
+        this.campaignButton.getText().setText("");
         let campaignButtonImage = this.add.image(0,0,'campaignButton');
         campaignButtonImage.setDisplaySize(buttonWidth, buttonHeight);
         this.campaignButton.add(campaignButtonImage);
@@ -166,7 +164,7 @@ export default class HubScene extends Phaser.Scene {
 
         //button3 Debate Game
         this.debateButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 2, height/2, buttonWidth, buttonHeight);
-        this.debateButton.text.setText("");
+        this.debateButton.getText().setText("");
         let debateButtonImage = this.add.image(0,0,'debateButton');
         debateButtonImage.setDisplaySize(buttonWidth, buttonHeight);
         this.debateButton.add(debateButtonImage);

@@ -1,10 +1,17 @@
-import Phaser from "phaser";
-import Button from "../phaserobjs/Button.js";
-import { MENU_CONFIG, SCENE_CONFIG } from "../gameconfig.js";
-import PlayerData from "../data/PlayerData.js";
-import PlayerModel from "../model/PlayerModel.js";
+import "phaser";
+import Button from "../phaserobjs/Button";
+import { MENU_CONFIG, SCENE_CONFIG } from "../gameconfig";
+import PlayerData from "../data/PlayerData";
+import PlayerModel from "../model/PlayerModel";
 
 export default class MenuScene extends Phaser.Scene {
+    private playerNameText: Phaser.GameObjects.Text;
+    private playerMoneyText: Phaser.GameObjects.Text;
+    private background: Phaser.GameObjects.Rectangle;
+    private fundraisingButton: Button;
+    private campaignButton: Button;
+    private debateButton: Button;
+    private hubButton: Button;
 
     init()
     {
@@ -55,11 +62,14 @@ export default class MenuScene extends Phaser.Scene {
         this.scene.pause('debateScene');
     }
 
-    showScene(sceneName)
+    showScene(sceneName: string)
     {
         let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
         for(let name of sceneNames)
         {
+            if(this.scene.get(name) == null){
+                continue;
+            }
             let camera = this.scene.get(name).cameras.main;
             if(camera)
                 this.changeCameraViewportOffScreen(camera);
@@ -68,11 +78,7 @@ export default class MenuScene extends Phaser.Scene {
         this.changeCameraViewportOnScreen(currentSceneCamera);
     }
 
-    /**
-     * 
-     * @param {Phaser.Cameras.Scene2D.Camera} camera 
-     */
-    changeCameraViewportOffScreen(camera)
+    changeCameraViewportOffScreen(camera: Phaser.Cameras.Scene2D.Camera)
     {
         let x = SCENE_CONFIG.scene_width + 100;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
@@ -81,11 +87,7 @@ export default class MenuScene extends Phaser.Scene {
         camera.setViewport(x, y, width, height);
     }
 
-    /**
-     * 
-     * @param {Phaser.Cameras.Scene2D.Camera} camera 
-     */
-    changeCameraViewportOnScreen(camera)
+    changeCameraViewportOnScreen(camera: Phaser.Cameras.Scene2D.Camera)
     {
         let x = SCENE_CONFIG.scene_camera_viewport_x;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
@@ -113,7 +115,7 @@ export default class MenuScene extends Phaser.Scene {
 
         //button1 Fundraising Game
         this.fundraisingButton = new Button(this, firstButtonStartX, height/2, buttonWidth, buttonHeight);
-        this.fundraisingButton.text.setText("Fundraising");
+        this.fundraisingButton.getText().setText("Fundraising");
         this.fundraisingButton.setOnclickCallback(() => {
             console.log('switching to clicker game');
             //this.scene.switch('clickerScene');
@@ -131,7 +133,7 @@ export default class MenuScene extends Phaser.Scene {
 
         //button2 Campaign Game
         this.campaignButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 1, height/2, buttonWidth, buttonHeight);
-        this.campaignButton.text.setText("Campaign");
+        this.campaignButton.getText().setText("Campaign");
         
         this.campaignButton.setOnclickCallback(() => {
             //this.scene.switch('campaignScene');
@@ -144,7 +146,7 @@ export default class MenuScene extends Phaser.Scene {
 
         //button3 Debate Game
         this.debateButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 2, height/2, buttonWidth, buttonHeight);
-        this.debateButton.text.setText("Debate");
+        this.debateButton.getText().setText("Debate");
         this.debateButton.setOnclickCallback(() => {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('debateScene'))
@@ -155,7 +157,7 @@ export default class MenuScene extends Phaser.Scene {
 
         //button4 hub
         this.hubButton = new Button(this, 80, height/2, buttonWidth, buttonHeight);
-        this.hubButton.text.setText("HOME");
+        this.hubButton.getText().setText("HOME");
         this.hubButton.setOnclickCallback(() => {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('hubScene'))

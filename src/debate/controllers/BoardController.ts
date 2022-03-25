@@ -1,13 +1,14 @@
 import BoardModel from "../models/BoardModel";
+import { TURN } from "../models/BoardModel";
 
 export default class BoardController
 {
-    model;
+    private model: BoardModel;
 
     /**
      * @param {BoardModel} model - the model of the deck, if left empty it will create a new model.
      */
-    constructor(model)
+    constructor(model: BoardModel)
     {
         if(model)
             this.model = model;
@@ -21,10 +22,10 @@ export default class BoardController
      * @param {Number} idx - the index of the card in player1's hand to play.
      * @returns {Boolean} True if the operation succeeced. False otherwise.
      */
-    playCardPlayer1(idx)
+    playCardPlayer1(idx: number): boolean
     {
         let turn = this.model.getTurn();
-        if(turn != this.model.TURN.PLAYER1)
+        if(turn != TURN.PLAYER1)
         {
             console.log("playCardPlayer1() Failed: Not player1's turn.");
             return false;
@@ -55,10 +56,10 @@ export default class BoardController
      * @param {Number} idx - the index of the card in player2's hand to play.
      * @returns {Boolean} True if the operation succeeced. False otherwise.
      */
-    playCardPlayer2(idx)
+    playCardPlayer2(idx: number): boolean
     {
         let turn = this.model.getTurn();
-        if(turn != this.model.TURN.PLAYER2)
+        if(turn != TURN.PLAYER2)
         {
             console.log("playCardPlayer2() Failed: Not player2's turn.");
             return false;
@@ -89,7 +90,7 @@ export default class BoardController
     {
         //TODO: next turn.
         this.model.switchTurn();
-        if(this.model.getTurn() === this.model.TURN.PLAYER2)
+        if(this.model.getTurn() === TURN.PLAYER2)
         {
 
             let cards = this.model.getPlayer2Board().getCards();
@@ -153,7 +154,7 @@ export default class BoardController
     //draw a card for player1.
     drawCardPlayer1()
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        if(this.model.getTurn() !== TURN.PLAYER1)
         {
             console.log("drawCardPlayer1() Failed: not player1's turn");
             return false;
@@ -190,7 +191,7 @@ export default class BoardController
     //draw a card for player2.
     drawCardPlayer2()
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        if(this.model.getTurn() !== TURN.PLAYER2)
         {
             console.log("drawCardPlayer2() Failed: not player2's turn");
             return false;
@@ -225,9 +226,9 @@ export default class BoardController
     }
     
     //player1 card attack player2 card.
-    attackPlayer2Card(player1CardIdx, player2CardIdx)
+    attackPlayer2Card(player1CardIdx: number, player2CardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        if(this.model.getTurn() !== TURN.PLAYER1)
         {
             console.log("attackPlayer2Card() Failed: not player1's turn");
             return false;
@@ -268,9 +269,9 @@ export default class BoardController
     }
 
     //player2 card attack player1 card.
-    attackPlayer1Card(player2CardIdx, player1CardIdx)
+    attackPlayer1Card(player2CardIdx: number, player1CardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        if(this.model.getTurn() !== TURN.PLAYER2)
         {
             console.log("attackPlayer1Card() Failed: not player2's turn");
             return false;
@@ -312,9 +313,9 @@ export default class BoardController
     
     
     //player1 card attack opponent.
-    attackPlayer2(cardIdx)
+    attackPlayer2(cardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        if(this.model.getTurn() !== TURN.PLAYER1)
         {
             console.log("attackPlayer2() Failed: not player1's turn");
             return false;
@@ -348,9 +349,9 @@ export default class BoardController
     }
 
     //player2 card attack us.
-    attackPlayer1(cardIdx)
+    attackPlayer1(cardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        if(this.model.getTurn() !== TURN.PLAYER2)
         {
             console.log("attackPlayer1() Failed: not player2's turn");
             return false;
@@ -384,9 +385,9 @@ export default class BoardController
     }
 
     //toggle player1's worker card from offensive to defensive mode.
-    togglePlayer1Worker(cardIdx)
+    togglePlayer1Worker(cardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER1)
+        if(this.model.getTurn() !== TURN.PLAYER1)
         {
             console.log("togglePlayer1Worker() Failed: not player1's turn");
             return false;
@@ -397,7 +398,7 @@ export default class BoardController
             console.log("togglePlayer1Worker() Failed: Player 1 card does not exist");
             return false;
         }
-        if(!player1Card.isWorker())
+        if(!player1Card.getIsWorker())
         {
             console.log("togglePlayer1Worker() Failed: Selected card is not a worker card");
             return false;
@@ -407,9 +408,9 @@ export default class BoardController
     }
 
     //toggle player2's worker card from offensive to defensive mode.
-    togglePlayer2Worker(cardIdx)
+    togglePlayer2Worker(cardIdx: number)
     {
-        if(this.model.getTurn() !== this.model.TURN.PLAYER2)
+        if(this.model.getTurn() !== TURN.PLAYER2)
         {
             console.log("togglePlayer2Worker() Failed: not player2's turn");
             return false;
@@ -420,7 +421,7 @@ export default class BoardController
             console.log("togglePlayer2Worker() Failed: Player 2 card does not exist");
             return false;
         }
-        if(!player2Card.isWorker())
+        if(!player2Card.getIsWorker())
         {
             console.log("togglePlayer2Worker() Failed: Selected card is not a worker card");
             return false;

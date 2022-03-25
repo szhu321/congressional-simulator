@@ -1,17 +1,14 @@
 
 export default class ActionModel
 {
-    /**
-     * @type {Function[]}
-     */
-    queue;
+    private queue: Function[];
 
     constructor()
     {
         this.queue = new Array();
     }
 
-    enqueue(func)
+    enqueue(func: Function)
     {
         this.queue.push(func);
     }

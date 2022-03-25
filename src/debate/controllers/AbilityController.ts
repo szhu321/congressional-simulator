@@ -1,16 +1,13 @@
-import AbilityModel from "../models/AbilityModel.js";
+import AbilityModel from "../models/AbilityModel";
 
 export default class AbilityController
 {
-    /**
-     * @type {AbilityModel}
-     */
-    model;
+    private model: AbilityModel;
 
     /**
      * @param {AbilityModel} model - the model of the deck, if left empty it will create a new model.
      */
-    constructor(model)
+    constructor(model: AbilityModel)
     {
         if(model)
             this.model = model;
