@@ -1,6 +1,6 @@
 import Zone from '../helpers/zone';
 import CardView from '../views/CardView';
-import Phaser from 'phaser';
+import 'phaser';
 import BoardView from '../views/BoardView';
 import BoardController from '../controllers/BoardController';
 import BoardModel from '../models/BoardModel';
@@ -61,7 +61,7 @@ export default class DebateScene extends Phaser.Scene {
         let deckView = new DeckView(this);
         deckView.initialize();
         deckModel.setView(deckView);
-        deckView.updateDisplay("");
+        deckView.updateDisplay();
         deckView.setInteractive(new Phaser.Geom.Rectangle(-1 * deckView.getMaxWidth() / 2, 
             -1 * deckView.getMaxHeight() / 2, deckView.getMaxWidth(), deckView.getMaxHeight()), Phaser.Geom.Rectangle.Contains);
         deckModel.updateView();

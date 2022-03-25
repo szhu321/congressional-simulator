@@ -1,5 +1,5 @@
 import CardModel from "../models/CardModel";
-import Phaser from "phaser";
+import "phaser";
 
 export default class CardView extends Phaser.GameObjects.Container{
     private fontSize: number;

@@ -1,5 +1,5 @@
 import BoardModel from '../models/BoardModel'
-import Phaser from "phaser";
+import "phaser";
 import Zone from '../helpers/zone';
 import CardView from './CardView';
 import DeckView from './DeckView';
@@ -71,26 +71,31 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             this.controller.drawCardPlayer1();
         })
 
-        this.scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
+        this.scene.input.on('drag', function (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject, dragX: number, dragY: number) {
+            if(gameObject instanceof CardView){
+                gameObject.setX(dragX);
+                gameObject.setY(dragY);
+            }
         })
 
-        this.scene.input.on('dragstart', (pointer, gameObject) => {
+        this.scene.input.on('dragstart', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject) => {
             this.scene.children.bringToTop(gameObject);
-            this.selectedCard = gameObject;
-            console.log(`DRAG STARTTTT`);
+            if(gameObject instanceof CardView){
+                this.selectedCard = gameObject;
+            }
         })
 
-        this.scene.input.on('dragend', (pointer, gameObject, dropped) => {
+        this.scene.input.on('dragend', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject, dropped: boolean) => {
             if (!dropped) {
-                gameObject.x = gameObject.input.dragStartX;
-                gameObject.y = gameObject.input.dragStartY;
+                if(gameObject instanceof CardView){
+                    gameObject.x = gameObject.input.dragStartX;
+                    gameObject.y = gameObject.input.dragStartY;
+                }
             }
             this.selectedCard = null;
         })
 
-        this.scene.input.on('gameobjectover', (pointer, gameObject, event) => {
+        this.scene.input.on('gameobjectover', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject, event: Phaser.Types.Input.EventData) => {
             if(gameObject instanceof CardView){
                 console.log(gameObject)
                 if(this.selectedCard !== null){
@@ -99,7 +104,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             }
         })
 
-        this.scene.input.on('gameobjectout', (pointer, gameObject, event) => {
+        this.scene.input.on('gameobjectout', (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject, event: Phaser.Types.Input.EventData) => {
             if(gameObject instanceof CardView){
                 console.log(gameObject)
                 if(this.selectedCard !== null){
@@ -108,7 +113,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
             }
         })
 
-        this.scene.input.on('drop', (pointer, gameObject, dropZone) => {
+        this.scene.input.on('drop', (pointer: Phaser.Input.Pointer, gameObject: CardView, dropZone: Phaser.GameObjects.GameObject) => {
             console.log(dropZone);
             console.log(gameObject === dropZone);
             if(gameObject.data.values.dropZoneName === dropZone.name && dropZone.name !== ""){
@@ -210,7 +215,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let opponentVotesText = this.getChildren()[8] as Phaser.GameObjects.Text;
         opponentVotesText.setText([`${model.getPlayer2Votes()} Votes`]);
         // Current Turn Text
-        let currentTurnText = this.getChildren()[8] as Phaser.GameObjects.Text;
+        let currentTurnText = this.getChildren()[9] as Phaser.GameObjects.Text;
         currentTurnText.setText(`${model.getTurn()}'s Turn`);
     }
 }
