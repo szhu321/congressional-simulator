@@ -1,4 +1,7 @@
 import { SCENE_CONFIG } from '../../gameconfig';
+import { CAMPAIGN_EVENTS } from '../campaignenum';
+import CampaignEventDispatcher from '../CampaignEventDispatcher';
+import Tile from '../model/Tile';
 
 export default class LeftPanelContainer extends Phaser.GameObjects.Container
 {
@@ -25,6 +28,9 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         this.backgroundBorderColor = 0xffffff;
         this.texts = [];
         this.initialize();
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, (row: number, col: number, tile: Tile) => {
+            this.updateSidePanel(tile);
+        });
     }
 
     private initialize()
@@ -58,5 +64,21 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
                 texts[i].setText("");
             }
         }
+    }
+
+    updateSidePanel(tile: Tile)
+    {
+        this.updateDisplay([
+            `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
+            `Voters: ${tile.getNumberOfVoters()}`,
+            `Voters Secured: ${tile.totalOccupied()}`,
+            `Worker On Tile: ${tile.isWorkerOnTile()}`,
+            `Political Stance (-1 <- Liberal Conservative -> 1):`,
+            `Economy: ${tile.getEconomy()}`,
+            `Healthcare: ${tile.getHealthcare()}`,
+            `Education: ${tile.getEducation()}`,
+            `Taxes: ${tile.getTaxes()}`,
+            `Environment: ${tile.getEnvironment()}`
+        ]);
     }
 }

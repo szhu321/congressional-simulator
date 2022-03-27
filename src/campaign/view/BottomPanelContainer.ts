@@ -1,5 +1,7 @@
 import PlayerData from '../../data/PlayerData';
 import Button from '../../phaserobjs/Button';
+import { CAMPAIGN_EVENTS } from '../campaignenum';
+import CampaignEventDispatcher from '../CampaignEventDispatcher';
 import CampaignScene from '../scenes/CampaignScene';
 
 export default class BottomPanelContainer extends Phaser.GameObjects.Container
@@ -43,7 +45,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         button.getText().setText("Cold Caller\n $30 \n\n Send");
         button.setOnclickCallback(() => {
             console.log("Bottom panel button 1 clicked.");
-            this.campaignScene.addWorkerAtSelectedTile();
+            CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, null);
             let moneySpent = PlayerData.getPlayer().getMoneySpent();
             PlayerData.getPlayer().setMoneySpent(moneySpent + 30);
         });
@@ -56,7 +58,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         button.getText().setText("leafleter\n $100 \n\n Send");
         button.setOnclickCallback(() => {
             console.log("Bottom panel button 2 clicked.");
-            this.campaignScene.addWorkerAtSelectedTile();
+            CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, null);
             let moneySpent = PlayerData.getPlayer().getMoneySpent();
             PlayerData.getPlayer().setMoneySpent(moneySpent + 100);
         });

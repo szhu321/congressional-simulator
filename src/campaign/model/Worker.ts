@@ -28,13 +28,16 @@ export default class Worker
      * a bunch of attributes at once instead of calling set methods individually.
      * @param {object} configObject - the configObject.
      */
-    public setConfig(configObject)
+    public setConfig(configObject: {
+        name: string, ability: string, description: string, rank: CARD_RANK, view: WorkerView,
+        actionCount: number, stars: number
+    })
     {
-        let {name, ability, descirption, rank,
+        let {name, ability, description, rank,
              actionCount, stars} = configObject;
         if(name) this.name = name;
         if(ability) this.ability = ability;
-        if(descirption) this.description = descirption;
+        if(description) this.description = description;
         if(rank) this.rank = rank;
         if(actionCount) this.actionCount = actionCount;
         if(stars) this.stars = stars;
@@ -82,7 +85,7 @@ export default class Worker
     /**
      * @param {Number} stars - the number of stars this card will be set to.
      */
-    public setStars(stars)
+    public setStars(stars: number)
     {
         this.stars = stars;
     }
@@ -109,7 +112,7 @@ export default class Worker
      * 
      * @param {*} actionCount 
      */
-    public setAction(actionCount)
+    public setAction(actionCount: number)
     {
         this.actionCount = actionCount;
         this.updateView();
@@ -120,13 +123,13 @@ export default class Worker
         return this.name;
     }
 
-    public setName(name)
+    public setName(name: string)
     {
         this.name = name;
         this.updateView();
     }
 
-    public setDescription(descirption)
+    public setDescription(descirption: string)
     {
         this.description = descirption;
         this.updateView(); 
@@ -152,7 +155,7 @@ export default class Worker
         return this.rank;
     }
 
-    public setAbility(ability)
+    public setAbility(ability: string)
     {
         this.ability = ability;
         this.updateView();

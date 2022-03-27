@@ -17,37 +17,32 @@ export default class TileMap
         this.rows = rows;
         this.cols = cols;
         this.displayMode = 0;
-        this.generateNewMap(rows, cols);
+        //initialize the map array to be empty.
+        this.map = new Array<Tile[]>(this.rows);
+        for(let i = 0; i < cols; i++)
+        {
+            this.map[i] = new Array<Tile>(this.cols);
+        }
     }
 
     public getRows(): number {return this.rows;}
     public getCols(): number {return this.cols;}
 
-    public generateNewMap(rows: number, cols: number):void
+    public populateMap(tiles: Tile[][])
     {
-        this.map = Array(rows);
-        //initialize the map hexagonal grid to 0,0.
-        for(let i = 0; i < rows; i++)
+        for(let row = 0; row < this.map.length; row++)
         {
-            this.map[i] = new Array(cols);
-            for(let j = 0; j < cols; j++)
+            for(let col = 0; col < this.map[row].length; col++)
             {
-                if(i % 2 == 1 && j == cols - 1)
-                    this.map[i][j] = null;
-                else
-                {
-                    let newTile = new Tile();
-                    newTile.setRow(i);
-                    newTile.setCol(j);
-                    this.map[i][j] = newTile;
-                }  
+                this.map[row][col] = tiles[row][col];
             }
         }
     }
 
-    public setViews(views: any)
+    
+    public setView(view: TileMapView)
     {
-        this.view = views;
+        this.view = view;
         this.updatesView();
     }
 
@@ -107,11 +102,11 @@ export default class TileMap
         this.updatesView();
     }
 
-    public resetBoard()
-    {
-        this.generateNewMap(this.rows, this.cols);
-        this.updatesView();
-    }
+    // public resetBoard()
+    // {
+    //     this.generateNewMap(this.rows, this.cols);
+    //     this.updatesView();
+    // }
 
     public getTileAt(row: number, col: number): Tile
     {

@@ -1,8 +1,7 @@
-import Phaser from "phaser";
 import Worker from "../model/Worker";
 
 export default class WorkerView extends Phaser.GameObjects.Container{
-    constructor(scene) {
+    constructor(scene: Phaser.Scene) {
         super(scene);
         // // this.maxLines = 7;
         // // this.vgap = 10;

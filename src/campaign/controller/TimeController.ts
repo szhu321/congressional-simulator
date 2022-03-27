@@ -26,6 +26,6 @@ export default class TimeController
 
     public passTime()
     {
-        this.scene.getMapController().passTime(1);
+        this.scene.getTileMapController().passTime(1);
     }
 }

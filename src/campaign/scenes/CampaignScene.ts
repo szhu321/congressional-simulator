@@ -1,14 +1,15 @@
 import 'phaser';
-import 'chroma-js';
-import MapController from "../controller/MapController";
+import chroma = require('chroma-js');
+import TileMapController from "../controller/TileMapController";
 import TimeController from "../controller/TimeController";
 import TileMap from "../model/TileMap";
-import LeftPanelContainer from "../view/LeftPanelContainer.js";
-import BottomPanelContainer from "../view/BottomPanelContainer.js";
+import LeftPanelContainer from "../view/LeftPanelContainer";
+import BottomPanelContainer from "../view/BottomPanelContainer";
 import { SCENE_CONFIG } from "../../gameconfig";
 import TileView from '../view/TileView';
 import Tile from '../model/Tile';
 import TileMapView from '../view/TileMapView';
+import TileMapFactory, { TileMapType } from '../factory/TileMapFactory';
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -20,7 +21,7 @@ export default class CampaignScene extends Phaser.Scene
     //TileMap MVC
     private tileMap: TileMap;
     private tileMapView: TileMapView;
-    private tileMapController: MapController;
+    private tileMapController: TileMapController;
     
     private timeController: TimeController;
 
@@ -51,9 +52,7 @@ export default class CampaignScene extends Phaser.Scene
         // polygon3.setOrigin(0.5, 0.5);
 
         //this.tileMap.setViews(this);
-        this.tileMap = new TileMap(7, 7);
-        this.tileMapView = new TileMapView(this);
-        this.tileMapController = new MapController(this, this.tileMap);
+        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.DEFAULT);
     }
 
     update()
@@ -75,9 +74,7 @@ export default class CampaignScene extends Phaser.Scene
         // }
     }
 
-    public getMapController(): MapController{return this.mapController;}
-
-    
+    public getTileMapController(): TileMapController{return this.tileMapController;}
 
     initializeCamera()
     {
@@ -116,33 +113,19 @@ export default class CampaignScene extends Phaser.Scene
     //         this.initializeTileObjects(tileMap);
     // }
 
-    drawTile(tile: Tile)
-    {
-        if(!this.sidePanel)
-            this.initializeSidePanel();
-        this.updateSidePanel(tile);
-    }
+    // drawTile(tile: Tile)
+    // {
+    //     if(!this.sidePanel)
+    //         this.initializeSidePanel();
+    //     this.updateSidePanel(tile);
+    // }
     
     clearSidePanel()
     {
         this.sidePanel.updateDisplay([]);
     }
 
-    updateSidePanel(tile: Tile)
-    {
-        this.sidePanel.updateDisplay([
-            `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
-            `Voters: ${tile.getNumberOfVoters()}`,
-            `Voters Secured: ${tile.totalOccupied()}`,
-            `Worker On Tile: ${tile.isWorkerOnTile()}`,
-            `Political Stance (-1 <- Liberal Conservative -> 1):`,
-            `Economy: ${tile.getEconomy()}`,
-            `Healthcare: ${tile.getHealthcare()}`,
-            `Education: ${tile.getEducation()}`,
-            `Taxes: ${tile.getTaxes()}`,
-            `Environment: ${tile.getEnvironment()}`
-        ]);
-    }
+    
 
     initializeDayDisplay()
     {
@@ -150,11 +133,6 @@ export default class CampaignScene extends Phaser.Scene
         this.dayDisplay.setFontSize(20);
         this.dayDisplay.setOrigin(1, 0);
         this.timeController = new TimeController(this, this.dayDisplay);
-    }
-
-    initializeMapController()
-    {
-        this.mapController = new MapController(this, this.tileMap);
     }
 
     initializeSidePanel()

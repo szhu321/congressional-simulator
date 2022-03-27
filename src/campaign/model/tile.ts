@@ -63,6 +63,11 @@ export default class Tile
         this.updateView();
     }
 
+    public getView(): TileView
+    {
+        return this.view;
+    }
+
     public updateView()
     {
         if(this.view)

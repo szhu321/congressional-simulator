@@ -1,10 +1,14 @@
 import chroma = require("chroma-js");
+import { CAMPAIGN_EVENTS } from "../campaignenum";
+import CampaignEventDispatcher from "../CampaignEventDispatcher";
+import TileController from "../controller/TileController";
 import Tile from "../model/Tile";
 import CampaignScene from '../scenes/CampaignScene';
 
 export default class TileView extends Phaser.GameObjects.Polygon
 {
     private campaignScene: CampaignScene;
+    private tileController: TileController;
     private row: number;
     private col: number;
 
@@ -27,15 +31,16 @@ export default class TileView extends Phaser.GameObjects.Polygon
             this.setAlpha(1);
         });
         this.on("pointerup", () => {
-            //TODO: add a messaging system.
-            let selectedTile = this.campaignScene.getSelectedTile();
-            if(selectedTile && selectedTile.row === this.row && selectedTile.col === this.col)
-                this.campaignScene.deselectTile();
-            else
-                this.campaignScene.setSelectedTile({row: this.row, col: this.col})
-            //console.log("Pressed");
+            //add a event system.
+            let emitter = CampaignEventDispatcher.getInstance();
+            emitter.emit(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, this.row, this.col, this.tileController.getTile());
         })
     }
+
+    public setTileController(value: TileController) {this.tileController = value;}
+    public getTileController(): TileController {return this.tileController;}
+
+    public getCampaignScene():CampaignScene {return this.campaignScene;}
 
     public updateView(tile: Tile)
     {

@@ -1,14 +1,13 @@
 import TileMap from "../model/TileMap";
 
-export default class MapController
+export default class TileMapController
 {
     private scene: Phaser.Scene;
     private mapModel: TileMap;
 
-    constructor(scene: Phaser.Scene, mapModel: TileMap)
+    constructor(scene: Phaser.Scene)
     {
         this.scene = scene;
-        this.mapModel = mapModel;
     }
 
     public getScene(): Phaser.Scene {return this.scene;}
