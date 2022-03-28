@@ -2,6 +2,7 @@ import { CAMPAIGN_EVENTS } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMapController from "../controller/TileMapController";
 import TileMap from "../model/TileMap";
+import TileView from "./TileView";
 
 /**
  * Responsible for:
@@ -12,7 +13,7 @@ import TileMap from "../model/TileMap";
 export default class TileMapView extends Phaser.GameObjects.Container
 {
     private selectedTile: {row: number, col: number};
-    private tileMapTiles: Phaser.GameObjects.Polygon[][];
+    private tileMapViews: TileView[][];
     private selectedHexagonOverlay: Phaser.GameObjects.Polygon;
     private tileMapController: TileMapController;
 
@@ -20,7 +21,7 @@ export default class TileMapView extends Phaser.GameObjects.Container
     {
         super(scene);
         this.setActive(true);
-        this.selectedTile = null;
+        this.selectedTile = {row: -1, col: -1};
         this.initializeSelectedHexagonOverlay();
         
         //this.tileMapTiles;
@@ -35,10 +36,11 @@ export default class TileMapView extends Phaser.GameObjects.Container
                 this.selectedTile.row = row;
                 this.selectedTile.col = col;
             }
+            console.log(this.selectedTile, row, col);
         })
 
         CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (worker: any) => {
-            if(this.selectedTile && this.selectedTile.row !== -1)
+            if(this.selectedTile.row !== -1)
             {
                 this.tileMapController.addWorkerToTile(this.selectedTile.row, this.selectedTile.col);
             }
@@ -48,12 +50,14 @@ export default class TileMapView extends Phaser.GameObjects.Container
     public setTileMapController(tileMapController: TileMapController) {this.tileMapController = tileMapController;} 
     public getTileMapController(): TileMapController {return this.tileMapController;}
 
-    update()
+    preUpdate(time: number, deltaT: number)
     {
-        if(this.selectedTile && this.selectedTile.row !== -1)
+        //console.log("Updating");
+        if(this.selectedTile.row !== -1)
         {
-            let tileView = this.tileMapTiles[this.selectedTile.row][this.selectedTile.col];
+            let tileView = this.tileMapViews[this.selectedTile.row][this.selectedTile.col];
             this.selectedHexagonOverlay.setVisible(true);
+            console.log(tileView.x, tileView.y);
             this.selectedHexagonOverlay.setPosition(tileView.x, tileView.y);
             //let tile = this.tileMap.getTileAt(row, col);
             //this.drawTile(this.tileMap.getTileAt(this.selectedTile.row,this.selectedTile.col));
@@ -64,6 +68,11 @@ export default class TileMapView extends Phaser.GameObjects.Container
             //this.clearSidePanel();
             this.selectedHexagonOverlay.setVisible(false);
         }
+    }
+
+    public setTileMapViews(value: TileView[][])
+    {
+        this.tileMapViews = value;
     }
 
     drawMap(tileMap: TileMap, mode: number = 0)
@@ -80,12 +89,13 @@ export default class TileMapView extends Phaser.GameObjects.Container
         let verticalDiameter = 90;
         let tileStrokeSize = 6;
         let points = this.polygonPoints(verticalDiameter);
-        this.selectedHexagonOverlay = this.scene.add.polygon(0, 0, points, 0x000000, 0.1);
+        this.selectedHexagonOverlay = this.scene.add.polygon(0, 0, points, 0x000000, 0.2);
         this.selectedHexagonOverlay.setOrigin(0.5, 0.5);
         this.selectedHexagonOverlay.setStrokeStyle(tileStrokeSize, selectedStrokeColor);
         this.selectedHexagonOverlay.setVisible(false);
         this.selectedHexagonOverlay.setDepth(2);
         this.add(this.selectedHexagonOverlay);
+        this.scene.add.existing(this.selectedHexagonOverlay);
     }
 
     // addWorkerAtSelectedTile()
@@ -101,7 +111,8 @@ export default class TileMapView extends Phaser.GameObjects.Container
 
     deselectTile()
     {
-        this.selectedTile = null;
+        this.selectedTile.row = -1;
+        this.selectedTile.col = -1;
     }
 
     public setSelectedTile(value: {row: number, col: number})

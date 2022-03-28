@@ -37,6 +37,11 @@ export default class TileView extends Phaser.GameObjects.Polygon
         })
     }
 
+    public setRow(value: number) {this.row = value;}
+    public setCol(value: number) {this.col = value;}
+    public getRow(): number {return this.row;}
+    public getCol(): number {return this.col;}
+
     public setTileController(value: TileController) {this.tileController = value;}
     public getTileController(): TileController {return this.tileController;}
 

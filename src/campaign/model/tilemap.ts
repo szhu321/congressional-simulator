@@ -46,6 +46,11 @@ export default class TileMap
         this.updatesView();
     }
 
+    public getView(): TileMapView
+    {
+        return this.view;
+    }
+
     public updatesView()
     {
         if(this.view == null)
