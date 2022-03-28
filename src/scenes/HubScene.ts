@@ -6,6 +6,7 @@ export default class HubScene extends Phaser.Scene {
     private fundraisingButton: Button;
     private campaignButton: Button;
     private debateButton: Button;
+    private feedbackButton: Button;
 
     init()
     {
@@ -122,7 +123,7 @@ export default class HubScene extends Phaser.Scene {
         let buttonHGap = 100;
         let firstButtonStartX = 390;
         let fontSize = 26;
-        let buttonTextYOffset = 20;
+        let buttonTextYOffset = 97;
 
         //button1 Fundraising Game
         this.fundraisingButton = new Button(this, firstButtonStartX, height/2, buttonWidth, buttonHeight);
@@ -137,6 +138,7 @@ export default class HubScene extends Phaser.Scene {
                 this.scene.launch('clickerScene');
             this.showScene('clickerScene');
             //console.log(this.scene.get('clickerScene'));
+            //window.open("https://forms.gle/CPLqcUc5CDEduhry6", "_blank");
         });
         this.add.existing(this.fundraisingButton);
         let fundraisingButtonText = this.add.text(this.fundraisingButton.x, this.fundraisingButton.y + ( this.fundraisingButton.height / 2 ) + buttonTextYOffset, "Fundraising");
@@ -178,5 +180,14 @@ export default class HubScene extends Phaser.Scene {
         let debateButtonText = this.add.text(this.debateButton.x, this.debateButton.y + ( this.debateButton.height / 2 ) + buttonTextYOffset, "Debate");
         debateButtonText.setOrigin(0.5, 0.5);
         debateButtonText.setFontSize(fontSize);
+
+        //feedback button
+        this.feedbackButton = new Button(this, 250/2 + 10, 35 / 2 + 10, 250, 35);
+        this.feedbackButton.getText().setText("Feedback (google forms)");
+        this.feedbackButton.setOnclickCallback(() => {
+            console.log('Opening window to feedback form.');
+            window.open("https://forms.gle/CPLqcUc5CDEduhry6", "_blank");
+        });
+        this.add.existing(this.feedbackButton);
     }
 }

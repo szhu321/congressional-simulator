@@ -16,7 +16,11 @@ var config = {
         arcade: {
             gravity: { y: 200 }
         }
-    }
+    },
+    // scale: {
+    //     mode: Phaser.Scale.RESIZE,
+    //     zoom: 0.8,
+    // }
 };
 
 var game = new Phaser.Game(config);

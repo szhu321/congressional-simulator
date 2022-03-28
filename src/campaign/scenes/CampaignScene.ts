@@ -34,14 +34,20 @@ export default class CampaignScene extends Phaser.Scene
         //used to size the scene camera correctly because of the menu on the top.
         this.initializeCamera();
         this.initializeBackground();
+        this.initializeTileMap();
         this.initializeSidePanel();
         this.initializeDayDisplay();
         this.initializeBottomPanel();
-        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL);
-        this.tileMap.getView().setDepth(-5);
+        
+        //this.scene.setActive(true);
+    }
+
+    private initializeTileMap()
+    {
+        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.DEFAULT);
+        //this.tileMap.getView().setDepth(-5);
         this.tileMapView = this.tileMap.getView();
         this.tileMapController = this.tileMap.getView().getTileMapController();
-        //this.scene.setActive(true);
     }
 
     update()
@@ -52,7 +58,7 @@ export default class CampaignScene extends Phaser.Scene
 
     public getTileMapController(): TileMapController{return this.tileMapController;}
 
-    initializeCamera()
+    private initializeCamera()
     {
         let x = SCENE_CONFIG.scene_camera_viewport_x;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
@@ -61,7 +67,7 @@ export default class CampaignScene extends Phaser.Scene
         this.cameras.main.setViewport(x, y, width, height);
     }
 
-    initializeBackground()
+    private initializeBackground()
     {
         let x = 0;
         let y = 0;
@@ -72,7 +78,7 @@ export default class CampaignScene extends Phaser.Scene
         background.setOrigin(0, 0);
     }
 
-    initializeBottomPanel()
+    private initializeBottomPanel()
     {
         this.bottomPanel = new BottomPanelContainer(this);
         this.add.existing(this.bottomPanel);
@@ -81,29 +87,7 @@ export default class CampaignScene extends Phaser.Scene
         this.bottomPanel.setPosition(width, height);
     }
 
-    
-
-    // drawMap(tileMap, displayMode)
-    // {
-    //     if(!this.tileMapTiles)
-    //         this.initializeTileObjects(tileMap);
-    // }
-
-    // drawTile(tile: Tile)
-    // {
-    //     if(!this.sidePanel)
-    //         this.initializeSidePanel();
-    //     this.updateSidePanel(tile);
-    // }
-    
-    clearSidePanel()
-    {
-        this.sidePanel.updateDisplay([]);
-    }
-
-    
-
-    initializeDayDisplay()
+    private initializeDayDisplay()
     {
         this.dayDisplay = this.add.text(this.game.scale.width, 0, "Day: 1");
         this.dayDisplay.setFontSize(20);
@@ -111,7 +95,7 @@ export default class CampaignScene extends Phaser.Scene
         this.timeController = new TimeController(this, this.dayDisplay);
     }
 
-    initializeSidePanel()
+    private initializeSidePanel()
     {
         this.sidePanel = new LeftPanelContainer(this);
         this.add.existing(this.sidePanel);

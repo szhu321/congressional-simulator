@@ -49,6 +49,12 @@ export default class Button extends Phaser.GameObjects.Container
         this.add(this.text);
     }
 
+    // public setOrigin(x: number, y: number)
+    // {
+    //     this.background.setOrigin(x, y);
+    //     //this.text.setOrigin(x, y);
+    // }
+
     public setOnclickCallback(onclickCallback: Function)
     {
         this.onclickCallback = onclickCallback;
