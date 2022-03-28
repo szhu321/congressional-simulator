@@ -48,7 +48,6 @@ export default class CardView extends Phaser.GameObjects.Container{
 
     updateDisplay(textArray: string[], frontFacing: boolean){
         let children = this.getAll();
-        // let combinedText = textArray.join("\r\n");
 
         this.background.setSize(this.maxWidth, this.maxHeight);
         this.background.setPosition(-1 * this.maxWidth / 2, -1 * this.maxHeight / 2);

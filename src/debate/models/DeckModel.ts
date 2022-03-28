@@ -21,6 +21,10 @@ export default class DeckModel
         this.view = null;
     }
 
+    getCardCount(){
+        return this.cardCount;
+    }
+
     /**
      * Get all the cards in this deck.
      * @returns {CardModel[]} the array of cards.

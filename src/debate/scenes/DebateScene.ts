@@ -1,4 +1,3 @@
-import Zone from '../helpers/zone';
 import CardView from '../views/CardView';
 import 'phaser';
 import BoardView from '../views/BoardView';
@@ -91,12 +90,6 @@ export default class DebateScene extends Phaser.Scene {
         cardModel.setConfig(jsonObject);
         cardModel.updateView();
         return cardModel;
-        //model has been created.
-
-        //we need the controller and the view.
-        // let cardController = new CardController(cardModel);
-        // let cardView = new CardView(this);
-        // cardModel.setUpdateViewCallback(cardView.updateViewCallBack);
     }
 
     createBoard()
@@ -138,7 +131,6 @@ export default class DebateScene extends Phaser.Scene {
         {
             let card = this.createNewCard(cardsData[i]);
             this.input.setDraggable(card.getView(), false);
-            //card.view.disableInteractive();
             cards2.push(card);
         }
 

@@ -11,7 +11,6 @@ export default class DeckView extends Phaser.GameObjects.Container{
     constructor(scene: Phaser.Scene){
         super(scene);
         this.fontSize = 15;
-        //this.abilityFontSize = 12;
         this.maxHeight = 140;
         this.maxWidth = 118;
         this.textAmount = 2;
@@ -58,7 +57,6 @@ export default class DeckView extends Phaser.GameObjects.Container{
         cardNumber.setText("");
         cardNumber.setPosition(0, this.maxHeight / 2);
         cardNumber.setOrigin(0.5, 1);
-        
     }
 
     /**
@@ -68,6 +66,6 @@ export default class DeckView extends Phaser.GameObjects.Container{
     updateViewCallback(model: DeckModel){
         let children = this.getAll();
         let cardNumber = children[2] as Phaser.GameObjects.Text;
-        cardNumber.setText(model.getCards().length.toString());
+        cardNumber.setText(model.getCardCount().toString());
     }
 }

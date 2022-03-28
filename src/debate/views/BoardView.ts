@@ -2,7 +2,6 @@ import BoardModel from '../models/BoardModel'
 import "phaser";
 import Zone from '../helpers/zone';
 import CardView from './CardView';
-import DeckView from './DeckView';
 import BoardController from '../controllers/BoardController';
 import { SCENE_CONFIG } from '../../gameconfig';
 
