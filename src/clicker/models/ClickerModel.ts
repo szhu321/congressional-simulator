@@ -4,7 +4,6 @@ import PlayerData from "../../data/PlayerData"
 import ClickerView from "../views/ClickerView";
 
 export default class ClickerModel{
-    private currentFunds: number;
     private revenueRate: number;
     private clickRevenue: number;
     private view: ClickerView;
@@ -12,16 +11,11 @@ export default class ClickerModel{
     private upgrades: UpgradeModel[];
 
     constructor(){
-        this.currentFunds = 0;
         this.revenueRate = 0;
         this.clickRevenue = 1;
         this.view = null;
         this.workers = [];
         this.upgrades = [];
-    }
-
-    getCurrentFunds(){
-        return this.currentFunds;
     }
 
     getRevenueRate(){
@@ -50,32 +44,29 @@ export default class ClickerModel{
 
     purchaseWorker(workerIndex: number){
         let worker = this.workers[workerIndex];
-        this.currentFunds -= worker.getCost();
-        PlayerData.getPlayer().setConfig({money: this.currentFunds});
+        PlayerData.getPlayer().addMoney(-1 * worker.getCost());
         worker.addWorker();
         this.updateRevenueRate();
         this.updateView();
     }
 
     updateCurrentFunds = (deltaT: number) => {
-        this.currentFunds += this.revenueRate * (deltaT / 1000);
-        PlayerData.getPlayer().setConfig({money: this.currentFunds});
+        PlayerData.getPlayer().addMoney(this.revenueRate * (deltaT / 1000));
         this.updateView();
     }
           
     clickCallText(){
-        this.currentFunds += this.clickRevenue;
-        PlayerData.getPlayer().setConfig({money: this.currentFunds});
+        PlayerData.getPlayer().addMoney(this.clickRevenue);
         this.updateView();
     }
 
     applyUpgrade(upgradeIndex: number){
+        PlayerData.getPlayer().addMoney(-1 * this.upgrades[upgradeIndex].getCost());
         if(this.upgrades[upgradeIndex].getTarget() == 0){
-
+            this.clickRevenue *= this.upgrades[upgradeIndex].getMultiplier();
+            this.updateView();
         }else{
             let worker = this.workers[this.upgrades[upgradeIndex].getTarget() - 1];
-            this.currentFunds -= this.upgrades[upgradeIndex].getCost();
-            PlayerData.getPlayer().setConfig({money: this.currentFunds});
             worker.setRevenueRate(worker.getRevenueRate() * this.upgrades[upgradeIndex].getMultiplier());
             this.updateRevenueRate();
             this.upgrades.splice(upgradeIndex, 1);

@@ -31,7 +31,6 @@ export default class BoardController
             return false;
         }
         let card = this.model.getPlayer1Hand().getCardAt(idx);
-        //let card = this.model.getPlayer1Hand().removeAtIdx(idx);
         if(!card)
         {
             console.log(`playCardPlayer1() Failed: Card at index ${idx} not found.`);
@@ -65,7 +64,6 @@ export default class BoardController
             return false;
         }
         let card = this.model.getPlayer2Hand().getCardAt(idx);
-        //let card = this.model.getPlayer2Hand().removeAtIdx(idx);
         if(!card)
         {
             console.log(`playCardPlayer2() Failed: Card at index ${idx} not found.`);

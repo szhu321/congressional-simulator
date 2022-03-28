@@ -20,7 +20,7 @@ export default class ActionController
             this.model = new ActionModel();
     }
 
-    queueAction(func)
+    queueAction(func: Function)
     {
         this.model.enqueue(func);
     }

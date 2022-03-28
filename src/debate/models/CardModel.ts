@@ -227,10 +227,6 @@ export default class CardModel
     setRank(rank: CARD_RANK)
     {
         this.rank = rank;
-        // if(this.rank > CARD_RANK.LEGENDARY)
-        //     this.rank = CARD_RANK.LEGENDARY;
-        // if(this.rank < CARD_RANK.COMMON)
-        //     this.rank = CARD_RANK.COMMON;
         this.updateView();
     }
 

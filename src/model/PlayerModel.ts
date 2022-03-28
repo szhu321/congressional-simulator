@@ -170,6 +170,11 @@ export default class PlayerModel {
         this.money = value;
     }
 
+    addMoney(value: number)
+    {
+        this.money += value;
+    }
+
     getDistrictPopularity()
     {
         return this.districtPopularity;
