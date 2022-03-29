@@ -10,6 +10,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     private fontSize: number;
     private panelWidth: number;
     private panelHeight: number;
+    private background: Phaser.GameObjects.Rectangle;
     private backgroundColor: number;
     private backgroundBorderWidth: number;
     private backgroundBorderColor: number;
@@ -40,6 +41,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         background.setStrokeStyle(this.backgroundBorderWidth, this.backgroundBorderColor);
         background.setOrigin(0,0);
         this.add(background);
+        this.background = background;
 
         for(let i = 0; i < this.maxLines; i++)
         {
@@ -48,6 +50,32 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
             this.add(text);
             this.texts.push(text);
         }
+        this.initializeInteractiveZone();
+    }
+
+    private initializeInteractiveZone()
+    {
+        let width = this.background.width;
+        let height = this.background.height;
+        let hitarea = new Phaser.Geom.Rectangle(0, 0, width, height);
+        this.setInteractive({
+            hitArea: hitarea, 
+            hitAreaCallback: Phaser.Geom.Rectangle.Contains,
+        });
+        this.preventEventPropogataion();
+    }
+
+    private preventEventPropogataion()
+    {
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer: Phaser.Input.Pointer, localX: number, localY: number, event: Phaser.Types.Input.EventData) => {
+            event.stopPropagation();
+        })
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_MOVE, (pointer: Phaser.Input.Pointer, localX: number, localY: number, event: Phaser.Types.Input.EventData) => {
+            event.stopPropagation();
+        })
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, (pointer: Phaser.Input.Pointer, localX: number, localY: number, event: Phaser.Types.Input.EventData) => {
+            event.stopPropagation();
+        })
     }
 
     public updateDisplay(textArray: string[])
