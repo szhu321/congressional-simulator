@@ -1,11 +1,13 @@
 import "phaser";
 import WorkerModel from "../models/WorkerModel";
 import ClickerButton from "./ClickerButton";
+import millify from "millify";
 
 export default class WorkerView extends ClickerButton{
     constructor(scene: Phaser.Scene){
         super(scene);
         this.textAmount = 3;
+        this.maxHeight = 60;
     }
 
     updateDisplay(){
@@ -17,7 +19,7 @@ export default class WorkerView extends ClickerButton{
         // Worker Name
         let workerName = children[1] as Phaser.GameObjects.Text;
         workerName.setPosition(-1 * this.maxWidth / 2, -1 * this.maxHeight / 2);
-        workerName.setWordWrapWidth(this.maxWidth / 2, true).setAlign('center');
+        workerName.setWordWrapWidth(this.maxWidth / 2, true)/*.setAlign('center')*/;
 
         // Worker Hired Amount
         let workerAmount = children[2] as Phaser.GameObjects.Text;
@@ -35,8 +37,15 @@ export default class WorkerView extends ClickerButton{
         let workerAmount = children[2] as Phaser.GameObjects.Text;
         let workerCost = children[3] as Phaser.GameObjects.Text;
 
+        // let formatter = Intl.NumberFormat('en-US', {
+        //     notation: "compact",
+        //     maximumFractionDigits: 1
+        //   })
+
         workerName.setText(model.getName());
         workerAmount.setText("Hired: " + model.getAmount());
-        workerCost.setText("Cost: $" + model.getCost().toFixed(2));
+        workerCost.setText("Cost: $" + millify(model.getCost(), {
+            precision: 5
+          }));
     }
 }

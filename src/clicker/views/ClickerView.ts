@@ -4,6 +4,7 @@ import ClickerController from "../controllers/ClickerController";
 import ClickerModel from "../models/ClickerModel";
 import UpgradeView from "./UpgradeView";
 import WorkerView from "./WorkerView";
+import millify from "millify";
 
 export default class ClickerView extends Phaser.GameObjects.Layer{
     private controller: ClickerController;
@@ -50,7 +51,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         let workers = model.getWorkers();
         for(let i = 0; i < workers.length; i++){
             let workerView = workers[i].getView();
-            workerView.setPosition(625, 150 + 110 * i);
+            workerView.setPosition(625, 130 + 70 * i);
             workerView.setCanPurchase(PlayerData.getPlayer().getMoney() >= workers[i].getCost());
             workerView.on('pointerup', (pointer: Phaser.Input.Pointer, localX: number, localY: number, event: Phaser.Types.Input.EventData) => {
                 this.controller.processPurchaseWorker(i);

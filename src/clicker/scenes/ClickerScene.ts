@@ -94,9 +94,18 @@ export default class ClickerScene extends Phaser.Scene{
     getClickerData(){
         let clickerData = new ClickerData();
         clickerData.workers.push(new WorkerData("Cold Caller", 0.1, 10));
-        clickerData.workers.push(new WorkerData("Leafleter", 1, 30));
-        clickerData.upgrades.push(new UpgradeData("Office Equipment", 2, 250, "Cold Callers are 2x more effective", 1));
-        clickerData.upgrades.push(new UpgradeData("Demographic Targeting", 2, 500, "Leafleters are 2x more effective", 2));
+        clickerData.workers.push(new WorkerData("Leafleter", 1, 80));
+        clickerData.workers.push(new WorkerData("Poster Designer", 7, 900));
+        clickerData.workers.push(new WorkerData("Street Fundraisers", 45, 11000));
+        clickerData.workers.push(new WorkerData("Merchandise Designer", 310, 120000));
+        clickerData.workers.push(new WorkerData("Yard Sign Designer", 2100, 1300000));
+        clickerData.workers.push(new WorkerData("Social Media Content Creator", 14500, 14000000));
+        clickerData.workers.push(new WorkerData("Event Coordinator", 101000, 150000000));
+        clickerData.workers.push(new WorkerData("Marketer", 700000, 1600000000));
+        // clickerData.workers.push(new WorkerData("Pollster", 4500000, 17000000000));
+        // clickerData.workers.push(new WorkerData("Political Analyst", 31000000, 180000000000));
+        clickerData.upgrades.push(new UpgradeData("Office Equipment", 2, 100, "Cold Callers are 2x more effective", 1));
+        clickerData.upgrades.push(new UpgradeData("Demographic Targeting", 2, 800, "Leafleters are 2x more effective", 2));
 
         return clickerData;
     }

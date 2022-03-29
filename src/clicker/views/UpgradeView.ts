@@ -1,6 +1,7 @@
 import "phaser";
 import UpgradeModel from "../models/UpgradeModel";
 import ClickerButton from "./ClickerButton";
+import millify from "millify";
 
 export default class UpgradeView extends ClickerButton{
     constructor(scene: Phaser.Scene){
