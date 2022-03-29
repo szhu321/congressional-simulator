@@ -2,7 +2,7 @@ import "phaser";
 import Button from "../phaserobjs/Button";
 import { GAME_CONFIG, SCENE_CONFIG } from "../gameconfig";
 
-export default class HubScene extends Phaser.Scene {
+export default class HomeScene extends Phaser.Scene {
     private fundraisingButton: Button;
     private campaignButton: Button;
     private debateButton: Button;
@@ -47,7 +47,7 @@ export default class HubScene extends Phaser.Scene {
     {
         this.initializeCamera();
         this.initializeBackground();
-        this.initializeHubButtons();
+        this.initializeButtons();
 
         //add a title text.
 
@@ -83,7 +83,8 @@ export default class HubScene extends Phaser.Scene {
 
     showScene(sceneName: string)
     {
-        let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
+        let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
+                            'instructScene'];
         for(let name of sceneNames)
         {
             if(this.scene.get(name) == null){
@@ -115,7 +116,7 @@ export default class HubScene extends Phaser.Scene {
         camera.setViewport(x, y, width, height);
     }
 
-    initializeHubButtons()
+    initializeButtons()
     {
         let height = SCENE_CONFIG.scene_height;
         let buttonWidth = 220;

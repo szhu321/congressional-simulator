@@ -11,7 +11,9 @@ export default class MenuScene extends Phaser.Scene {
     private fundraisingButton: Button;
     private campaignButton: Button;
     private debateButton: Button;
-    private hubButton: Button;
+    private homeButton: Button;
+    private instructButton: Button;
+    private backstoryButton: Button;
 
     init()
     {
@@ -54,17 +56,18 @@ export default class MenuScene extends Phaser.Scene {
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
     }
 
-    hideScenes()
-    {
-        this.scene.pause('campaignScene');
-        this.scene.pause('hubScene');
-        this.scene.pause('clickerScene');
-        this.scene.pause('debateScene');
-    }
+    // hideScenes()
+    // {
+    //     this.scene.pause('campaignScene');
+    //     this.scene.pause('hubScene');
+    //     this.scene.pause('clickerScene');
+    //     this.scene.pause('debateScene');
+    // }
 
     showScene(sceneName: string)
     {
-        let sceneNames = ['campaignScene', 'hubScene', 'clickerScene', 'debateScene'];
+        let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
+                            'instructScene', 'backstoryScene'];
         for(let name of sceneNames)
         {
             if(this.scene.get(name) == null){
@@ -156,14 +159,36 @@ export default class MenuScene extends Phaser.Scene {
         this.add.existing(this.debateButton);
 
         //button4 hub
-        this.hubButton = new Button(this, 80, height/2, buttonWidth, buttonHeight);
-        this.hubButton.getText().setText("HOME");
-        this.hubButton.setOnclickCallback(() => {
+        this.homeButton = new Button(this, 80, height/2, buttonWidth, buttonHeight);
+        this.homeButton.getText().setText("HOME");
+        this.homeButton.setOnclickCallback(() => {
             //this.scene.switch('debateScene');
-            if(!this.scene.isActive('hubScene'))
-                this.scene.launch('hubScene');
-            this.showScene('hubScene');
+            if(!this.scene.isActive('homeScene'))
+                this.scene.launch('homeScene');
+            this.showScene('homeScene');
         });
-        this.add.existing(this.hubButton);
+        this.add.existing(this.homeButton);
+
+        //button5 instructions
+        this.instructButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 3, height/2, buttonWidth + 15, buttonHeight);
+        this.instructButton.getText().setText("Instructions");
+        this.instructButton.setOnclickCallback(() => {
+            //this.scene.switch('debateScene');
+            if(!this.scene.isActive('instructScene'))
+                this.scene.launch('instructScene');
+            this.showScene('instructScene');
+        });
+        this.add.existing(this.instructButton);
+
+        //button6 backstory
+        this.backstoryButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 4, height/2, buttonWidth + 10, buttonHeight);
+        this.backstoryButton.getText().setText("Back Story");
+        this.backstoryButton.setOnclickCallback(() => {
+            //this.scene.switch('debateScene');
+            if(!this.scene.isActive('backstoryScene'))
+                this.scene.launch('backstoryScene');
+            this.showScene('backstoryScene');
+        });
+        this.add.existing(this.backstoryButton);
     }
 }
