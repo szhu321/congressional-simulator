@@ -30,10 +30,13 @@ export default class TileView extends Phaser.GameObjects.Polygon
         this.on("pointerout", () => {
             this.setAlpha(1);
         });
-        this.on("pointerup", () => {
-            //add a event system.
-            let emitter = CampaignEventDispatcher.getInstance();
-            emitter.emit(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, this.row, this.col, this.tileController.getTile());
+        this.on("pointerup", (pointer: Phaser.Input.Pointer) => {
+            if(pointer.leftButtonReleased())
+            {
+                //add a event system.
+                let emitter = CampaignEventDispatcher.getInstance();
+                emitter.emit(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, this.row, this.col, this.tileController.getTile());
+            }
         })
     }
 

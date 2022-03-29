@@ -3,7 +3,9 @@ import DebateScene from './debate/scenes/DebateScene';
 import CampaignScene from './campaign/scenes/CampaignScene';
 import ClickerScene from './clicker/scenes/ClickerScene';
 import MenuScene from './scenes/MenuScene';
-import HubScene from './scenes/HubScene';
+import HomeScene from './scenes/HomeScene';
+import InstructScene from './scenes/InstructScene';
+import BackStoryScene from './scenes/BackStoryScene';
 //import { GAME_CONFIG } from './gameconfig.js';
 import { GAME_CONFIG } from './gameconfig';
 
@@ -28,8 +30,10 @@ var game = new Phaser.Game(config);
 game.scene.add('debateScene', DebateScene);
 game.scene.add('campaignScene', CampaignScene);
 game.scene.add('clickerScene', ClickerScene);
-game.scene.add('hubScene', HubScene);
+game.scene.add('homeScene', HomeScene);
 game.scene.add('menuScene', MenuScene);
+game.scene.add('instructScene', InstructScene);
+game.scene.add('backstoryScene', BackStoryScene);
 
 //At any point in the game, the menubar scene will always be displayed.
 //The menubar will have links to the hub area, fundraising area, campaign area, debate area.
@@ -38,4 +42,4 @@ game.scene.add('menuScene', MenuScene);
 //The debate area will be created and destroyed as needed.
 
 game.scene.start('menuScene');
-game.scene.start('hubScene');
+game.scene.start('homeScene');

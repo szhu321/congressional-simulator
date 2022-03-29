@@ -16,12 +16,20 @@ export default class TileMapView extends Phaser.GameObjects.Container
     private tileMapViews: TileView[][];
     private selectedHexagonOverlay: Phaser.GameObjects.Polygon;
     private tileMapController: TileMapController;
+    private background: Phaser.GameObjects.Rectangle;
+    
+    private isDragging: boolean;
+    private dragStartX: number;
+    private dragStartY: number;
 
     constructor(scene: Phaser.Scene)
     {
         super(scene);
         this.setActive(true);
         this.selectedTile = {row: -1, col: -1};
+        this.isDragging = false;
+        this.initializeBackground();
+        this.initializeDraggingZooming();
         this.initializeSelectedHexagonOverlay();
         
         //this.tileMapTiles;
@@ -36,7 +44,7 @@ export default class TileMapView extends Phaser.GameObjects.Container
                 this.selectedTile.row = row;
                 this.selectedTile.col = col;
             }
-            console.log(this.selectedTile, row, col);
+            //console.log(this.selectedTile, row, col);
         })
 
         CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (worker: any) => {
@@ -57,11 +65,8 @@ export default class TileMapView extends Phaser.GameObjects.Container
         {
             let tileView = this.tileMapViews[this.selectedTile.row][this.selectedTile.col];
             this.selectedHexagonOverlay.setVisible(true);
-            console.log(tileView.x, tileView.y);
+            //console.log(tileView.x, tileView.y);
             this.selectedHexagonOverlay.setPosition(tileView.x, tileView.y);
-            //let tile = this.tileMap.getTileAt(row, col);
-            //this.drawTile(this.tileMap.getTileAt(this.selectedTile.row,this.selectedTile.col));
-            //tile.addWorkerToTile();
         }
         else
         {
@@ -73,6 +78,12 @@ export default class TileMapView extends Phaser.GameObjects.Container
     public setTileMapViews(value: TileView[][])
     {
         this.tileMapViews = value;
+        //add all the tiles to this container.
+        value.forEach((tiles: TileView[]) => {
+            tiles.forEach((tile: TileView) => {
+                this.add(tile);
+            })
+        })
     }
 
     drawMap(tileMap: TileMap, mode: number = 0)
@@ -83,19 +94,73 @@ export default class TileMapView extends Phaser.GameObjects.Container
         }
     }
 
+    private initializeDraggingZooming()
+    {
+        let width = this.background.width;
+        let height = this.background.height;
+        let hitarea = new Phaser.Geom.Rectangle(0, 0, width, height);
+        this.setInteractive({
+            hitArea: hitarea, 
+            hitAreaCallback: Phaser.Geom.Rectangle.Contains,
+            useHandCursor: true});
+        
+        this.scene.input.setDraggable(this);
+        this.input.draggable = true;
+
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+            if(pointer.rightButtonDown())
+            {
+                this.dragStartX = pointer.position.x - this.x;
+                this.dragStartY = pointer.position.y - this.y;
+                this.isDragging = true;
+                console.log("RIGHT BUTTON DOWN");
+            }
+                
+            // console.log(pointer);
+            // console.log("dragstart:");
+            // console.log(pointer);
+            // console.log(dragX);
+            // console.log(dragY);
+        });
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_MOVE, (pointer: Phaser.Input.Pointer) => {
+            if(pointer.rightButtonDown() && this.isDragging)
+            {
+                let dragX = pointer.position.x - this.dragStartX;
+                let dragY = pointer.position.y - this.dragStartY;
+                this.setPosition(dragX, dragY); 
+            }
+            // console.log("rightbuttondown: " + this.scene.input.mousePointer.rightButtonDown());
+            // console.log(pointer);
+            // console.log(dragX + " " + dragY);
+        });
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+            this.isDragging = false;
+        });
+    }
+
+    private initializeBackground()
+    {
+        this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, 1000, 1000, 0x2fa83d);
+        this.add(this.background);
+        this.background.setOrigin(0, 0);
+        this.background.setDepth(-1);
+        this.scene.add.existing(this.background);
+    }
+
     private initializeSelectedHexagonOverlay()
     {
         let selectedStrokeColor = 0xedeb4e;
         let verticalDiameter = 90;
-        let tileStrokeSize = 6;
+        let tileStrokeSize = 10;
         let points = this.polygonPoints(verticalDiameter);
-        this.selectedHexagonOverlay = this.scene.add.polygon(0, 0, points, 0x000000, 0.2);
+        this.selectedHexagonOverlay = new Phaser.GameObjects.Polygon(this.scene, 0, 0, points, 0x000000, 0);
         this.selectedHexagonOverlay.setOrigin(0.5, 0.5);
-        this.selectedHexagonOverlay.setStrokeStyle(tileStrokeSize, selectedStrokeColor);
+        this.selectedHexagonOverlay.setStrokeStyle(tileStrokeSize, selectedStrokeColor, 1);
         this.selectedHexagonOverlay.setVisible(false);
         this.selectedHexagonOverlay.setDepth(2);
-        this.add(this.selectedHexagonOverlay);
+        this.bringToTop(this.selectedHexagonOverlay);
         this.scene.add.existing(this.selectedHexagonOverlay);
+        this.add(this.selectedHexagonOverlay);
     }
 
     // addWorkerAtSelectedTile()

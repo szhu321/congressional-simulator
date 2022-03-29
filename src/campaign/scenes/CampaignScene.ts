@@ -38,7 +38,8 @@ export default class CampaignScene extends Phaser.Scene
         this.initializeSidePanel();
         this.initializeDayDisplay();
         this.initializeBottomPanel();
-        
+        this.input.setTopOnly(false);
+        this.input.mouse.disableContextMenu();
         //this.scene.setActive(true);
     }
 
