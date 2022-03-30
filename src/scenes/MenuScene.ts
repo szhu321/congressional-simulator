@@ -23,19 +23,11 @@ export default class MenuScene extends Phaser.Scene {
     preload() {
         this.load.image('issueCard', 'assets/issue_card.png');
         this.load.image('workerCard', 'assets/worker_card.png');
-        // this.boardModel;
-        // this.boardView;
-        // this.boardController;
     }
 
     create()
     {
         this.initializeMenu();
-
-        // //set the player data.
-        // let player = new PlayerModel();
-        // this.playerData = new PlayerData();
-        // this.playerData.setPlayer(player);
 
         //player name.
         this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "Sheng Wei");
@@ -46,6 +38,7 @@ export default class MenuScene extends Phaser.Scene {
         this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 5, MENU_CONFIG.menu_height - 5, "$100");
         this.playerMoneyText.setOrigin(1, 1);
         this.playerMoneyText.setFontSize(20);
+        //this.fundraisingButton.setVisible(false);
     }
 
     update()
@@ -55,14 +48,6 @@ export default class MenuScene extends Phaser.Scene {
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
     }
-
-    // hideScenes()
-    // {
-    //     this.scene.pause('campaignScene');
-    //     this.scene.pause('hubScene');
-    //     this.scene.pause('clickerScene');
-    //     this.scene.pause('debateScene');
-    // }
 
     showScene(sceneName: string)
     {
@@ -99,16 +84,32 @@ export default class MenuScene extends Phaser.Scene {
         camera.setViewport(x, y, width, height);
     }
 
-    initializeMenu()
+    private addMenuButton(sceneName: string, buttonText: string, positionNumber: number): Button
+    {
+        let firstButtonStartX = 100;
+        let height = MENU_CONFIG.menu_height;
+        let buttonHGap = 50;
+        let buttonWidth = 130;
+        let buttonHeight = 30;
+        let button = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * positionNumber, height/2, buttonWidth, buttonHeight);
+        button.getText().setText(buttonText);
+        button.setOnclickCallback(() => {
+            console.log('switching to clicker game');
+            //this.scene.switch('clickerScene');
+            if(!this.scene.isActive(sceneName))
+                this.scene.launch(sceneName);
+            this.showScene(sceneName);
+        });
+        this.add.existing(button);
+        return button;
+    }
+
+    private initializeMenu()
     {
         let height = MENU_CONFIG.menu_height;
         let width = MENU_CONFIG.menu_width;
         let menubarX = 0;
         let menubarY = 0;
-        let buttonWidth = 120;
-        let buttonHeight = 30;
-        let buttonHGap = 50;
-        let firstButtonStartX = 250;
         let backgroundColor = 0x1976D2;
         this.cameras.main.setViewport(menubarX, menubarY, width, height);
 
@@ -116,79 +117,11 @@ export default class MenuScene extends Phaser.Scene {
         this.background = this.add.rectangle(menubarX, menubarY, width, height, backgroundColor);
         this.background.setOrigin(0, 0);
 
-        //button1 Fundraising Game
-        this.fundraisingButton = new Button(this, firstButtonStartX, height/2, buttonWidth, buttonHeight);
-        this.fundraisingButton.getText().setText("Fundraising");
-        this.fundraisingButton.setOnclickCallback(() => {
-            console.log('switching to clicker game');
-            //this.scene.switch('clickerScene');
-            if(!this.scene.isActive('clickerScene'))
-                this.scene.launch('clickerScene');
-            this.showScene('clickerScene');
-            //this.scene.get('clickerScene').scene.resume();
-            //this.scene.bringToTop('clickerScene');
-            //this.scene.get('clickerScene').scene.setVisible(true);
-            //this.scene.bringToTop('clickerScene');
-            
-            //console.log(this.scene.get('clickerScene'));
-        });
-        this.add.existing(this.fundraisingButton);
-
-        //button2 Campaign Game
-        this.campaignButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 1, height/2, buttonWidth, buttonHeight);
-        this.campaignButton.getText().setText("Campaign");
-        
-        this.campaignButton.setOnclickCallback(() => {
-            //this.scene.switch('campaignScene');
-            if(!this.scene.isActive('campaignScene'))
-                this.scene.launch('campaignScene');
-            this.showScene('campaignScene');
-        });
-        this.add.existing(this.campaignButton);
-
-
-        //button3 Debate Game
-        this.debateButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 2, height/2, buttonWidth, buttonHeight);
-        this.debateButton.getText().setText("Debate");
-        this.debateButton.setOnclickCallback(() => {
-            //this.scene.switch('debateScene');
-            if(!this.scene.isActive('debateScene'))
-                this.scene.launch('debateScene');
-            this.showScene('debateScene');
-        });
-        this.add.existing(this.debateButton);
-
-        //button4 hub
-        this.homeButton = new Button(this, 80, height/2, buttonWidth, buttonHeight);
-        this.homeButton.getText().setText("HOME");
-        this.homeButton.setOnclickCallback(() => {
-            //this.scene.switch('debateScene');
-            if(!this.scene.isActive('homeScene'))
-                this.scene.launch('homeScene');
-            this.showScene('homeScene');
-        });
-        this.add.existing(this.homeButton);
-
-        //button5 instructions
-        this.instructButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 3, height/2, buttonWidth + 15, buttonHeight);
-        this.instructButton.getText().setText("Instructions");
-        this.instructButton.setOnclickCallback(() => {
-            //this.scene.switch('debateScene');
-            if(!this.scene.isActive('instructScene'))
-                this.scene.launch('instructScene');
-            this.showScene('instructScene');
-        });
-        this.add.existing(this.instructButton);
-
-        //button6 backstory
-        this.backstoryButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 4, height/2, buttonWidth + 10, buttonHeight);
-        this.backstoryButton.getText().setText("Back Story");
-        this.backstoryButton.setOnclickCallback(() => {
-            //this.scene.switch('debateScene');
-            if(!this.scene.isActive('backstoryScene'))
-                this.scene.launch('backstoryScene');
-            this.showScene('backstoryScene');
-        });
-        this.add.existing(this.backstoryButton);
+        this.homeButton = this.addMenuButton("homeScene", "Home", 0);
+        this.fundraisingButton = this.addMenuButton("clickerScene", "Fundraising", 1);
+        this.campaignButton = this.addMenuButton("campaignScene", "Campaign", 2);
+        this.debateButton = this.addMenuButton("debateScene", "Debate", 3);
+        this.instructButton = this.addMenuButton("instructScene", "Instructions", 4);
+        this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 5);
     }
 }

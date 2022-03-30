@@ -10,6 +10,7 @@ const paths = {
 };
 
 //browserify will use tsify to compile typescript.
+//watchify will check for changes and recompile the typescript files automatically.
 let watchedBrowserify = watchify(browserify({
     basedir: '.',
     debug: true,
@@ -18,12 +19,13 @@ let watchedBrowserify = watchify(browserify({
     packageCache: {}
 }).plugin(tsify));
 
-
+//create a new gulp task called copy-html.
 gulp.task('copy-html', function() {
     return gulp.src(paths.pages)
         .pipe(gulp.dest('dist'));
 });
 
+//A function that returns a watchify object.
 function bundle() {
     return watchedBrowserify
         .bundle()
@@ -32,7 +34,7 @@ function bundle() {
         .pipe(gulp.dest('dist'));
 }
 
-//what does this do?
+//create a dufault gulp task. 
 gulp.task('default', gulp.series(gulp.parallel('copy-html'), bundle));
 watchedBrowserify.on('update', bundle);
 watchedBrowserify.on('log', fancy_log);
