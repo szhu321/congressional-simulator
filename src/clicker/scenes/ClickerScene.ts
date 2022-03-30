@@ -96,16 +96,26 @@ export default class ClickerScene extends Phaser.Scene{
         clickerData.workers.push(new WorkerData("Cold Caller", 0.1, 10));
         clickerData.workers.push(new WorkerData("Leafleter", 1, 80));
         clickerData.workers.push(new WorkerData("Poster Designer", 7, 900));
-        clickerData.workers.push(new WorkerData("Street Fundraisers", 45, 11000));
+        clickerData.workers.push(new WorkerData("Street Fundraiser", 45, 11000));
         clickerData.workers.push(new WorkerData("Merchandise Designer", 310, 120000));
         clickerData.workers.push(new WorkerData("Yard Sign Designer", 2100, 1300000));
         clickerData.workers.push(new WorkerData("Social Media Content Creator", 14500, 14000000));
         clickerData.workers.push(new WorkerData("Event Coordinator", 101000, 150000000));
         clickerData.workers.push(new WorkerData("Marketer", 700000, 1600000000));
-        // clickerData.workers.push(new WorkerData("Pollster", 4500000, 17000000000));
-        // clickerData.workers.push(new WorkerData("Political Analyst", 31000000, 180000000000));
+        clickerData.workers.push(new WorkerData("Pollster", 4500000, 17000000000));
+        clickerData.workers.push(new WorkerData("Political Analyst", 31000000, 180000000000));
+        clickerData.upgrades.push(new UpgradeData("Campaign Website", 2, 100, "Call/Text is 2x more effective", 0));
         clickerData.upgrades.push(new UpgradeData("Office Equipment", 2, 100, "Cold Callers are 2x more effective", 1));
         clickerData.upgrades.push(new UpgradeData("Demographic Targeting", 2, 800, "Leafleters are 2x more effective", 2));
+        clickerData.upgrades.push(new UpgradeData("Campaign Slogan", 2, 9000, "Poster Designers are 2x more effective", 3));
+        clickerData.upgrades.push(new UpgradeData("Campaign Pitch", 2, 110000, "Street Fundraisers are 2x more effective", 4));
+        clickerData.upgrades.push(new UpgradeData("Improved Sewing Machines", 2, 1200000, "Merchandise Designers are 2x more effective", 5));
+        clickerData.upgrades.push(new UpgradeData("Vinyl Banners", 2, 13000000, "Yard Sign Designers are 2x more effective", 6));
+        clickerData.upgrades.push(new UpgradeData("Improved Recording Equipment", 2, 140000000, "Social Media Content Creators are 2x more effective", 7));
+        clickerData.upgrades.push(new UpgradeData("Celebrity Artists", 2, 1500000000, "Event Coordinators are 2x more effective", 8));
+        clickerData.upgrades.push(new UpgradeData("Native Advertising", 2, 16000000000, "Marketers are 2x more effective", 9));
+        clickerData.upgrades.push(new UpgradeData("Raffle Tickets", 2, 170000000000, "Pollsters are 2x more effective", 10));
+        clickerData.upgrades.push(new UpgradeData("Machine Learning", 2, 1800000000000, "Political Analysts are 2x more effective", 11));
 
         return clickerData;
     }

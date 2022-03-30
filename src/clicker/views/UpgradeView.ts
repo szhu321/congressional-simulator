@@ -24,12 +24,12 @@ export default class UpgradeView extends ClickerButton{
 
         // Upgrade Cost
         let upgradeCost = children[2] as Phaser.GameObjects.Text;
-        upgradeCost.setPosition(0, upgradeName.height - this.maxHeight / 2);
+        upgradeCost.setPosition(0, upgradeName.height * 2 - this.maxHeight / 2);
         upgradeCost.setOrigin(0.5, 0);
 
         // Upgrade Description
         let upgradeDescription = children[3] as Phaser.GameObjects.Text;
-        upgradeDescription.setPosition(0, upgradeName.height + upgradeCost.height - this.maxHeight / 2);
+        upgradeDescription.setPosition(0, upgradeName.height * 2 + upgradeCost.height - this.maxHeight / 2);
         upgradeDescription.setWordWrapWidth(this.maxWidth, true).setAlign('center');
         upgradeDescription.setOrigin(0.5, 0);
     }
@@ -41,7 +41,9 @@ export default class UpgradeView extends ClickerButton{
         let upgradeDescription = children[3] as Phaser.GameObjects.Text;
 
         upgradeName.setText(model.getName());
-        upgradeCost.setText(`$${model.getCost().toFixed(2)}`);
+        upgradeCost.setText(`$${millify(model.getCost(), {
+            precision: 5
+          })}`);
         upgradeDescription.setText(model.getDescription());
     }
 }
