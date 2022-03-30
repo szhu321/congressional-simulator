@@ -5,9 +5,10 @@
 dist/*
 !dist/assets/
 
-/prototypes/campaign/dist
-/prototypes/debate/dist
-/prototypes/clicker/dist
+oldjs/prototypes/campaign/dist
+oldjs/prototypes/debate/dist
+oldjs/prototypes/clicker/dist
+oldjs/dist
 
 # Logs
 logs

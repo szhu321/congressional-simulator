@@ -1,0 +1,19 @@
+{
+    "include": [
+        "src/**/*",
+        "src/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "oldjs",
+        "src/debate",
+        "src/phaserobj",
+        "src/scenes"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "ES6",
+        "module": "CommonJS",
+        "moduleResolution": "node"
+    }
+}
