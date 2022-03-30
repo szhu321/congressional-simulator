@@ -44,8 +44,10 @@ export default class WorkerView extends ClickerButton{
 
         workerName.setText(model.getName());
         workerAmount.setText("Hired: " + model.getAmount());
-        workerCost.setText("Cost: $" + millify(model.getCost(), {
-            precision: 5
-          }));
+        let cost = model.getCost();
+        let costString = cost < 1000 ? cost.toFixed(2) : millify(cost, {
+            precision: 2
+          })
+        workerCost.setText("Cost: $" + costString);
     }
 }

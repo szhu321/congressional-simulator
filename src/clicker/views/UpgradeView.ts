@@ -41,9 +41,11 @@ export default class UpgradeView extends ClickerButton{
         let upgradeDescription = children[3] as Phaser.GameObjects.Text;
 
         upgradeName.setText(model.getName());
-        upgradeCost.setText(`$${millify(model.getCost(), {
-            precision: 5
-          })}`);
+        let cost = model.getCost();
+        let costString = cost < 1000 ? cost.toFixed(2) : millify(cost, {
+            precision: 2
+          })
+        upgradeCost.setText(`$${costString}`);
         upgradeDescription.setText(model.getDescription());
     }
 }

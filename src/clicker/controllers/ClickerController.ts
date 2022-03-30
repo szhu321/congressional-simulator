@@ -30,4 +30,20 @@ export default class ClickerController{
     processPurchaseUpgrade = (upgradeIndex: number) => {
         this.model.applyUpgrade(upgradeIndex);
     }
+
+    processWorkerNextPage = () => {
+        this.model.changeWorkerPage(1);
+    }
+
+    processWorkerPrevPage = () => {
+        this.model.changeWorkerPage(-1);
+    }
+
+    processUpgradeNextPage = () => {
+        this.model.changeUpgradePage(1);
+    }
+
+    processUpgradePrevPage = () => {
+        this.model.changeUpgradePage(-1);
+    }
 }
