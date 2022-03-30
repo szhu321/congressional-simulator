@@ -205,7 +205,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
             upgradeView.setPosition(1075, 150 + 110 * i);
             this.add(upgradeView);
             this.upgradeViews.push(upgradeView);
-            upgradeView.setCanPurchase(PlayerData.getPlayer().getMoney() >= upgrades[i + model.getWorkerPage() * this.workersPerPage].getCost());
+            upgradeView.setCanPurchase(PlayerData.getPlayer().getMoney() >= upgrades[i + model.getUpgradePage() * this.upgradesPerPage].getCost());
         }
 
         let upgradeNextRect = children[11] as Phaser.GameObjects.Rectangle;
