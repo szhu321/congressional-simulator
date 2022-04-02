@@ -1,5 +1,6 @@
 import TileMapView from "../view/TileMapView";
 import Tile from "./Tile";
+import Worker from "./Worker";
 
 export default class TileMap
 {
@@ -8,6 +9,11 @@ export default class TileMap
     private rows: number;
     private cols: number;
     private displayMode: number;
+
+    /**
+     * List of workers that is currently on the map.
+     */
+    private workersOnMap: Worker[];
 
     /**Creates a empty hexagonal tile map.*/
     constructor(rows: number = 20, cols: number = 20)
@@ -23,6 +29,8 @@ export default class TileMap
         {
             this.map[i] = new Array<Tile>(this.cols);
         }
+
+        this.workersOnMap = new Array<Worker>();
     }
 
     public getRows(): number {return this.rows;}
@@ -38,7 +46,6 @@ export default class TileMap
             }
         }
     }
-
     
     public setView(view: TileMapView)
     {

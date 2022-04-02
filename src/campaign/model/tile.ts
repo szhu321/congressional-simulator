@@ -1,9 +1,11 @@
+import { CANDIDATE } from "../campaignenum";
 import TileView from "../view/TileView";
+import Worker from "./Worker";
 
 export default class Tile
 {
     private numberOfVoters: number;
-    private workerOnTile: boolean;
+    //private workerOnTile: boolean;
     private symbol: string;
     private visible: boolean;
     private row: number;
@@ -14,14 +16,17 @@ export default class Tile
     private taxes: number;
     private environment: number;
     private view: TileView;
-    private listOccupied: any;
+
+    private workers: Worker[];
+    private listOccupied: CandidateInfo[];
 
 
     constructor()
     {
-        this.numberOfVoters = Math.floor((Math.random() * 9)) + 1;
-        this.listOccupied = [];
-        this.workerOnTile = false;
+        this.numberOfVoters = Math.floor((Math.random() * 2000)) + 50;
+        this.listOccupied = new Array<CandidateInfo>();
+        this.workers = new Array<Worker>();
+        //this.workerOnTile = false;
         this.symbol = "X";
         this.visible = false;
         this.row = 0;
@@ -36,8 +41,10 @@ export default class Tile
 
     public getNumberOfVoters(): number {return this.numberOfVoters;}
     public setNumberOfVoters(value: number) {this.numberOfVoters = value;}
-    public isWorkerOnTile(): boolean {return this.workerOnTile;}
-    public setWorkerOnTile(value: boolean) {this.workerOnTile = value;}
+    public isWorkerOnTile(): boolean {
+        return this.workers.length > 0;
+    }
+    // public setWorkerOnTile(value: boolean) {this.workerOnTile = value;}
     public getSymbol(): string {return this.symbol;}
     public setSymbol(value: string) {this.symbol = value;}
     public isVisible(): boolean {return this.visible;}
@@ -79,13 +86,23 @@ export default class Tile
         return this.totalOccupied() / this.numberOfVoters;
     }
 
-    public addWorkerToTile(worker: Worker)
+    public addWorker(worker: Worker)
     {
-        if(worker)
+        if(!worker)
         {
-            //TODO: create a worker class.
+            console.log("Error, Worker is null");
         }
-        this.workerOnTile = true;
+        this.workers.push(worker);
+        //this.workerOnTile = true;
+        this.updateView();
+    }
+
+    public removeWorker(worker: Worker)
+    {
+        let idx = this.workers.indexOf(worker);
+        if(idx == -1)
+            console.log("Error, failed to remove worker. Worker does not exist in tile.");
+        this.workers.splice(idx, 1);
         this.updateView();
     }
 
@@ -104,17 +121,29 @@ export default class Tile
      * @param amount - The amount of votes that the player will occupy.
      * @returns The actual number of votes that the player occupied.
      */
-    public occupy(name: string, amount: number): number
+    public occupy(candidate: CANDIDATE, amount: number): number
     {
         let overflow = this.totalOccupied() - this.numberOfVoters + amount;
         if(overflow > 0)
         {
             amount -= overflow;
         }
-        if(this.listOccupied[name])
-            this.listOccupied[name] += amount;
-        else
-            this.listOccupied[name] = amount;
+
+        let doesCandidateExist = false;
+        this.listOccupied.forEach((candidateInfo) => {
+            if(candidateInfo.getCandidate() === candidate)
+            {
+                doesCandidateExist = true;
+                candidateInfo.setAmountOccupied(amount + candidateInfo.getAmountOccupied());
+            }    
+        })
+
+        if(!doesCandidateExist)
+        {
+            let newCandidateInfo = new CandidateInfo(candidate);
+            newCandidateInfo.setAmountOccupied(amount);
+            this.listOccupied.push(newCandidateInfo);
+        }
         this.updateView();
         return amount;
     }
@@ -126,12 +155,30 @@ export default class Tile
     public totalOccupied(): number
     {
         let sum = 0;
-        for(let key in this.listOccupied)
+        for(let info of this.listOccupied)
         {
-            sum += this.listOccupied[key];
+            sum += info.getAmountOccupied();
         }
         return sum;
     }
 
 
+}
+
+class CandidateInfo
+{
+    private candidate: CANDIDATE;
+    private amountOccupied: number;
+
+    constructor(candidate: CANDIDATE)
+    {
+        this.candidate = candidate;
+        this.amountOccupied = 0;
+    }
+
+    public getCandidate(): CANDIDATE {return this.candidate;}
+    public setAmountOccupied(value: number) {this.amountOccupied = value;}
+    public getAmountOccupied(): number {return this.amountOccupied;}
+
+    
 }

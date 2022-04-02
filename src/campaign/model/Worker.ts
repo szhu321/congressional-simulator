@@ -1,13 +1,15 @@
 import {CARD_RANK} from "../../gameenums";
+import { CANDIDATE, WORKER_TYPE } from "../campaignenum";
 import WorkerView from "../view/WorkerView";
 
-export enum BOSS {
-    OPPONENT = 'opponent',
-    PLAYER = 'player'
-}
+// export enum BOSS {
+//     OPPONENT = 'opponent',
+//     PLAYER = 'player'
+// }
 
 export default class Worker
 {
+    private workerType: WORKER_TYPE;
     private ability: string;
     private name: string;
     private description: string;
@@ -17,7 +19,17 @@ export default class Worker
     private stars: number;
 
     private dailySalary: number;
-    private boss: BOSS;
+    private initialCost: number;
+    
+    /**
+     * The employer of this worker.
+     */
+    private candidate: CANDIDATE;
+    private working: boolean;
+    private tileRow: number;
+    private tileCol: number;
+    private persuasivePower: number;
+    private influencePower: number;
 
 
     constructor()
@@ -32,7 +44,14 @@ export default class Worker
 
         //cost to hire in money per day.
         this.dailySalary = 0;
-        this.boss = BOSS.PLAYER;
+
+        this.initialCost = 0;
+        this.candidate = CANDIDATE.PLAYER;
+        this.tileCol = -1;
+        this.tileRow = -1;
+        this.working = false;
+        this.persuasivePower = 1;
+        this.influencePower = 1;
     }
 
     /**
@@ -43,11 +62,11 @@ export default class Worker
      */
     public setConfig(configObject: {
         name: string, ability: string, description: string, rank: CARD_RANK, view: WorkerView,
-        actionCount: number, stars: number, dailySalary: number, boss: BOSS
+        actionCount: number, stars: number, dailySalary: number, candidate: CANDIDATE
     })
     {
         let {name, ability, description, rank,
-             actionCount, stars, dailySalary, boss} = configObject;
+             actionCount, stars, dailySalary, candidate} = configObject;
         if(name) this.name = name;
         if(ability) this.ability = ability;
         if(description) this.description = description;
@@ -55,15 +74,29 @@ export default class Worker
         if(actionCount) this.actionCount = actionCount;
         if(stars) this.stars = stars;
         if(dailySalary) this.dailySalary = dailySalary;
-        if(boss) this.boss = boss;
+        if(candidate) this.candidate = candidate;
         //this.updateDefaults(configObject);
         this.updateView();
     }
 
     public getDailySalary(): number {return this.dailySalary;}
     public setDailySalary(value: number) {this.dailySalary = value;}
-    public getBoss(): BOSS {return this.boss;}
-    public setBoss(value: BOSS) {this.boss = value;}
+    public getCandidate(): CANDIDATE {return this.candidate;}
+    public setCandidate(value: CANDIDATE) {this.candidate = value;}
+    public setTileRow(value: number) {this.tileRow = value;}
+    public getTileRow(): number {return this.tileRow;}
+    public setTileCol(value: number) {this.tileCol = value;}
+    public getTileCol(): number {return this.tileCol;} 
+    public setWorkerType(value: WORKER_TYPE) {this.workerType = value;}
+    public getWorkerType(): WORKER_TYPE {return this.workerType;} 
+    public setWorking(value: boolean) {this.working = value;}
+    public isWorking(): boolean {return this.working;} 
+    public setInitialCost(value: number) {this.initialCost = value;}
+    public getInitialCost(): number {return this.initialCost;} 
+    public setPersuasivePower(value: number) {this.persuasivePower = value;}
+    public getPersuasivePower(): number {return this.persuasivePower;} 
+    public setInfluencePower(value: number) {this.influencePower = value;}
+    public getInfluencePower(): number {return this.influencePower;} 
 
     public getStar()
     {
@@ -156,7 +189,7 @@ export default class Worker
     {
         let worker = new Worker();
         worker.setConfig({name: this.name, ability: this.ability, description: this.description, rank: this.rank,
-            actionCount: this.actionCount, stars: this.stars, dailySalary: this.dailySalary, boss: this.boss, view: null});
+            actionCount: this.actionCount, stars: this.stars, dailySalary: this.dailySalary, candidate: this.candidate, view: null});
         return worker;
     }
 }

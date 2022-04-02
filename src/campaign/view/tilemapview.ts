@@ -1,7 +1,9 @@
-import { CAMPAIGN_EVENTS } from "../campaignenum";
+import { CAMPAIGN_EVENTS, CANDIDATE, WORKER_TYPE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMapController from "../controller/TileMapController";
+import WorkerFactory from "../factory/WorkerFactory";
 import TileMap from "../model/TileMap";
+import Worker from "../model/Worker";
 import TileView from "./TileView";
 
 /**
@@ -47,10 +49,16 @@ export default class TileMapView extends Phaser.GameObjects.Container
             //console.log(this.selectedTile, row, col);
         })
 
-        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (worker: any) => {
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (workerType: WORKER_TYPE, candidate: CANDIDATE) => {
             if(this.selectedTile.row !== -1)
             {
-                this.tileMapController.addWorkerToTile(this.selectedTile.row, this.selectedTile.col);
+                //set some worker settings.
+                let worker = WorkerFactory.getWorker(this.scene, workerType);
+                worker.setWorking(true);
+                worker.setTileRow(this.selectedTile.row);
+                worker.setTileCol(this.selectedTile.col);
+                worker.setCandidate(candidate);
+                this.tileMapController.addWorkerToTile(worker, this.selectedTile.row, this.selectedTile.col);
             }
         })
     }
@@ -98,7 +106,9 @@ export default class TileMapView extends Phaser.GameObjects.Container
     {
         let width = this.background.width;
         let height = this.background.height;
-        let hitarea = new Phaser.Geom.Rectangle(0, 0, width, height);
+        let x = this.background.x;
+        let y = this.background.y;
+        let hitarea = new Phaser.Geom.Rectangle(x, y, width, height);
         this.setInteractive({
             hitArea: hitarea, 
             hitAreaCallback: Phaser.Geom.Rectangle.Contains,
@@ -140,7 +150,7 @@ export default class TileMapView extends Phaser.GameObjects.Container
 
     private initializeBackground()
     {
-        this.background = new Phaser.GameObjects.Rectangle(this.scene, 0, 0, 1000, 1000, 0x2fa83d);
+        this.background = new Phaser.GameObjects.Rectangle(this.scene, 300, -20, 1200, 1000, 0x0d421b);
         this.add(this.background);
         this.background.setOrigin(0, 0);
         this.background.setDepth(-1);
