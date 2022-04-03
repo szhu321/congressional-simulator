@@ -2,7 +2,6 @@
 export default class GameModel
 {
     private currentDay: number;
-
     private lastDay: number;
 
     constructor()

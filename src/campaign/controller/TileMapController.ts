@@ -1,3 +1,6 @@
+import PlayerData from "../../data/PlayerData";
+import EventDispatcher from "../../events/EventDispatcher";
+import { GAME_EVENTS } from "../../gameenums";
 import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMap from "../model/TileMap";
@@ -11,6 +14,9 @@ export default class TileMapController
     constructor(scene: Phaser.Scene)
     {
         this.scene = scene;
+        EventDispatcher.getInstance().on(GAME_EVENTS.UPDATE_GLOBAL_CAMPAIGN_DATA, () => {
+            PlayerData.getCampaignData().setMapModel(this.mapModel);
+        });
     }
 
     public getScene(): Phaser.Scene {return this.scene;}

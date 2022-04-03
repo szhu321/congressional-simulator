@@ -73,7 +73,7 @@ export default class PlayerModel {
     private moneySpent: number;
 
     constructor() {
-        this.name = "Sheng Wei";
+        this.name = "Your Name";
         this.money = 0;
         this.age = 30;
         this.gender = GENDER.MALE;

@@ -16,6 +16,7 @@ export default class MenuScene extends Phaser.Scene {
     private homeButton: Button;
     private instructButton: Button;
     private backstoryButton: Button;
+    private gameOverButton: Button;
 
     init()
     {
@@ -47,6 +48,7 @@ export default class MenuScene extends Phaser.Scene {
             if(!this.scene.isActive("gameOverScene"))
                 this.scene.launch("gameOverScene");
             this.showScene("gameOverScene");
+            this.gameOverButton.setVisible(true);
         });
     }
 
@@ -132,5 +134,7 @@ export default class MenuScene extends Phaser.Scene {
         this.debateButton = this.addMenuButton("debateScene", "Debate", 3);
         this.instructButton = this.addMenuButton("instructScene", "Instructions", 4);
         this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 5);
+        this.gameOverButton = this.addMenuButton("gameOverScene", "GameOver", 6);
+        this.gameOverButton.setVisible(false);
     }
 }

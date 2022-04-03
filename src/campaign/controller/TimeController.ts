@@ -1,4 +1,7 @@
 import PlayerData from "../../data/PlayerData";
+import EventDispatcher from "../../events/EventDispatcher";
+import { GAME_CONFIG } from "../../gameconfig";
+import { GAME_EVENTS } from "../../gameenums";
 import CampaignScene from "../scenes/CampaignScene";
 
 export default class TimeController
@@ -12,12 +15,20 @@ export default class TimeController
     {
         this.scene = scene;
         this.timerDisplay = timerDisplay;
+        this.timerDisplay.setText(`Day: 0 / 180`);
         //this.day = 1;
         this.timerId = setInterval(() => {
             PlayerData.getGameData().setCurrentDay(PlayerData.getGameData().getCurrentDay() + 1);
             this.timerDisplay.setText(`Day: ${PlayerData.getGameData().getCurrentDay()} / 180`);
             this.passTime();
-        }, 2000);
+            if(PlayerData.getGameData().getLastDay() <= PlayerData.getGameData().getCurrentDay())
+            {
+                //stop timer
+                clearInterval(this.timerId);
+                //prepare gameover screen.
+                EventDispatcher.getInstance().emit(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN);
+            }
+        }, GAME_CONFIG.default_day_timer_milliseconds);
     }
 
     public stopTimer()

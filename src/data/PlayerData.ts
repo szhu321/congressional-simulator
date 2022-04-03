@@ -1,3 +1,4 @@
+import CampaignModel from "../model/CampaignModel";
 import GameModel from "../model/GameModel";
 import PlayerModel from "../model/PlayerModel";
 
@@ -5,6 +6,7 @@ export default class PlayerData
 {
     private static player: PlayerModel;
     private static gameData: GameModel;
+    private static campaignData: CampaignModel;
 
     /**
      * Gets the singleton player model.
@@ -26,5 +28,12 @@ export default class PlayerData
         if(!PlayerData.gameData)
             PlayerData.gameData = new GameModel();
         return this.gameData;
+    }
+
+    static getCampaignData(): CampaignModel
+    {
+        if(!PlayerData.campaignData)
+            PlayerData.campaignData = new CampaignModel();
+        return this.campaignData;
     }
 }
