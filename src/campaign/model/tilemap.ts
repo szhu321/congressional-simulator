@@ -114,6 +114,25 @@ export default class TileMap
         this.updatesView();
     }
 
+    public getRandomTile()
+    {
+        let tiles = new Array<Tile>();
+        for(let row = 0; row < this.map.length; row++)
+        {
+            for(let col = 0; col < this.map[row].length; col++)
+            {
+                let tile = this.map[row][col];
+                if(tile)
+                    tiles.push(tile);
+            }
+        }
+        if(tiles.length > 0)
+        {
+            return tiles[Math.floor(Math.random() * tiles.length)];
+        }
+        return null;
+    }
+
     // public resetBoard()
     // {
     //     this.generateNewMap(this.rows, this.cols);

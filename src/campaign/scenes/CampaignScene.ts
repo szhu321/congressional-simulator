@@ -45,7 +45,7 @@ export default class CampaignScene extends Phaser.Scene
 
     private initializeTileMap()
     {
-        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.DEFAULT);
+        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL);
         //this.tileMap.getView().setDepth(-5);
         this.tileMapView = this.tileMap.getView();
         this.tileMapController = this.tileMap.getView().getTileMapController();

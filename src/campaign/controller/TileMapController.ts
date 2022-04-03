@@ -1,5 +1,5 @@
-import EventDispatcher from "../../events/EventDispatcher";
-import { CAMPAIGN_EVENTS } from "../campaignenum";
+import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from "../campaignenum";
+import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMap from "../model/TileMap";
 import Worker from "../model/Worker";
 
@@ -37,6 +37,19 @@ export default class TileMapController
         tile.addWorker(worker);
     }
 
+    private aiDaysPassed: number = 0;
+
+    public runAi(daysPassed: number)
+    {
+        this.aiDaysPassed += daysPassed;
+        //console.log("running campaign ai");
+        if(this.aiDaysPassed % 2 === 0)
+        {
+            CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, 
+                WORKER_TYPE.COLD_CALLER, CANDIDATE.OPPONENT, TILE_POSITION.RAMDOM_TILE);
+        }
+    }
+
     public passTime(daysPassed: number)
     {
         if(!this.mapModel)
@@ -44,10 +57,14 @@ export default class TileMapController
             console.error("MapController does not have a MapModel");
             return;
         }
-        let votesPerday = 1;
-        let neighborsVotesPerday = 0.1;
+        // let votesPerday = 1;
+        // let neighborsVotesPerday = 0.1;
 
-        EventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.UPDATE_WORKER_ON_MAP, this.mapModel, daysPassed);
+        CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.UPDATE_WORKER_ON_MAP, this.mapModel, daysPassed);
+
+        this.runAi(daysPassed);
+
+        //
 
         // //for every tile that has a worker, add a vote and add a vote to the surrounding tiles
         // for(let i = 0; i < this.mapModel.getRows(); i++)

@@ -1,5 +1,5 @@
 import chroma = require("chroma-js");
-import { CAMPAIGN_EVENTS } from "../campaignenum";
+import { CAMPAIGN_EVENTS, CANDIDATE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileController from "../controller/TileController";
 import Tile from "../model/Tile";
@@ -53,13 +53,23 @@ export default class TileView extends Phaser.GameObjects.Polygon
     public updateView(tile: Tile)
     {
         let percentageOccupied = tile.percentageOccupied();
+        let playerOccupied = tile.percentageOccupiedBy(CANDIDATE.PLAYER);
+        let opponentOccupied = tile.percentageOccupiedBy(CANDIDATE.OPPONENT);
         let tileStrokeSize = 5;
         if(tile.isWorkerOnTile())
         {
             this.setStrokeStyle(tileStrokeSize, 0x37ed98);
         }
-        let colorScale = chroma.scale(['eeeeee', 'blue']);
-        let hexNum = parseInt(colorScale(percentageOccupied).toString().substring(1), 16);
+
+        let playerColor = "blue";
+        let opponentColor = "red";
+        //first scale from red and blue.
+        let colorScale = chroma.scale([opponentColor, playerColor]);
+        let colorStr = colorScale(playerOccupied/percentageOccupied).toString();
+        let colorSaturation = chroma.scale(['eeeeee', colorStr]);
+
+        //desaturate the color depending on the percentage Occupied.
+        let hexNum = parseInt(colorSaturation(percentageOccupied).toString().substring(1), 16);
         //console.log(percentageOccupied, hexNum);
         this.setFillStyle(hexNum);
     }

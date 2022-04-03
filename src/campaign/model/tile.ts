@@ -18,13 +18,15 @@ export default class Tile
     private view: TileView;
 
     private workers: Worker[];
-    private listOccupied: CandidateInfo[];
+    private candidateInfos: CandidateInfo[];
 
 
     constructor()
     {
-        this.numberOfVoters = Math.floor((Math.random() * 2000)) + 50;
-        this.listOccupied = new Array<CandidateInfo>();
+        let minVoters = 100;
+        let maxVoters = 500;
+        this.numberOfVoters = Math.floor((Math.random() * (maxVoters - minVoters))) + minVoters;
+        this.candidateInfos = new Array<CandidateInfo>();
         this.workers = new Array<Worker>();
         //this.workerOnTile = false;
         this.symbol = "X";
@@ -86,6 +88,26 @@ export default class Tile
         return this.totalOccupied() / this.numberOfVoters;
     }
 
+    public percentageOccupiedBy(candidate: CANDIDATE): number
+    {
+        let candidateInfo = this.getCandidateInfoFor(candidate);
+        if(candidateInfo)
+        {
+            return candidateInfo.getAmountOccupied() / this.numberOfVoters;
+        }
+        return 0;
+    }
+
+    public getCandidateInfoFor(candidate: CANDIDATE): CandidateInfo
+    {
+        for(let info of this.candidateInfos)
+        {
+            if(info.getCandidate() === candidate)
+                return info;
+        }
+        return null;
+    }
+
     public addWorker(worker: Worker)
     {
         if(!worker)
@@ -130,7 +152,7 @@ export default class Tile
         }
 
         let doesCandidateExist = false;
-        this.listOccupied.forEach((candidateInfo) => {
+        this.candidateInfos.forEach((candidateInfo) => {
             if(candidateInfo.getCandidate() === candidate)
             {
                 doesCandidateExist = true;
@@ -142,7 +164,7 @@ export default class Tile
         {
             let newCandidateInfo = new CandidateInfo(candidate);
             newCandidateInfo.setAmountOccupied(amount);
-            this.listOccupied.push(newCandidateInfo);
+            this.candidateInfos.push(newCandidateInfo);
         }
         this.updateView();
         return amount;
@@ -155,7 +177,7 @@ export default class Tile
     public totalOccupied(): number
     {
         let sum = 0;
-        for(let info of this.listOccupied)
+        for(let info of this.candidateInfos)
         {
             sum += info.getAmountOccupied();
         }

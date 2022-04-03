@@ -1,8 +1,16 @@
 
 export enum CAMPAIGN_EVENTS {
     CAMPAIGN_SELECTED_TILE = "campaign_selected_tile",
+    /**
+     * Args: (type: WORKER_TYPE, candidate: CANDIDATE, tilePosition: TILE_POSITION)
+     */
     CAMPAIGN_ADD_WORKER = "campaign_add_worker",
     UPDATE_WORKER_ON_MAP = "update_worker_on_map"
+}
+
+export enum TILE_POSITION {
+    SELECTED_TILE = "selected_tile",
+    RAMDOM_TILE = "random_tile"
 }
 
 export enum WORKER_TYPE {

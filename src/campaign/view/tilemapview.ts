@@ -1,4 +1,4 @@
-import { CAMPAIGN_EVENTS, CANDIDATE, WORKER_TYPE } from "../campaignenum";
+import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMapController from "../controller/TileMapController";
 import WorkerFactory from "../factory/WorkerFactory";
@@ -49,16 +49,42 @@ export default class TileMapView extends Phaser.GameObjects.Container
             //console.log(this.selectedTile, row, col);
         })
 
-        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (workerType: WORKER_TYPE, candidate: CANDIDATE) => {
-            if(this.selectedTile.row !== -1)
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, (workerType: WORKER_TYPE, candidate: CANDIDATE, tilePosition: TILE_POSITION) => {
+            let tileRow = -1;
+            let tileCol = -1;
+
+            //console.log("Atempting to add worker to server");
+
+            switch(tilePosition)
+            {
+                case TILE_POSITION.SELECTED_TILE: {
+                    tileRow = this.selectedTile.row;
+                    tileCol = this.selectedTile.col;
+                } break;
+                case TILE_POSITION.RAMDOM_TILE: {
+                    let randomTile = this.tileMapController.getMapModel().getRandomTile();
+                    if(randomTile)
+                    {
+                        tileRow = randomTile.getRow();
+                        tileCol = randomTile.getCol();
+                    }
+                } break;
+                default: {
+                    tileRow = -1;
+                    tileCol = -1;
+                }
+            }
+
+            if(tileRow !== -1)
             {
                 //set some worker settings.
                 let worker = WorkerFactory.getWorker(this.scene, workerType);
                 worker.setWorking(true);
-                worker.setTileRow(this.selectedTile.row);
-                worker.setTileCol(this.selectedTile.col);
+                worker.setTileRow(tileRow);
+                worker.setTileCol(tileCol);
                 worker.setCandidate(candidate);
-                this.tileMapController.addWorkerToTile(worker, this.selectedTile.row, this.selectedTile.col);
+                this.tileMapController.addWorkerToTile(worker, tileRow, tileCol);
+                //console.log(`Added worker to (${tileRow}, ${tileCol})`);
             }
         })
     }

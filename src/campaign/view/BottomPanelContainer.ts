@@ -1,6 +1,6 @@
 import PlayerData from '../../data/PlayerData';
 import Button from '../../phaserobjs/Button';
-import { CAMPAIGN_EVENTS, CANDIDATE, WORKER_TYPE } from '../campaignenum';
+import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from '../campaignenum';
 import CampaignEventDispatcher from '../CampaignEventDispatcher';
 import WorkerFactory from '../factory/WorkerFactory';
 import CampaignScene from '../scenes/CampaignScene';
@@ -76,7 +76,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
             //console.log("Bottom panel button 1 clicked.");
             if(this.spendMoney(30))
                 CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER,
-                    WORKER_TYPE.COLD_CALLER, CANDIDATE.PLAYER);
+                    WORKER_TYPE.COLD_CALLER, CANDIDATE.PLAYER, TILE_POSITION.SELECTED_TILE);
         });
         //button.setDepth(1);
         this.items.push(button);
@@ -89,7 +89,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
             //console.log("Bottom panel button 2 clicked.");
             if(this.spendMoney(100))
                 CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER,
-                    WORKER_TYPE.LEAFLETER, CANDIDATE.PLAYER);
+                    WORKER_TYPE.LEAFLETER, CANDIDATE.PLAYER, TILE_POSITION.SELECTED_TILE);
         });
         //button.setDepth(1);
         this.items.push(button);

@@ -26,14 +26,14 @@ export default class WorkerFactory
                 worker.setName("Cold Caller");
                 worker.setWorkerType(WORKER_TYPE.COLD_CALLER);
                 worker.setDailySalary(30);
-                worker.setPersuasivePower(3);
-                worker.setInfluencePower(1);
+                worker.setPersuasivePower(1);
+                worker.setInfluencePower(0);
             } break;
             case WORKER_TYPE.LEAFLETER: {
                 worker.setName("LEAFLETER");
                 worker.setWorkerType(WORKER_TYPE.COLD_CALLER);
-                worker.setDailySalary(70);
-                worker.setPersuasivePower(11);
+                worker.setDailySalary(300);
+                worker.setPersuasivePower(2);
                 worker.setInfluencePower(1);
             } break;
         }

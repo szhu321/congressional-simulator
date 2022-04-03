@@ -1,5 +1,5 @@
-import EventDispatcher from "../../events/EventDispatcher";
 import { CAMPAIGN_EVENTS } from "../campaignenum";
+import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMap from "../model/TileMap";
 import Worker from "../model/Worker";
 
@@ -9,7 +9,7 @@ export default class WorkerController
 
     constructor()
     {
-        EventDispatcher.getInstance().on(CAMPAIGN_EVENTS.UPDATE_WORKER_ON_MAP, this.updateWorkerOnMapHandler, this);
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.UPDATE_WORKER_ON_MAP, this.updateWorkerOnMapHandler, this);
     }
 
     public updateWorkerOnMapHandler(mapModel: TileMap, daysPassed: number)
@@ -28,7 +28,8 @@ export default class WorkerController
             {
                 if(neighbors[i])
                 {
-                    neighbors[i].occupy(this.worker.getCandidate(), this.worker.getInfluencePower() * daysPassed);
+                    let count = neighbors[i].occupy(this.worker.getCandidate(), this.worker.getInfluencePower() * daysPassed);
+                    //console.log(count);
                 }
             }
         }

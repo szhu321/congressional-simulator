@@ -122,7 +122,7 @@ export default class TileMapFactory
     {
         switch(type)
         {
-            case TileMapType.SMALL: return 5;
+            case TileMapType.SMALL: return 6;
             case TileMapType.LARGE: return 12;
         }
         return 8;
@@ -132,7 +132,7 @@ export default class TileMapFactory
     {
         switch(type)
         {
-            case TileMapType.SMALL: return 5;
+            case TileMapType.SMALL: return 6;
             case TileMapType.LARGE: return 12;
         }
         return 8;
