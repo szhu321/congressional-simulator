@@ -3,6 +3,8 @@ import Button from "../phaserobjs/Button";
 import { MENU_CONFIG, SCENE_CONFIG } from "../gameconfig";
 import PlayerData from "../data/PlayerData";
 import PlayerModel from "../model/PlayerModel";
+import EventDispatcher from "../events/EventDispatcher";
+import { GAME_EVENTS } from "../gameenums";
 
 export default class MenuScene extends Phaser.Scene {
     private playerNameText: Phaser.GameObjects.Text;
@@ -39,6 +41,13 @@ export default class MenuScene extends Phaser.Scene {
         this.playerMoneyText.setOrigin(1, 1);
         this.playerMoneyText.setFontSize(20);
         //this.fundraisingButton.setVisible(false);
+        //add event for gameover scene.
+
+        EventDispatcher.getInstance().on(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN, () => {
+            if(!this.scene.isActive("gameOverScene"))
+                this.scene.launch("gameOverScene");
+            this.showScene("gameOverScene");
+        });
     }
 
     update()
@@ -52,7 +61,7 @@ export default class MenuScene extends Phaser.Scene {
     showScene(sceneName: string)
     {
         let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
-                            'instructScene', 'backstoryScene'];
+                            'instructScene', 'backstoryScene', 'gameOverScene'];
         for(let name of sceneNames)
         {
             if(this.scene.get(name) == null){

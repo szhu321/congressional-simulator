@@ -16,3 +16,8 @@ export enum CARD_RANK {
     RARE = "rare",
     LEGENDARY = "legendary"
 }
+
+export enum GAME_EVENTS {
+    DISPLAY_GAME_OVER_SCREEN = "display_game_over_screen",
+    
+}
