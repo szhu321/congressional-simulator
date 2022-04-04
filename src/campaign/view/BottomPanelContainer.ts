@@ -1,4 +1,6 @@
 import PlayerData from '../../data/PlayerData';
+import EventDispatcher from '../../events/EventDispatcher';
+import { GAME_EVENTS } from '../../gameenums';
 import Button from '../../phaserobjs/Button';
 import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from '../campaignenum';
 import CampaignEventDispatcher from '../CampaignEventDispatcher';
@@ -73,9 +75,9 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
 
     preUpdate()
     {
+        let selectedTile = PlayerData.getCampaignData().getSelectedTile();
         for(let item of this.items)
         {
-            let selectedTile = PlayerData.getCampaignData().getSelectedTile();
             if(selectedTile)
             {
                 item.setVisible(true);
@@ -85,12 +87,25 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
                 item.setVisible(false);
             }
         }
+
+        if(selectedTile)
+        {
+            let opponentInfo = selectedTile.getCandidateInfoFor(CANDIDATE.OPPONENT);
+            if(opponentInfo && opponentInfo.getAmountOccupied() > selectedTile.getNumberOfVoters() / 4)
+            {
+                this.debateButton.setVisible(true);
+            }
+            else
+            {
+                this.debateButton.setVisible(false);
+            }
+        }
     }
 
     private initializeWorkerButtons()
     {
         let button = new Button(this.scene, -this.panelWidth + 150, -this.panelHeight/2, 200, 100);
-        button.getText().setText("Cold Caller\n $30 \n\n Send");
+        button.getText().setText("Cold Caller\n$30\n\nSend");
         button.setOnclickCallback(() => {
             //console.log("Bottom panel button 1 clicked.");
             if(this.spendMoney(30))
@@ -103,7 +118,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         this.add(button);
 
         button = new Button(this.scene, -this.panelWidth + 400, -this.panelHeight/2, 200, 100);
-        button.getText().setText("leafleter\n $100 \n\n Send");
+        button.getText().setText("leafleter\n$100\n\nSend");
         button.setOnclickCallback(() => {
             //console.log("Bottom panel button 2 clicked.");
             if(this.spendMoney(100))
@@ -117,12 +132,13 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
 
         //debate button
         this.debateButton = new Button(this.scene, -this.panelWidth + 650, -this.panelHeight/2, 200, 100);
-        this.debateButton.getText().setText("Call a debate\n $200 \n\n Start");
+        this.debateButton.getText().setText("Call a debate\n$200\n\nStart");
         this.debateButton.setOnclickCallback(() => {
             //console.log("Bottom panel button 2 clicked.");
-            if(this.spendMoney(200))
+            if(this.spendMoney(500))
             {
                 //start a debate game.
+                EventDispatcher.getInstance().emit(GAME_EVENTS.START_DEBATE_GAME);
             }
         });
         //button.setDepth(1);

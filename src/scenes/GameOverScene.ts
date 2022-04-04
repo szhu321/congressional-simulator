@@ -12,8 +12,8 @@ export default class GameOverScene extends Phaser.Scene
         this.initializeCamera();
 
         EventDispatcher.getInstance().emit(GAME_EVENTS.UPDATE_GLOBAL_CAMPAIGN_DATA);
-        let yourVotes = this.getPlayerNumberOfVotes();
-        let opponentVotes = this.getOpponentNumberOfVotes();
+        let yourVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.PLAYER);
+        let opponentVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.OPPONENT);
 
         // yourVotes = 0;
         // opponentVotes = 0;
@@ -40,49 +40,6 @@ export default class GameOverScene extends Phaser.Scene
         textView.setFontSize(fontSize);
         textView.setOrigin(0.5, 0);
         textView.setWordWrapWidth(textBoxWidth, true).setAlign('center');
-    }
-
-    private getPlayerNumberOfVotes(): number
-    {
-        let mapModel = PlayerData.getCampaignData().getMapModel();
-        let rowNumber = mapModel.getRows();
-        let colNumber = mapModel.getCols();
-        let result = 0;
-        for(let row = 0; row < rowNumber; row++)
-        {
-            for(let col = 0; col < colNumber; col++)
-            {
-                let tile = mapModel.getTileAt(row, col);
-                if(tile)
-                {
-                    let info = tile.getCandidateInfoFor(CANDIDATE.PLAYER);
-                    if(info)
-                        result += info.getAmountOccupied();
-                }
-            }
-        }
-        return result;
-    }
-
-    private getOpponentNumberOfVotes(): number
-    {
-        let mapModel = PlayerData.getCampaignData().getMapModel();
-        let rowNumber = mapModel.getRows();
-        let colNumber = mapModel.getCols();
-        let result = 0;
-        for(let row = 0; row < rowNumber; row++)
-        {
-            for(let col = 0; col < colNumber; col++)
-            {
-                let tile = mapModel.getTileAt(row, col);
-                if(tile)
-                {
-                    let info = tile.getCandidateInfoFor(CANDIDATE.OPPONENT);
-                    result += info.getAmountOccupied();
-                }
-            }
-        }
-        return result;
     }
 
     initializeCamera()

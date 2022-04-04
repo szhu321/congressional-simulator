@@ -8,8 +8,7 @@
 export const GAME_CONFIG = {
     game_width: 1400,
     game_height: 800,
-    game_version_number: "0.1",
-    default_day_timer_milliseconds: 2000,
+    game_version_number: "0.2",
 }
 
 /**

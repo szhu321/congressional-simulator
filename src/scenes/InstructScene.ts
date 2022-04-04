@@ -13,12 +13,15 @@ export default class InstructScene extends Phaser.Scene
         let text = `
         FUNDRAISING GAME: PLAYABLE. \n
         To start head to the Fundraising game to collect money. \n
-        To get money click on the text/call button. Next, obtain upgrades so that you can get more money. \n
+        To get money, click on the text/call button. When you have enough money you can purchase upgrades(to get more money). \n
         \n\n
-        CAMPAIGN GAME: WORK IN PROGRESS. \n
-        Next, head to the campaign scene to send workers to campaign. Your goal is to have more voters on your side when the general elections starts.\n
-        To send a worker, click on a tile on the map to select it, then press on a worker on the bottom panel to send them.
-        Note that you would need enough money to send the worker.
+        CAMPAIGN GAME: PLAYABLE. \n
+        Next, head to the campaign scene to send workers to campaign.\n
+        Your goal is to have more voters on your side when the general elections starts(day 180).\n
+        To send a worker, click on a tile on the map to select it, 
+        then press on a worker on the bottom panel to send them.
+        Note that you would need enough money to send the worker.\n
+        Do be fast, before your opponent takes away all the voters.
         \n\n
         DEBATE GAME: KINDOF PLAYABLE. \n
         When you want to capture a tile in the campaign game that's been dominated by your opponent, you will have to play a debate game. \n

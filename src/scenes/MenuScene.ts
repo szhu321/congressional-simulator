@@ -5,6 +5,8 @@ import PlayerData from "../data/PlayerData";
 import PlayerModel from "../model/PlayerModel";
 import EventDispatcher from "../events/EventDispatcher";
 import { GAME_EVENTS } from "../gameenums";
+import { CANDIDATE } from "../campaign/campaignenum";
+import Tile from "../campaign/model/Tile";
 
 export default class MenuScene extends Phaser.Scene {
     private playerNameText: Phaser.GameObjects.Text;
@@ -53,6 +55,26 @@ export default class MenuScene extends Phaser.Scene {
                 this.scene.launch("gameOverScene");
             this.showScene("gameOverScene");
             this.gameOverButton.setVisible(true);
+        });
+
+        EventDispatcher.getInstance().on(GAME_EVENTS.START_DEBATE_GAME, (tile: Tile) => {
+            PlayerData.getGameData().setDebateInSession(true);
+            PlayerData.getGameData().setDebateTile(tile);
+            if(!this.scene.isActive("debateScene"))
+                this.scene.launch("debateScene");
+            this.showScene("debateScene");
+        });
+
+        EventDispatcher.getInstance().on(GAME_EVENTS.END_DEBATE_GAME, (winner: CANDIDATE) => {
+            let tile = PlayerData.getGameData().getDebateTile();
+            if(tile)
+            {
+                //TODO: handle debate winner.
+            }
+            if(!this.scene.isActive("homeScene"))
+                this.scene.launch("homeScene");
+            this.showScene("homeScene");
+            this.scene.stop("debateScene");
         });
 
         //start the campaign scene.

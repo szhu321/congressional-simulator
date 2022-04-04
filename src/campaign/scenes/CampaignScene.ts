@@ -10,6 +10,10 @@ import TileView from '../view/TileView';
 import Tile from '../model/Tile';
 import TileMapView from '../view/TileMapView';
 import TileMapFactory, { TileMapType } from '../factory/TileMapFactory';
+import EventDispatcher from '../../events/EventDispatcher';
+import { GAME_EVENTS } from '../../gameenums';
+import PlayerData from '../../data/PlayerData';
+import { CANDIDATE } from '../campaignenum';
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -24,6 +28,12 @@ export default class CampaignScene extends Phaser.Scene
     
     private timeController: TimeController;
 
+    private yourVotesDisplay: Phaser.GameObjects.Text;
+    private opponentVotesDisplay: Phaser.GameObjects.Text;
+
+    private updateTimePassed: number;
+    private numberOfMSBeforeUpdate: number;
+
     preload()
     {  
         
@@ -36,10 +46,13 @@ export default class CampaignScene extends Phaser.Scene
         this.initializeBackground();
         this.initializeTileMap();
         this.initializeSidePanel();
-        this.initializeDayDisplay();
+        this.initializeTopRightDisplay();
         this.initializeBottomPanel();
         this.input.setTopOnly(false);
         this.input.mouse.disableContextMenu();
+
+        this.updateTimePassed = 0;
+        this.numberOfMSBeforeUpdate = 200;
         //this.scene.setActive(true);
     }
 
@@ -51,11 +64,29 @@ export default class CampaignScene extends Phaser.Scene
         this.tileMapController = this.tileMap.getView().getTileMapController();
     }
 
-    update()
-    {
-        //Event system for the sidepanel.
-        //console.log("Campaign Scene Updating");
+    update(time: number, delta: number): void {
+        this.updateTimePassed += delta;
+        if(this.updateTimePassed > this.numberOfMSBeforeUpdate)
+        {
+            this.updateTimePassed = 0;
+            EventDispatcher.getInstance().emit(GAME_EVENTS.UPDATE_GLOBAL_CAMPAIGN_DATA);
+            let playerVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.PLAYER);
+            let opponentVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.OPPONENT);
+
+            this.yourVotesDisplay.setText(`You: ${playerVotes} Votes`);
+            this.opponentVotesDisplay.setText(`Opponent: ${opponentVotes} Votes`)
+        }
     }
+
+    // update
+    // update()
+    // {
+    //     //Event system for the sidepanel.
+    //     //console.log("Campaign Scene Updating");
+        
+    //     this.yourVotesDisplay.setText("You: 0 Votes");
+    //     this.opponentVotesDisplay.setText("Opponent: 0 Votes")
+    // }
 
     public getTileMapController(): TileMapController{return this.tileMapController;}
 
@@ -88,12 +119,20 @@ export default class CampaignScene extends Phaser.Scene
         this.bottomPanel.setPosition(width, height);
     }
 
-    private initializeDayDisplay()
+    private initializeTopRightDisplay()
     {
         this.dayDisplay = this.add.text(this.game.scale.width, 0, "Day: 1");
         this.dayDisplay.setFontSize(20);
         this.dayDisplay.setOrigin(1, 0);
         this.timeController = new TimeController(this, this.dayDisplay);
+
+        this.yourVotesDisplay = this.add.text(SCENE_CONFIG.scene_width, 20, "You: 0 Votes");
+        this.yourVotesDisplay.setFontSize(20);
+        this.yourVotesDisplay.setOrigin(1, 0);
+
+        this.opponentVotesDisplay = this.add.text(SCENE_CONFIG.scene_width, 40, "Opponent: 0 Votes");
+        this.opponentVotesDisplay.setFontSize(20);
+        this.opponentVotesDisplay.setOrigin(1, 0);
     }
 
     private initializeSidePanel()

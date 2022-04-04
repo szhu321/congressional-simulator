@@ -38,5 +38,7 @@ export enum CARD_RANK {
 
 export enum GAME_EVENTS {
     DISPLAY_GAME_OVER_SCREEN = "display_game_over_screen",
-    UPDATE_GLOBAL_CAMPAIGN_DATA = "update_global_campaign_data"
+    UPDATE_GLOBAL_CAMPAIGN_DATA = "update_global_campaign_data",
+    START_DEBATE_GAME = "start_debate_game",
+    END_DEBATE_GAME = "end_debate_game"
 }

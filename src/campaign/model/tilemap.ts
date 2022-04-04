@@ -1,3 +1,4 @@
+import { CANDIDATE } from "../campaignenum";
 import TileMapView from "../view/TileMapView";
 import Tile from "./Tile";
 import Worker from "./Worker";
@@ -131,6 +132,27 @@ export default class TileMap
             return tiles[Math.floor(Math.random() * tiles.length)];
         }
         return null;
+    }
+
+    public getTotalVotesFor(candidate: CANDIDATE): number
+    {
+        let rowNumber = this.getRows();
+        let colNumber = this.getCols();
+        let result = 0;
+        for(let row = 0; row < rowNumber; row++)
+        {
+            for(let col = 0; col < colNumber; col++)
+            {
+                let tile = this.getTileAt(row, col);
+                if(tile)
+                {
+                    let info = tile.getCandidateInfoFor(candidate);
+                    if(info)
+                        result += info.getAmountOccupied();
+                }
+            }
+        }
+        return result;
     }
 
     // public resetBoard()
