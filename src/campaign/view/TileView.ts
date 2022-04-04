@@ -12,6 +12,9 @@ export default class TileView extends Phaser.GameObjects.Polygon
     private row: number;
     private col: number;
 
+    private playerWorkingIcon: Phaser.GameObjects.Rectangle;
+    private opponentWorkingIcon: Phaser.GameObjects.Rectangle;
+
     constructor(scene: CampaignScene, x: number, y: number, points: any, color: number, row: number, col: number)
     {
         super(scene, x, y, points, color);
@@ -56,10 +59,13 @@ export default class TileView extends Phaser.GameObjects.Polygon
         let playerOccupied = tile.percentageOccupiedBy(CANDIDATE.PLAYER);
         let opponentOccupied = tile.percentageOccupiedBy(CANDIDATE.OPPONENT);
         let tileStrokeSize = 5;
+        
         if(tile.isWorkerOnTile())
         {
             this.setStrokeStyle(tileStrokeSize, 0x37ed98);
         }
+        
+        //Workers on the tile.
 
         let playerColor = "blue";
         let opponentColor = "red";

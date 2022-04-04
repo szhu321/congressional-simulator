@@ -1,5 +1,8 @@
 
 export enum CAMPAIGN_EVENTS {
+    /**
+     * Args: (row: number, col: number, tile: Tile)
+     */
     CAMPAIGN_SELECTED_TILE = "campaign_selected_tile",
     /**
      * Args: (type: WORKER_TYPE, candidate: CANDIDATE, tilePosition: TILE_POSITION)

@@ -9,6 +9,7 @@ import { GAME_EVENTS } from "../gameenums";
 export default class MenuScene extends Phaser.Scene {
     private playerNameText: Phaser.GameObjects.Text;
     private playerMoneyText: Phaser.GameObjects.Text;
+    private gameDayText: Phaser.GameObjects.Text;
     private background: Phaser.GameObjects.Rectangle;
     private fundraisingButton: Button;
     private campaignButton: Button;
@@ -38,11 +39,14 @@ export default class MenuScene extends Phaser.Scene {
         this.playerNameText.setFontSize(20);
 
         //player money.
-        this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 5, MENU_CONFIG.menu_height - 5, "$100");
+        this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 150, MENU_CONFIG.menu_height - 5, "$100");
         this.playerMoneyText.setOrigin(1, 1);
         this.playerMoneyText.setFontSize(20);
         //this.fundraisingButton.setVisible(false);
         //add event for gameover scene.
+        this.gameDayText = this.add.text(MENU_CONFIG.menu_width - 5, MENU_CONFIG.menu_height - 5, "Day:0/180");
+        this.gameDayText.setOrigin(1, 1);
+        this.gameDayText.setFontSize(20);
 
         EventDispatcher.getInstance().on(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN, () => {
             if(!this.scene.isActive("gameOverScene"))
@@ -50,6 +54,16 @@ export default class MenuScene extends Phaser.Scene {
             this.showScene("gameOverScene");
             this.gameOverButton.setVisible(true);
         });
+
+        //start the campaign scene.
+        if(!this.scene.isActive("campaignScene"))
+            this.scene.launch("campaignScene");
+        this.showScene("campaignScene");
+
+        //switch back to homescene;
+        if(!this.scene.isActive("homeScene"))
+            this.scene.launch("homeScene");
+        this.showScene("homeScene");
     }
 
     update()
@@ -58,6 +72,7 @@ export default class MenuScene extends Phaser.Scene {
         let money = PlayerData.getPlayer().getMoney();
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
+        this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/180`);
     }
 
     showScene(sceneName: string)
@@ -99,7 +114,7 @@ export default class MenuScene extends Phaser.Scene {
     {
         let firstButtonStartX = 100;
         let height = MENU_CONFIG.menu_height;
-        let buttonHGap = 50;
+        let buttonHGap = 30;
         let buttonWidth = 130;
         let buttonHeight = 30;
         let button = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * positionNumber, height/2, buttonWidth, buttonHeight);

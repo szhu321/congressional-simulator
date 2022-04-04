@@ -1,5 +1,5 @@
 import { SCENE_CONFIG } from '../../gameconfig';
-import { CAMPAIGN_EVENTS } from '../campaignenum';
+import { CAMPAIGN_EVENTS, CANDIDATE } from '../campaignenum';
 import CampaignEventDispatcher from '../CampaignEventDispatcher';
 import Tile from '../model/Tile';
 
@@ -96,11 +96,22 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
 
     updateSidePanel(tile: Tile)
     {
+        
+        let yourVotes = 0;
+        let info = tile.getCandidateInfoFor(CANDIDATE.PLAYER);
+        if(info)
+            yourVotes = info.getAmountOccupied();
+        let opponentVotes = 0;
+        info = tile.getCandidateInfoFor(CANDIDATE.OPPONENT);
+        if(info)
+            opponentVotes = info.getAmountOccupied();
         this.updateDisplay([
             `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
-            `Voters: ${tile.getNumberOfVoters()}`,
-            `Voters Secured: ${tile.totalOccupied()}`,
-            `Worker On Tile: ${tile.isWorkerOnTile()}`,
+            `Total Voters: ${tile.getNumberOfVoters()}`,
+            `Total Voters Secured: ${tile.totalOccupied()}`,
+            `Your Voters: ${yourVotes}`,
+            `Opponent Voters: ${opponentVotes}`,
+            //`Worker On Tile: ${tile.isWorkerOnTile()}`,
             `Political Stance (-1 <- Liberal Conservative -> 1):`,
             `Economy: ${tile.getEconomy()}`,
             `Healthcare: ${tile.getHealthcare()}`,

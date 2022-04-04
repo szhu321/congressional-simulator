@@ -16,6 +16,8 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
     private backgroundBorderColor: number;
     private campaignScene: CampaignScene;
 
+    private debateButton: Button;
+
     constructor(scene: CampaignScene)
     {
         super(scene);
@@ -95,6 +97,21 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         this.items.push(button);
         this.scene.add.existing(button);
         this.add(button);
+
+        //debate button
+        this.debateButton = new Button(this.scene, -this.panelWidth + 650, -this.panelHeight/2, 200, 100);
+        this.debateButton.getText().setText("Call a debate\n $200 \n\n Start");
+        this.debateButton.setOnclickCallback(() => {
+            //console.log("Bottom panel button 2 clicked.");
+            if(this.spendMoney(200))
+            {
+                //start a debate game.
+            }
+        });
+        //button.setDepth(1);
+        this.items.push(this.debateButton);
+        this.scene.add.existing(this.debateButton);
+        this.add(this.debateButton);
     }
 
     /**
