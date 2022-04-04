@@ -33,7 +33,7 @@ export default class GameOverScene extends Phaser.Scene
         Opponent Votes: ${opponentVotes}\n
 
         `
-        let fontSize = 36;
+        let fontSize = 32;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);
 
         let textView = this.add.text(SCENE_CONFIG.scene_width / 2, 10, text);

@@ -22,7 +22,7 @@ export default class BackStoryScene extends Phaser.Scene
         You are an aspiring congressperson trying to get into office. You have no money. Either way your goal is to get the support of your people so you may get/stay in office.
 
         `
-        let fontSize = 22;
+        let fontSize = 18;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);
 
         let textView = this.add.text(SCENE_CONFIG.scene_width / 2, 10, text);

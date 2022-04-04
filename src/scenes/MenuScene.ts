@@ -95,7 +95,7 @@ export default class MenuScene extends Phaser.Scene {
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
         this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/180`);
-        this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
+        //this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
     }
 
     showScene(sceneName: string)

@@ -31,7 +31,7 @@ export default class InstructScene extends Phaser.Scene
         To attack your opponent's card drag a card from your board onto your opponent's card.\n
         The game ends when one side obtains all the votes.
         `
-        let fontSize = 22;
+        let fontSize = 18;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);
 
         let textView = this.add.text(SCENE_CONFIG.scene_width / 2, 10, text);
