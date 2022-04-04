@@ -1,7 +1,7 @@
 import PlayerData from "../../data/PlayerData";
 import EventDispatcher from "../../events/EventDispatcher";
 import { GAME_CONFIG } from "../../gameconfig";
-import { GAME_EVENTS } from "../../gameenums";
+import { DAY_SPEED, GAME_EVENTS } from "../../gameenums";
 import CampaignScene from "../scenes/CampaignScene";
 
 export default class TimeController
@@ -28,7 +28,7 @@ export default class TimeController
                 //prepare gameover screen.
                 EventDispatcher.getInstance().emit(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN);
             }
-        }, GAME_CONFIG.default_day_timer_milliseconds);
+        }, DAY_SPEED.FASTER);
     }
 
     public stopTimer()

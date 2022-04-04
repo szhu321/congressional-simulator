@@ -1,4 +1,23 @@
 
+/**
+ * The number of milliseconds(in real life) that will pass before a day(in game) will pass.
+ */
+export enum DAY_SPEED {
+    /**
+     * 86,400,000 milliseconds.
+     */
+    REAL_TIME = 86400000,
+    SLOWEST = 40000,
+    SLOW = 20000,
+    /**
+     * 10000 milliseconds. Around 30min of gameplay time for 180 days in game.
+     */
+    NORMAL = 10000,
+    FAST = 5000,
+    FASTER = 2000,
+    FASTEST = 500,
+    FASTER_THAN_FASTEST = 30,
+}
 
 export enum POLITICAL_PARTY {
     REPUBLICAN_PARTY = "republican_party",

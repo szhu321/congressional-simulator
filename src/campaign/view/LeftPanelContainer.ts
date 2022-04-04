@@ -1,3 +1,4 @@
+import PlayerData from '../../data/PlayerData';
 import { SCENE_CONFIG } from '../../gameconfig';
 import { CAMPAIGN_EVENTS, CANDIDATE } from '../campaignenum';
 import CampaignEventDispatcher from '../CampaignEventDispatcher';
@@ -29,9 +30,13 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         this.backgroundBorderColor = 0xffffff;
         this.texts = [];
         this.initialize();
-        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, (row: number, col: number, tile: Tile) => {
-            this.updateSidePanel(tile);
-        });
+        this.setActive(true);
+    }
+
+    preUpdate()
+    {
+        //check player data for the current selected tile and display its information.
+        this.updateSidePanel(PlayerData.getCampaignData().getSelectedTile());
     }
 
     private initialize()
@@ -94,9 +99,14 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         }
     }
 
-    updateSidePanel(tile: Tile)
+    public updateSidePanel(tile: Tile): void
     {
-        
+        if(!tile)
+        {
+            this.updateDisplay([]);
+            return;
+        }
+
         let yourVotes = 0;
         let info = tile.getCandidateInfoFor(CANDIDATE.PLAYER);
         if(info)

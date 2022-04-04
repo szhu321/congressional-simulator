@@ -1,11 +1,14 @@
 import "phaser";
 import Button from "../phaserobjs/Button";
 import { GAME_CONFIG, SCENE_CONFIG } from "../gameconfig";
+import PlayerData from "../data/PlayerData";
 
 export default class HomeScene extends Phaser.Scene {
     private fundraisingButton: Button;
     private campaignButton: Button;
     private debateButton: Button;
+    private debateButtonImage: Phaser.GameObjects.Image;
+    private debateButtonText: Phaser.GameObjects.Text;
     private feedbackButton: Button;
 
     init()
@@ -59,6 +62,14 @@ export default class HomeScene extends Phaser.Scene {
         titleText.setOrigin(0.5, 0.5);
 
         
+    }
+
+    update(time: number, delta: number): void
+    {
+        let debateInSession = PlayerData.getGameData().isDebateInSession();
+        this.debateButton.setVisible(debateInSession);
+        this.debateButtonImage.setVisible(debateInSession);
+        this.debateButtonText.setVisible(debateInSession);
     }
 
     initializeCamera()
@@ -168,9 +179,9 @@ export default class HomeScene extends Phaser.Scene {
         //button3 Debate Game
         this.debateButton = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * 2, height/2, buttonWidth, buttonHeight);
         this.debateButton.getText().setText("");
-        let debateButtonImage = this.add.image(0,0,'debateButton');
-        debateButtonImage.setDisplaySize(buttonWidth, buttonHeight);
-        this.debateButton.add(debateButtonImage);
+        this.debateButtonImage = this.add.image(0,0,'debateButton');
+        this.debateButtonImage.setDisplaySize(buttonWidth, buttonHeight);
+        this.debateButton.add(this.debateButtonImage);
         this.debateButton.setOnclickCallback(() => {
             //this.scene.switch('debateScene');
             if(!this.scene.isActive('debateScene'))
@@ -178,9 +189,9 @@ export default class HomeScene extends Phaser.Scene {
             this.showScene('debateScene');
         });
         this.add.existing(this.debateButton);
-        let debateButtonText = this.add.text(this.debateButton.x, this.debateButton.y + ( this.debateButton.height / 2 ) + buttonTextYOffset, "Debate");
-        debateButtonText.setOrigin(0.5, 0.5);
-        debateButtonText.setFontSize(fontSize);
+        this.debateButtonText = this.add.text(this.debateButton.x, this.debateButton.y + ( this.debateButton.height / 2 ) + buttonTextYOffset, "Debate");
+        this.debateButtonText.setOrigin(0.5, 0.5);
+        this.debateButtonText.setFontSize(fontSize);
 
         //feedback button
         this.feedbackButton = new Button(this, 250/2 + 10, 35 / 2 + 10, 250, 35);

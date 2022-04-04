@@ -1,3 +1,4 @@
+import Tile from "../campaign/model/Tile";
 import TileMap from "../campaign/model/TileMap";
 
 /**
@@ -7,6 +8,7 @@ import TileMap from "../campaign/model/TileMap";
 export default class CampaignModel
 {
     private mapModel: TileMap;
+    private selectedTile: Tile;
 
     constructor()
     {
@@ -15,4 +17,7 @@ export default class CampaignModel
 
     public getMapModel(): TileMap {return this.mapModel;}
     public setMapModel(value: TileMap) {this.mapModel = value;}
+    public setSelectedTile(value: Tile) {this.selectedTile = value;}
+    public getSelectedTile(): Tile {return this.selectedTile;}
+
 }

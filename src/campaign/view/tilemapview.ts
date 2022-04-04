@@ -1,7 +1,9 @@
+import PlayerData from "../../data/PlayerData";
 import { CAMPAIGN_EVENTS, CANDIDATE, TILE_POSITION, WORKER_TYPE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMapController from "../controller/TileMapController";
 import WorkerFactory from "../factory/WorkerFactory";
+import Tile from "../model/Tile";
 import TileMap from "../model/TileMap";
 import Worker from "../model/Worker";
 import TileView from "./TileView";
@@ -35,16 +37,18 @@ export default class TileMapView extends Phaser.GameObjects.Container
         this.initializeSelectedHexagonOverlay();
         
         //this.tileMapTiles;
-        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, (row: number, col: number) => {
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, (row: number, col: number, tile: Tile) => {
             if(this.selectedTile.row === row && this.selectedTile.col === col)
             {
                 this.selectedTile.row = -1;
                 this.selectedTile.col = -1;
+                PlayerData.getCampaignData().setSelectedTile(null);
             }
             else
             {
                 this.selectedTile.row = row;
                 this.selectedTile.col = col;
+                PlayerData.getCampaignData().setSelectedTile(tile);
             }
             //console.log(this.selectedTile, row, col);
         })

@@ -34,7 +34,7 @@ export default class MenuScene extends Phaser.Scene {
         this.initializeMenu();
 
         //player name.
-        this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "Sheng Wei");
+        this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "[Name]");
         this.playerNameText.setOrigin(1, 0);
         this.playerNameText.setFontSize(20);
 
@@ -73,6 +73,7 @@ export default class MenuScene extends Phaser.Scene {
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
         this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/180`);
+        this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
     }
 
     showScene(sceneName: string)

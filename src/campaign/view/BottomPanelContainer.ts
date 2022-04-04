@@ -28,6 +28,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         this.backgroundBorderColor = 0xffffff;
         this.items = [];
         this.campaignScene = scene;
+        this.setActive(true);
         this.initialize();
     }
 
@@ -68,6 +69,22 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, (pointer: Phaser.Input.Pointer, localX: number, localY: number, event: Phaser.Types.Input.EventData) => {
             event.stopPropagation();
         })
+    }
+
+    preUpdate()
+    {
+        for(let item of this.items)
+        {
+            let selectedTile = PlayerData.getCampaignData().getSelectedTile();
+            if(selectedTile)
+            {
+                item.setVisible(true);
+            }
+            else
+            {
+                item.setVisible(false);
+            }
+        }
     }
 
     private initializeWorkerButtons()
