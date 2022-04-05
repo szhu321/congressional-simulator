@@ -59,16 +59,19 @@ export default class ClickerModel{
         PlayerData.getPlayer().addMoney(-1 * worker.getCost());
         worker.addWorker();
         this.updateRevenueRate();
+        this.unlockWorkersAndUpgrades();
         this.updateView();
     }
 
     updateCurrentFunds = (deltaT: number) => {
         PlayerData.getPlayer().addMoney(this.revenueRate * (deltaT / 1000));
+        this.unlockWorkersAndUpgrades();
         this.updateView();
     }
           
     clickCallText(){
         PlayerData.getPlayer().addMoney(this.clickRevenue);
+        this.unlockWorkersAndUpgrades();
         this.updateView();
     }
 
@@ -82,10 +85,32 @@ export default class ClickerModel{
             this.updateRevenueRate();
         }
         this.upgrades.splice(upgradeIndex, 1);
-        if(this.upgrades.length < (this.upgradePage * this.view.getUpgradesPerPage() + 1)){
+        if(this.upgrades.filter(upgrade => upgrade.getIsUnlocked()).length < (this.upgradePage * this.view.getUpgradesPerPage() + 1)){
             this.upgradePage--;
         }
         this.updateView();
+    }
+
+    unlockWorkersAndUpgrades(){
+        let currentFunds = PlayerData.getPlayer().getMoney();
+        for(let i = 0; i < this.workers.length; i++){
+            let worker = this.workers[i];
+            if(currentFunds >= worker.getCost() && !worker.getIsUnlocked()){
+                worker.unlockPurchase();
+            }
+        }
+        for(let i = 0; i < this.upgrades.length; i++){
+            let upgrade = this.upgrades[i];
+            if(currentFunds >= upgrade.getCost() && !upgrade.getIsUnlocked()){
+                if(upgrade.getTarget() == 0){
+                    upgrade.unlockPurchase();
+                }else{
+                    if(this.workers[upgrade.getTarget() - 1].getAmount() > 0){
+                        upgrade.unlockPurchase();
+                    }
+                }
+            }
+        }
     }
 
     updateRevenueRate(){

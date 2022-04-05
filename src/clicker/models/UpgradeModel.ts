@@ -6,7 +6,8 @@ export default class UpgradeModel{
     private cost: number;
     private description: string;
     private target: number;
-    private view: UpgradeView
+    private view: UpgradeView;
+    private isUnlocked: boolean;
 
     constructor(name: string, multiplier: number, cost: number, description: string, target: number){
         this.name = name;
@@ -15,6 +16,7 @@ export default class UpgradeModel{
         this.description = description;
         this.target = target;
         this.view = null;
+        this.isUnlocked = false;
     }
 
     setView(view: UpgradeView){
@@ -43,6 +45,14 @@ export default class UpgradeModel{
 
     getTarget(){
         return this.target;
+    }
+
+    getIsUnlocked(){
+        return this.isUnlocked;
+    }
+
+    unlockPurchase(){
+        this.isUnlocked = true;
     }
 
     updateView()

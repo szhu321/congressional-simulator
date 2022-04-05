@@ -23,7 +23,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
     initialize(model: BoardModel){
         let zone = new Zone(this.scene);
-        let playerDropZone = zone.renderZone(700, 460).setName("playerZone");
+        let playerDropZone = zone.renderZone(700, 410).setName("playerZone");
         this.scene.input.setTopOnly(false);
         zone.renderOutline(playerDropZone);
         let opponentDropZone = zone.renderZone(700, 260).setName("opponentZone");
@@ -32,8 +32,8 @@ export default class BoardView extends Phaser.GameObjects.Layer{
         let opponentVoteZone = this.scene.add.zone(1300, 80, 100, 100).setRectangleDropZone(100, 100).setName("opponentVotes");
         zone.renderOutline(opponentVoteZone);
 
-        let playerBattleFundsText = this.scene.add.text(125, 550, [`Current Funds: $${model.getPlayer1Money()}`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
-        let playerVotesText = this.scene.add.text(125, 650, [`${model.getPlayer1Votes()} Votes`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
+        let playerBattleFundsText = this.scene.add.text(125, 500, [`Current Funds: $${model.getPlayer1Money()}`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
+        let playerVotesText = this.scene.add.text(125, 590, [`${model.getPlayer1Votes()} Votes`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
         let opponentBattleFundsText = this.scene.add.text(1300, 170, [`Current Funds: $${model.getPlayer2Money()}`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
         let opponentVotesText = this.scene.add.text(1300, 80, [`${model.getPlayer2Votes()} Votes`]).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setOrigin(0.5, 0.5);
 
@@ -56,7 +56,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
         let playerBoardZone = model.getPlayer1Board().getView();
         this.scene.add.existing(playerBoardZone);
-        playerBoardZone.setPosition(this.scene.game.canvas.width / 4, SCENE_CONFIG.scene_height - 270);
+        playerBoardZone.setPosition(this.scene.game.canvas.width / 4, SCENE_CONFIG.scene_height - 260);
 
         let opponentHandZone = model.getPlayer2Hand().getView();
         this.scene.add.existing(opponentHandZone);
@@ -64,7 +64,7 @@ export default class BoardView extends Phaser.GameObjects.Layer{
 
         let opponentBoardZone = model.getPlayer2Board().getView();
         this.scene.add.existing(opponentBoardZone);
-        opponentBoardZone.setPosition(this.scene.game.canvas.width / 4, 240);
+        opponentBoardZone.setPosition(this.scene.game.canvas.width / 4, 260);
 
         playerDeckZone.on('pointerdown', () => {
             this.controller.drawCardPlayer1();

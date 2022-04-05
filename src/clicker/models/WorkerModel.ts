@@ -6,6 +6,7 @@ export default class WorkerModel{
     private cost: number;
     private revenueRate: number;
     private view: WorkerView;
+    private isUnlocked: boolean;
 
     constructor(name: string, revenueRate: number, cost: number){
         this.name = name;
@@ -13,6 +14,7 @@ export default class WorkerModel{
         this.cost = cost;
         this.revenueRate = revenueRate;
         this.view = null;
+        this.isUnlocked = false;
     }
 
     setRevenueRate(newRevenueRate: number){
@@ -33,6 +35,10 @@ export default class WorkerModel{
         this.updateView();
     }
 
+    unlockPurchase(){
+        this.isUnlocked = true;
+    }
+
     getName(){
         return this.name;
     }
@@ -47,6 +53,10 @@ export default class WorkerModel{
 
     getRevenueRate(){
         return this.revenueRate;
+    }
+
+    getIsUnlocked(){
+        return this.isUnlocked;
     }
 
     updateView()

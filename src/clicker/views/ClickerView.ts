@@ -39,6 +39,17 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
     }
 
     initialize(model: ClickerModel){
+        let money = this.scene.add.particles('money');
+        let moneyEmitter = money.createEmitter({
+            scale: { min: 0.1, max: 0.5 },
+            speed: { min: 100, max: 200 },
+            quantity: 0.1,
+            frequency: 1,
+            lifespan: 1000,
+            gravityY: 100,
+            on: false,
+        });
+
         let statsText = this.scene.add.text(75, 50, [`Stats`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
         let currentFundsText = this.scene.add.text(75, 150, [`Current Funds: $${millify(PlayerData.getPlayer().getMoney(), {
             precision: 2
@@ -56,8 +67,11 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         clickCallRect.setPosition(clickCallText.getCenter().x - clickCallRect.width / 2, clickCallText.getCenter().y - clickCallRect.height / 2);
         clickCallRect.setInteractive({useHandCursor: true});
 
+        moneyEmitter.setPosition(clickCallRect.getCenter().x, clickCallRect.getCenter().y);
+
         clickCallRect.on('pointerup', () => {
             this.controller.processClickCallText();
+            moneyEmitter.emitParticle(1, clickCallRect.getCenter().x, clickCallRect.getCenter().y);
         })
 
         let workerNextRect = this.scene.add.rectangle(0, 0, 0, 0, this.buttonColor);
@@ -103,6 +117,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         upgradePrevRect.on('pointerup', () => {
             this.controller.processUpgradePrevPage();
         })
+
 
         this.add(statsText);
         this.add(currentFundsText);
@@ -166,7 +181,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         }
         this.workerViews.splice(0, this.workerViews.length);
 
-        let workers = model.getWorkers();
+        let workers = model.getWorkers().filter(worker => worker.getIsUnlocked());
         for(let i = 0; i < this.workersPerPage && ((i + model.getWorkerPage() * this.workersPerPage) < workers.length); i++){
             let workerView = workers[i + model.getWorkerPage() * this.workersPerPage].getView();
             workerView.setPosition(625, 130 + 70 * i);
@@ -199,7 +214,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         }
         this.upgradeViews.splice(0, this.upgradeViews.length);
 
-        let upgrades = model.getUpgrades();
+        let upgrades = model.getUpgrades().filter(upgrade => upgrade.getIsUnlocked());
         for(let i = 0; i < this.upgradesPerPage && ((i + model.getUpgradePage() * this.upgradesPerPage) < upgrades.length); i++){
             let upgradeView = upgrades[i + model.getUpgradePage() * this.upgradesPerPage].getView();
             upgradeView.setPosition(1075, 150 + 110 * i);

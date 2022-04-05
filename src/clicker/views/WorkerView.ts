@@ -20,6 +20,7 @@ export default class WorkerView extends ClickerButton{
         let workerName = children[1] as Phaser.GameObjects.Text;
         workerName.setPosition(-1 * this.maxWidth / 2, -1 * this.maxHeight / 2);
         workerName.setWordWrapWidth(this.maxWidth / 2, true)/*.setAlign('center')*/;
+        workerName.setFontStyle('bold');
 
         // Worker Hired Amount
         let workerAmount = children[2] as Phaser.GameObjects.Text;
