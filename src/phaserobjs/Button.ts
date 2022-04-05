@@ -59,6 +59,11 @@ export default class Button extends Phaser.GameObjects.Container
     {
         this.onclickCallback = onclickCallback;
         this.background.removeAllListeners();
-        this.background.addListener('pointerdown', this.onclickCallback);
+        this.background.addListener('pointerup', this.onclickCallback);
+    }
+
+    public setBackgroundColor(color: number)
+    {
+        this.background.setFillStyle(color);
     }
 }

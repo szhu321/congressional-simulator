@@ -98,6 +98,16 @@ export default class Tile
         return 0;
     }
 
+    public getAmountOccupiedBy(candidate: CANDIDATE): number
+    {
+        let candidateInfo = this.getCandidateInfoFor(candidate);
+        if(candidateInfo)
+        {
+            return candidateInfo.getAmountOccupied();
+        }
+        return 0;
+    }
+
     public getCandidateInfoFor(candidate: CANDIDATE): CandidateInfo
     {
         for(let info of this.candidateInfos)
@@ -139,7 +149,7 @@ export default class Tile
 
     /**
      * 
-     * @param name - The name of the player that is occpying this tile.
+     * @param candidate - The candidate.
      * @param amount - The amount of votes that the player will occupy.
      * @returns The actual number of votes that the player occupied.
      */
@@ -168,6 +178,33 @@ export default class Tile
         }
         this.updateView();
         return amount;
+    }
+
+    /**
+     * 
+     * @param candidate - The candidate.
+     * @param amount - The amount that will be deoccupied or tried to be deoccupied.
+     * @returns The actual amount that was deoccupied.
+     */
+    public deoccupy(candidate: CANDIDATE, amount: number): number
+    {
+        let candidateInfo = this.getCandidateInfoFor(candidate);
+        if(candidateInfo)
+        {
+            let amountOccupied = candidateInfo.getAmountOccupied();
+            let amountDeoccupied = 0;
+            if(amount > amountOccupied)
+            {
+                amountDeoccupied = amountOccupied;
+            }
+            else
+            {
+                amountDeoccupied = amount;
+            }
+            candidateInfo.setAmountOccupied(amountOccupied - amountDeoccupied);
+            return amountDeoccupied;
+        }
+        return 0;
     }
 
     /**

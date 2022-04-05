@@ -200,6 +200,7 @@ export default class HomeScene extends Phaser.Scene {
             console.log('Opening window to feedback form.');
             window.open("https://forms.gle/CPLqcUc5CDEduhry6", "_blank");
         });
+        this.feedbackButton.setBackgroundColor(0xeba134);
         this.add.existing(this.feedbackButton);
 
         //verison text

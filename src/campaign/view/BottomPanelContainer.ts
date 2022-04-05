@@ -132,10 +132,10 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
 
         //debate button
         this.debateButton = new Button(this.scene, -this.panelWidth + 650, -this.panelHeight/2, 200, 100);
-        this.debateButton.getText().setText("Call a debate\n$200\n\nStart");
+        this.debateButton.getText().setText("Call a debate\n$500\n\nStart");
         this.debateButton.setOnclickCallback(() => {
             //console.log("Bottom panel button 2 clicked.");
-            if(this.spendMoney(500))
+            if(!PlayerData.getGameData().isDebateInSession() && this.spendMoney(500))
             {
                 //start a debate game.
                 EventDispatcher.getInstance().emit(GAME_EVENTS.START_DEBATE_GAME);
