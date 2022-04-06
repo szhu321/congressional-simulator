@@ -85,7 +85,7 @@ export default class ClickerModel{
             this.updateRevenueRate();
         }
         this.upgrades.splice(upgradeIndex, 1);
-        if(this.upgrades.filter(upgrade => upgrade.getIsUnlocked()).length < (this.upgradePage * this.view.getUpgradesPerPage() + 1)){
+        if(this.upgrades.filter(upgrade => upgrade.getIsUnlocked()).length < (this.upgradePage * this.view.getUpgradesPerPage() + 1) && this.upgradePage > 0){
             this.upgradePage--;
         }
         this.updateView();

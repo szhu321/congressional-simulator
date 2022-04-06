@@ -67,11 +67,11 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         clickCallRect.setPosition(clickCallText.getCenter().x - clickCallRect.width / 2, clickCallText.getCenter().y - clickCallRect.height / 2);
         clickCallRect.setInteractive({useHandCursor: true});
 
-        moneyEmitter.setPosition(clickCallRect.getCenter().x, clickCallRect.getCenter().y);
+        moneyEmitter.setPosition(clickCallRect.getCenter().x + clickCallRect.width / 2, clickCallRect.getCenter().y + clickCallRect.height / 2);
 
         clickCallRect.on('pointerup', () => {
             this.controller.processClickCallText();
-            moneyEmitter.emitParticle(1, clickCallRect.getCenter().x, clickCallRect.getCenter().y);
+            moneyEmitter.emitParticle(1);
         })
 
         let workerNextRect = this.scene.add.rectangle(0, 0, 0, 0, this.buttonColor);
