@@ -30,8 +30,9 @@ export default class GameOverScene extends Phaser.Scene
         ${winText}\n\n
         End Statistics:\n\n
         Your Votes: ${yourVotes}\n
-        Opponent Votes: ${opponentVotes}\n
+        Opponent Votes: ${opponentVotes}\n\n
 
+        To restart refresh the website.
         `
         let fontSize = 32;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);

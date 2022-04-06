@@ -7,6 +7,7 @@ import EventDispatcher from "../events/EventDispatcher";
 import { GAME_EVENTS } from "../gameenums";
 import { CANDIDATE } from "../campaign/campaignenum";
 import Tile from "../campaign/model/Tile";
+import DebateScene from "../debate/scenes/DebateScene";
 
 export default class MenuScene extends Phaser.Scene {
     private playerNameText: Phaser.GameObjects.Text;
@@ -34,7 +35,7 @@ export default class MenuScene extends Phaser.Scene {
     create()
     {
         this.initializeMenu();
-
+        //PlayerData.getPlayer().addMoney(5000);
         //player name.
         this.playerNameText = this.add.text(MENU_CONFIG.menu_width - 5, 5, "[Name]");
         this.playerNameText.setOrigin(1, 0);
@@ -57,24 +58,39 @@ export default class MenuScene extends Phaser.Scene {
             this.gameOverButton.setVisible(true);
         });
 
-        EventDispatcher.getInstance().on(GAME_EVENTS.START_DEBATE_GAME, (tile: Tile) => {
+        EventDispatcher.getInstance().on(GAME_EVENTS.START_DEBATE_GAME, () => {
             PlayerData.getGameData().setDebateInSession(true);
-            PlayerData.getGameData().setDebateTile(tile);
-            if(!this.scene.isActive("debateScene"))
-                this.scene.launch("debateScene");
-            this.showScene("debateScene");
-        });
+            PlayerData.getGameData().setDebateTile(PlayerData.getCampaignData().getSelectedTile());
+            // setTimeout(() => {
+            //     if(!this.scene.isActive("debateScene"))
+            //         this.scene.launch("debateScene");
+            //     this.showScene("debateScene");
+            // }, 200);
+        }, this);
 
         EventDispatcher.getInstance().on(GAME_EVENTS.END_DEBATE_GAME, (winner: CANDIDATE) => {
+            PlayerData.getGameData().setDebateInSession(false);
             let tile = PlayerData.getGameData().getDebateTile();
             if(tile)
             {
-                //TODO: handle debate winner.
+                //handle debate winner.
+                let playerOccupied = tile.getAmountOccupiedBy(CANDIDATE.PLAYER)
+                let opponentOccupied = tile.getAmountOccupiedBy(CANDIDATE.OPPONENT);
+                if(winner == CANDIDATE.PLAYER)
+                {
+                    tile.occupy(CANDIDATE.PLAYER ,tile.deoccupy(CANDIDATE.OPPONENT, opponentOccupied));
+                }
+                else
+                {
+                    tile.occupy(CANDIDATE.OPPONENT, tile.deoccupy(CANDIDATE.PLAYER, playerOccupied));
+                }
             }
             if(!this.scene.isActive("homeScene"))
                 this.scene.launch("homeScene");
             this.showScene("homeScene");
-            this.scene.stop("debateScene");
+
+            this.scene.remove("debateScene");
+            this.scene.add("debateScene", DebateScene);
         });
 
         //start the campaign scene.
@@ -95,7 +111,7 @@ export default class MenuScene extends Phaser.Scene {
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
         this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/180`);
-        //this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
+        this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
     }
 
     showScene(sceneName: string)
@@ -117,7 +133,7 @@ export default class MenuScene extends Phaser.Scene {
 
     changeCameraViewportOffScreen(camera: Phaser.Cameras.Scene2D.Camera)
     {
-        let x = SCENE_CONFIG.scene_width + 100;
+        let x = SCENE_CONFIG.scene_width + 3000;
         let y = SCENE_CONFIG.scene_camera_viewport_y;
         let width = SCENE_CONFIG.scene_width;
         let height = SCENE_CONFIG.scene_height;
@@ -143,7 +159,7 @@ export default class MenuScene extends Phaser.Scene {
         let button = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * positionNumber, height/2, buttonWidth, buttonHeight);
         button.getText().setText(buttonText);
         button.setOnclickCallback(() => {
-            console.log('switching to clicker game');
+            //console.log('switching to clicker game');
             //this.scene.switch('clickerScene');
             if(!this.scene.isActive(sceneName))
                 this.scene.launch(sceneName);
@@ -170,6 +186,7 @@ export default class MenuScene extends Phaser.Scene {
         this.fundraisingButton = this.addMenuButton("clickerScene", "Fundraising", 1);
         this.campaignButton = this.addMenuButton("campaignScene", "Campaign", 2);
         this.debateButton = this.addMenuButton("debateScene", "Debate", 3);
+        this.debateButton.setBackgroundColor(0xeba134);
         this.instructButton = this.addMenuButton("instructScene", "Instructions", 4);
         this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 5);
         this.gameOverButton = this.addMenuButton("gameOverScene", "GameOver", 6);

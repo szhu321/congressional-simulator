@@ -1,3 +1,6 @@
+import { CANDIDATE } from "../../campaign/campaignenum";
+import EventDispatcher from "../../events/EventDispatcher";
+import { GAME_EVENTS } from "../../gameenums";
 import BoardModel from "../models/BoardModel";
 import { TURN } from "../models/BoardModel";
 
@@ -342,6 +345,7 @@ export default class BoardController
         if(this.model.getPlayer2Votes() <= 0)
         {
             console.log("*********GAME OVER: Player 1 wins*************");
+            EventDispatcher.getInstance().emit(GAME_EVENTS.END_DEBATE_GAME, CANDIDATE.PLAYER);
         }
         return true;
     }
@@ -378,6 +382,7 @@ export default class BoardController
         if(this.model.getPlayer1Votes() <= 0)
         {
             console.log("*********GAME OVER: Player 2 wins*************");
+            EventDispatcher.getInstance().emit(GAME_EVENTS.END_DEBATE_GAME, CANDIDATE.OPPONENT);
         }
         return true;
     }
