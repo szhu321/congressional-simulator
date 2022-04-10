@@ -26,14 +26,14 @@ export default class TileView extends Phaser.GameObjects.Polygon
         this.setOrigin(0.5, 0.5);
         this.setStrokeStyle(tileStrokeSize, 0xaaaaaa);
         this.setInteractive({hitArea: hitarea, hitAreaCallback: Phaser.Geom.Polygon.Contains ,useHandCursor: true});
-        this.on("pointerover", () => {
+        this.on(Phaser.Input.Events.POINTER_OVER, () => {
             this.setAlpha(0.8);
             //this.drawTile(this.tileMap.getTileAt(row,col));
         });
-        this.on("pointerout", () => {
+        this.on(Phaser.Input.Events.POINTER_OUT, () => {
             this.setAlpha(1);
         });
-        this.on("pointerup", (pointer: Phaser.Input.Pointer) => {
+        this.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonReleased())
             {
                 //add a event system.

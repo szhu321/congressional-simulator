@@ -14,6 +14,8 @@ import EventDispatcher from '../../events/EventDispatcher';
 import { GAME_EVENTS } from '../../gameenums';
 import PlayerData from '../../data/PlayerData';
 import { CANDIDATE } from '../campaignenum';
+import Popup from '../../phaserobjs/Popup';
+import Content from '../../phaserobjs/Content';
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -34,6 +36,8 @@ export default class CampaignScene extends Phaser.Scene
     private updateTimePassed: number;
     private numberOfMSBeforeUpdate: number;
 
+    private popupWindow: Popup;
+
     preload()
     {  
         
@@ -53,7 +57,30 @@ export default class CampaignScene extends Phaser.Scene
 
         this.updateTimePassed = 0;
         this.numberOfMSBeforeUpdate = 200;
+
+        this.initializePopupWindow();
         //this.scene.setActive(true);
+    }
+
+    private initializePopupWindow()
+    {
+        this.popupWindow = new Popup(this);
+        //create the content of the popup.
+        let content = new Content(this, 100, 100, 1000, 500);
+        let textContent = `
+        Welcome to campaigning.\n\n
+        Your goal is to have more voters on your side when the general elections starts(day 180).\n
+        To send a worker, click on a tile on the map to select it, 
+        then press on a worker on the bottom panel to send them.
+        Note that you would need enough money to send the worker.\n
+        Do be fast, before your opponent takes away all the voters.
+        `
+        let textObj = new Phaser.GameObjects.Text(this, 0, 0, textContent, {});
+        textObj.setOrigin(0.5, 0.5);
+        textObj.setAlign("center");
+        content.add(textObj);
+        this.popupWindow.setContent(content);
+        this.popupWindow.showPopup();
     }
 
     private initializeTileMap()

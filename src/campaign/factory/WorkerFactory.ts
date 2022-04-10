@@ -3,6 +3,15 @@ import WorkerController from "../controller/WorkerController";
 import Worker from "../model/Worker"
 import WorkerView from "../view/WorkerView";
 
+export enum WORKER_STATS {
+    COLD_CALLER_DAILY_SALARY = 30,
+    COLD_CALLER_PERSUASIVE_POWER = 1,
+    COLD_CALLER_INFLUENCE_POWER = 0,
+    LEAFLETER_DAILY_SALARY = 300,
+    LEAFLETER_PERSUASIVE_POWER = 2,
+    LEAFLETER_INFLUENCE_POWER = 1
+}
+
 export default class WorkerFactory
 {
     public static getWorker(scene: Phaser.Scene, type: WORKER_TYPE): Worker
