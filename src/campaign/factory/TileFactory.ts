@@ -5,12 +5,14 @@ import TileView from "../view/TileView";
 
 export default class TileFactory
 {
-    public static getTile(scene: CampaignScene): Tile
+    public static getTile(scene: CampaignScene, population: number = -1): Tile
     {
         let verticalDiameter = 90;
         let color = 0xeeeeee;
         let points = this.polygonPoints(verticalDiameter);
+
         let tileModel = new Tile();
+
         let tileController = new TileController();
         let tileView = new TileView(scene, 0, 0, points, color, 0, 0);
         tileModel.setView(tileView);

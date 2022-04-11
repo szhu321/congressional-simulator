@@ -9,6 +9,7 @@ import BackStoryScene from './scenes/BackStoryScene';
 import GameOverScene from './scenes/GameOverScene';
 //import { GAME_CONFIG } from './gameconfig.js';
 import { GAME_CONFIG } from './gameconfig';
+import PositionTakingScene from './position_taking/scenes/PositionTakingScene';
 
 var config = {
     type: Phaser.AUTO,
@@ -36,6 +37,7 @@ game.scene.add('menuScene', MenuScene);
 game.scene.add('instructScene', InstructScene);
 game.scene.add('backstoryScene', BackStoryScene);
 game.scene.add('gameOverScene', GameOverScene);
+game.scene.add('positionTakingScene', PositionTakingScene);
 
 //At any point in the game, the menubar scene will always be displayed.
 //The menubar will have links to the hub area, fundraising area, campaign area, debate area.

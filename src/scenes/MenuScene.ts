@@ -21,6 +21,7 @@ export default class MenuScene extends Phaser.Scene {
     private instructButton: Button;
     private backstoryButton: Button;
     private gameOverButton: Button;
+    private positionTakingButton: Button;
 
     init()
     {
@@ -116,8 +117,9 @@ export default class MenuScene extends Phaser.Scene {
 
     showScene(sceneName: string)
     {
+        //LIST OF SCENE NAMES.
         let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
-                            'instructScene', 'backstoryScene', 'gameOverScene'];
+                            'instructScene', 'backstoryScene', 'gameOverScene', 'positionTakingScene'];
         for(let name of sceneNames)
         {
             if(this.scene.get(name) == null){
@@ -151,10 +153,10 @@ export default class MenuScene extends Phaser.Scene {
 
     private addMenuButton(sceneName: string, buttonText: string, positionNumber: number): Button
     {
-        let firstButtonStartX = 100;
+        let firstButtonStartX = 90;
         let height = MENU_CONFIG.menu_height;
-        let buttonHGap = 30;
-        let buttonWidth = 130;
+        let buttonHGap = 10;
+        let buttonWidth = 145;
         let buttonHeight = 30;
         let button = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * positionNumber, height/2, buttonWidth, buttonHeight);
         button.getText().setText(buttonText);
@@ -185,11 +187,13 @@ export default class MenuScene extends Phaser.Scene {
         this.homeButton = this.addMenuButton("homeScene", "Home", 0);
         this.fundraisingButton = this.addMenuButton("clickerScene", "Fundraising", 1);
         this.campaignButton = this.addMenuButton("campaignScene", "Campaign", 2);
-        this.debateButton = this.addMenuButton("debateScene", "Debate", 3);
+        this.positionTakingButton = this.addMenuButton("positionTakingScene", "Position Taking", 3);
+        this.positionTakingButton.getText().setFontSize(16);
+        this.debateButton = this.addMenuButton("debateScene", "Debate", 4);
         this.debateButton.setBackgroundColor(0xeba134);
-        this.instructButton = this.addMenuButton("instructScene", "Instructions", 4);
-        this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 5);
-        this.gameOverButton = this.addMenuButton("gameOverScene", "GameOver", 6);
+        this.instructButton = this.addMenuButton("instructScene", "Instructions", 5);
+        this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 6);
+        this.gameOverButton = this.addMenuButton("gameOverScene", "GameOver", 7);
         this.gameOverButton.setVisible(false);
     }
 }
