@@ -10,7 +10,7 @@ export default class GameModel
     constructor()
     {
         this.currentDay = 0;
-        this.lastDay = 180;
+        this.lastDay = 730;
         this.debateInSession = false;
     }
 

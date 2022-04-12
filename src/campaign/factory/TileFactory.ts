@@ -11,7 +11,8 @@ export default class TileFactory
         let color = 0xeeeeee;
         let points = this.polygonPoints(verticalDiameter);
 
-        let tileModel = new Tile();
+        //make the jitter 5 percent of the population.
+        let tileModel = new Tile(population, population * 0.05);
 
         let tileController = new TileController();
         let tileView = new TileView(scene, 0, 0, points, color, 0, 0);

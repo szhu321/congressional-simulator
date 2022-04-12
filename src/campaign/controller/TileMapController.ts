@@ -49,11 +49,11 @@ export default class TileMapController
     {
         this.aiDaysPassed += daysPassed;
         //console.log("running campaign ai");
-        if(this.aiDaysPassed % 2 === 0)
-        {
+        // if(this.aiDaysPassed % 2 === 0)
+        // {
             CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.CAMPAIGN_ADD_WORKER, 
                 WORKER_TYPE.COLD_CALLER, CANDIDATE.OPPONENT, TILE_POSITION.RAMDOM_TILE);
-        }
+        // }
     }
 
     public passTime(daysPassed: number)

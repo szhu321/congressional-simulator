@@ -1,3 +1,4 @@
+import { SCENE_CONFIG } from "../gameconfig";
 
 export default class Button extends Phaser.GameObjects.Container
 {
@@ -45,6 +46,7 @@ export default class Button extends Phaser.GameObjects.Container
         this.text.setColor('#000000');
         this.text.setAlign('center');
         this.text.setFontSize(this.fontSize);
+        this.text.setFontFamily(SCENE_CONFIG.scene_font_family);
         //this.text.setDepth(10);
         this.add(this.text);
     }

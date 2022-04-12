@@ -21,14 +21,29 @@ export default class Tile
     private candidateInfos: CandidateInfo[];
 
 
-    constructor()
+    /**
+     * Creates a new tile. 
+     * @param population - The population of this tile. If its -1 we will default it to 1000.
+     * @param jitter - The random offset that is applied to the population.
+     */
+    constructor(population: number = -1, jitter: number = 200)
     {
-        let minVoters = 100;
-        let maxVoters = 500;
-        this.numberOfVoters = Math.floor((Math.random() * (maxVoters - minVoters))) + minVoters;
+        //if jitter is 200. random jitter is a random number between [-200. 199];
+        if(jitter < 0)
+            jitter = 0;
+        let randomJitter = Math.floor((Math.random() * jitter * 2) - jitter);
+        //calculate the number of voters on the tile.
+        let totalPopulation = 1000;
+        if(population != -1)
+            totalPopulation = population;
+        totalPopulation += randomJitter;
+        if(totalPopulation < 1)
+            totalPopulation = 1;
+        this.numberOfVoters = totalPopulation;
         this.candidateInfos = new Array<CandidateInfo>();
         this.workers = new Array<Worker>();
         //this.workerOnTile = false;
+        //symbol is deprecated.
         this.symbol = "X";
         this.visible = false;
         this.row = 0;

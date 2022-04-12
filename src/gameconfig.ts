@@ -17,6 +17,7 @@ export const GAME_CONFIG = {
 export const MENU_CONFIG = {
     menu_height: 60,
     menu_width: GAME_CONFIG.game_width,
+    menu_font_family: 'Georgia, "Goudy Bookletter 1911", Times, serif'
 }
 
 /**
@@ -27,5 +28,6 @@ export const SCENE_CONFIG = {
     scene_width: GAME_CONFIG.game_width,
     scene_camera_viewport_x: 0,
     scene_camera_viewport_y: MENU_CONFIG.menu_height,
-    scene_background_color: 0x2F2F2F
+    scene_background_color: 0x2F2F2F,
+    scene_font_family: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 }

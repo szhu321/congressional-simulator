@@ -7,6 +7,10 @@ import CampaignEventDispatcher from '../CampaignEventDispatcher';
 import WorkerFactory from '../factory/WorkerFactory';
 import CampaignScene from '../scenes/CampaignScene';
 
+/**
+ * The bottom panel container will display buttons to send workers to campaign and 
+ * go to a debate.
+ */
 export default class BottomPanelContainer extends Phaser.GameObjects.Container
 {
     private items: Button[];
@@ -23,8 +27,8 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
     constructor(scene: CampaignScene)
     {
         super(scene);
-        this.panelWidth = 1050;
-        this.panelHeight = 220;
+        this.panelWidth = 1100;
+        this.panelHeight = 180;
         this.backgroundColor = 0x4d4d4d;
         this.backgroundBorderWidth = 3;
         this.backgroundBorderColor = 0xffffff;

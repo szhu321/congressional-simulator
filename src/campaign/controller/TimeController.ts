@@ -15,11 +15,11 @@ export default class TimeController
     {
         this.scene = scene;
         this.timerDisplay = timerDisplay;
-        this.timerDisplay.setText(`Day: 0 / 180`);
+        //this.timerDisplay.setText(`Day: 0 / ${PlayerData.getGameData().getLastDay()}`);
         //this.day = 1;
         this.timerId = setInterval(() => {
             PlayerData.getGameData().setCurrentDay(PlayerData.getGameData().getCurrentDay() + 1);
-            this.timerDisplay.setText(`Day: ${PlayerData.getGameData().getCurrentDay()} / 180`);
+            //this.timerDisplay.setText(`Day: ${PlayerData.getGameData().getCurrentDay()} / 730`);
             this.passTime();
             if(PlayerData.getGameData().getLastDay() <= PlayerData.getGameData().getCurrentDay())
             {

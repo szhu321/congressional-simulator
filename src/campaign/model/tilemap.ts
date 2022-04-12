@@ -26,7 +26,7 @@ export default class TileMap
         this.displayMode = 0;
         //initialize the map array to be empty.
         this.map = new Array<Tile[]>(this.rows);
-        for(let i = 0; i < cols; i++)
+        for(let i = 0; i < rows; i++)
         {
             this.map[i] = new Array<Tile>(this.cols);
         }

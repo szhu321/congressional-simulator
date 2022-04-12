@@ -111,7 +111,7 @@ export default class MenuScene extends Phaser.Scene {
         let money = PlayerData.getPlayer().getMoney();
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
-        this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/180`);
+        this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/${PlayerData.getGameData().getLastDay()}`);
         this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
     }
 
@@ -156,10 +156,13 @@ export default class MenuScene extends Phaser.Scene {
         let firstButtonStartX = 90;
         let height = MENU_CONFIG.menu_height;
         let buttonHGap = 10;
-        let buttonWidth = 145;
+        let buttonWidth = 120;
         let buttonHeight = 30;
         let button = new Button(this, firstButtonStartX + (buttonHGap + buttonWidth) * positionNumber, height/2, buttonWidth, buttonHeight);
-        button.getText().setText(buttonText);
+        button.getText().setText(buttonText)
+        button.getText().setFontSize(14);
+        button.getText().setFontFamily(MENU_CONFIG.menu_font_family);
+        button.getText().setFontStyle("bold");
         button.setOnclickCallback(() => {
             //console.log('switching to clicker game');
             //this.scene.switch('clickerScene');
@@ -188,12 +191,12 @@ export default class MenuScene extends Phaser.Scene {
         this.fundraisingButton = this.addMenuButton("clickerScene", "Fundraising", 1);
         this.campaignButton = this.addMenuButton("campaignScene", "Campaign", 2);
         this.positionTakingButton = this.addMenuButton("positionTakingScene", "Position Taking", 3);
-        this.positionTakingButton.getText().setFontSize(16);
+        this.positionTakingButton.getText().setFontSize(12);
         this.debateButton = this.addMenuButton("debateScene", "Debate", 4);
         this.debateButton.setBackgroundColor(0xeba134);
         this.instructButton = this.addMenuButton("instructScene", "Instructions", 5);
         this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 6);
-        this.gameOverButton = this.addMenuButton("gameOverScene", "GameOver", 7);
+        this.gameOverButton = this.addMenuButton("gameOverScene", "Game Over", 7);
         this.gameOverButton.setVisible(false);
     }
 }

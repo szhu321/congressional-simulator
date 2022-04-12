@@ -16,6 +16,7 @@ import PlayerData from '../../data/PlayerData';
 import { CANDIDATE } from '../campaignenum';
 import Popup from '../../phaserobjs/Popup';
 import Content from '../../phaserobjs/Content';
+import Statistics from '../../data/statistics/Statistics';
 
 export default class CampaignScene extends Phaser.Scene
 {
@@ -85,7 +86,8 @@ export default class CampaignScene extends Phaser.Scene
 
     private initializeTileMap()
     {
-        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL);
+        let district = Statistics.getInstance().getDistrictDatas();
+        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL, district[0].getDemographics().getTotalPopulation());
         //this.tileMap.getView().setDepth(-5);
         this.tileMapView = this.tileMap.getView();
         this.tileMapController = this.tileMap.getView().getTileMapController();

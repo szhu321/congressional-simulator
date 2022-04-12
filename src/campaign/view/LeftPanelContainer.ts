@@ -9,6 +9,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     private maxLines: number;
     private vgap: number;
     private fontSize: number;
+    private fontFamily: string;
     private panelWidth: number;
     private panelHeight: number;
     private background: Phaser.GameObjects.Rectangle;
@@ -20,10 +21,11 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     constructor(scene: Phaser.Scene)
     {
         super(scene);
-        this.maxLines = 12;
-        this.vgap = 50;
-        this.fontSize = 20;
-        this.panelWidth = 350;
+        this.maxLines = 14;
+        this.vgap = 35;
+        this.fontSize = 18;
+        this.fontFamily = SCENE_CONFIG.scene_font_family;
+        this.panelWidth = 300;
         this.panelHeight = SCENE_CONFIG.scene_height;
         this.backgroundColor = 0x4d4d4d;
         this.backgroundBorderWidth = 3;
@@ -52,6 +54,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         {
             let text = this.scene.add.text(0, i * this.vgap, "" , {wordWrap: {width: this.panelWidth}});
             text.setFontSize(this.fontSize);
+            text.setFontFamily(this.fontFamily);
             this.add(text);
             this.texts.push(text);
         }
