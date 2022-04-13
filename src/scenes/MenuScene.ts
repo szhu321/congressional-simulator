@@ -21,7 +21,7 @@ export default class MenuScene extends Phaser.Scene {
     private instructButton: Button;
     private backstoryButton: Button;
     private gameOverButton: Button;
-    private positionTakingButton: Button;
+    private platformButton: Button;
 
     init()
     {
@@ -118,8 +118,8 @@ export default class MenuScene extends Phaser.Scene {
     showScene(sceneName: string)
     {
         //LIST OF SCENE NAMES.
-        let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
-                            'instructScene', 'backstoryScene', 'gameOverScene', 'positionTakingScene'];
+        let sceneNames = ['campaignScene', 'homeScene', 'fundraiseScene', 'debateScene',
+                            'instructScene', 'backstoryScene', 'gameOverScene', 'platformScene'];
         for(let name of sceneNames)
         {
             if(this.scene.get(name) == null){
@@ -188,10 +188,10 @@ export default class MenuScene extends Phaser.Scene {
         this.background.setOrigin(0, 0);
 
         this.homeButton = this.addMenuButton("homeScene", "Home", 0);
-        this.fundraisingButton = this.addMenuButton("clickerScene", "Fundraising", 1);
+        this.fundraisingButton = this.addMenuButton("fundraiseScene", "Fundraising", 1);
         this.campaignButton = this.addMenuButton("campaignScene", "Campaign", 2);
-        this.positionTakingButton = this.addMenuButton("positionTakingScene", "Position Taking", 3);
-        this.positionTakingButton.getText().setFontSize(12);
+        this.platformButton = this.addMenuButton("platformScene", "Platform", 3);
+        this.platformButton.getText().setFontSize(12);
         this.debateButton = this.addMenuButton("debateScene", "Debate", 4);
         this.debateButton.setBackgroundColor(0xeba134);
         this.instructButton = this.addMenuButton("instructScene", "Instructions", 5);

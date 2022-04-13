@@ -1,9 +1,9 @@
 import "phaser";
 import UpgradeModel from "../models/UpgradeModel";
-import ClickerButton from "./ClickerButton";
+import FundraiseButton from "./FundraiseButton";
 import millify from "millify";
 
-export default class UpgradeView extends ClickerButton{
+export default class UpgradeView extends FundraiseButton{
     constructor(scene: Phaser.Scene){
         super(scene);
         this.textAmount = 3;

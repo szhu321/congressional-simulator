@@ -1,9 +1,9 @@
-import PositionTakingController from "../controllers/PositionTakingController";
-import Button from '../../../phaserobjs/Button';
-import PositionTakingModel from "../models/PositionTakingModel";
+import PlatformController from "../controllers/PlatformController";
+import Button from '../../phaserobjs/Button';
+import PlatformModel from "../models/PlatformModel";
 
-export default class PositionTakingView extends Phaser.GameObjects.Container{
-    private controller: PositionTakingController;
+export default class PlatformView extends Phaser.GameObjects.Container{
+    private controller: PlatformController;
     private questionText: Phaser.GameObjects.Text;
     private answers: Button[];
     private retryButton: Button;
@@ -16,11 +16,11 @@ export default class PositionTakingView extends Phaser.GameObjects.Container{
         this.retryButton = null;
     }
 
-    setController(controller: PositionTakingController){
+    setController(controller: PlatformController){
         this.controller = controller;
     }
 
-    initialize(model: PositionTakingModel){
+    initialize(model: PlatformModel){
         let questionIndex = Math.floor(Math.random() * model.getQuestions().length);
         let question = model.getQuestions()[questionIndex];
 
@@ -41,7 +41,7 @@ export default class PositionTakingView extends Phaser.GameObjects.Container{
         }
 
         this.retryButton = new Button(this.scene, 700, 350, 500, 50);
-        this.retryButton.getText().setText("Get Another Question");
+        this.retryButton.getText().setText("Answer Another Question");
         this.retryButton.setOnclickCallback(() => {
             model.chooseNewQuestion();
         })
@@ -61,7 +61,7 @@ export default class PositionTakingView extends Phaser.GameObjects.Container{
         this.retryButton.setVisible(true);
     }
 
-    setNewQuestion(model: PositionTakingModel){
+    setNewQuestion(model: PlatformModel){
         let questionIndex = Math.floor(Math.random() * model.getQuestions().length);
         let question = model.getQuestions()[questionIndex];
         this.questionText.setText(question.getText());

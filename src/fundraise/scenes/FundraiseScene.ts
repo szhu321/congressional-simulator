@@ -1,17 +1,17 @@
 import "phaser";
-import ClickerModel from "../models/ClickerModel";
-import ClickerController from "../controllers/ClickerController";
-import ClickerView from "../views/ClickerView";
+import FundraiseModel from "../models/FundraiseModel";
+import FundraiseController from "../controllers/FundraiseController";
+import FundraiseView from "../views/FundraiseView";
 import WorkerModel from "../models/WorkerModel";
 import WorkerView from "../views/WorkerView";
 import UpgradeModel from "../models/UpgradeModel";
 import UpgradeView from "../views/UpgradeView";
 import { SCENE_CONFIG } from "../../gameconfig";
 
-export default class ClickerScene extends Phaser.Scene{
-    private model: ClickerModel;
-    private view: ClickerView;
-    private controller: ClickerController;
+export default class FundraiseScene extends Phaser.Scene{
+    private model: FundraiseModel;
+    private view: FundraiseView;
+    private controller: FundraiseController;
 
     preload(){
         this.load.image('money', 'assets/money1.png');
@@ -22,8 +22,8 @@ export default class ClickerScene extends Phaser.Scene{
         this.initializeCamera();
 
         this.model = this.createClickerModel();
-        this.controller = new ClickerController();
-        this.view = new ClickerView(this);
+        this.controller = new FundraiseController();
+        this.view = new FundraiseView(this);
 
         this.model.setView(this.view);
         this.view.setController(this.controller);
@@ -59,13 +59,13 @@ export default class ClickerScene extends Phaser.Scene{
     }
 
     createClickerModel(){
-        let model = new ClickerModel();
+        let model = new FundraiseModel();
         let clickerData = this.getClickerData();
         this.createWorkersandUpgrades(clickerData, model);
         return model;
     }
 
-    createWorkersandUpgrades(clickerData: ClickerData, model: ClickerModel){
+    createWorkersandUpgrades(clickerData: ClickerData, model: FundraiseModel){
         for(let i = 0; i < clickerData.workers.length; i++){
             let newWorker = clickerData.workers[i];
             let newWorkerModel = new WorkerModel(newWorker.name, newWorker.revenueRate, newWorker.cost);

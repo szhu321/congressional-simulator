@@ -1,13 +1,13 @@
-import ClickerModel from "../models/ClickerModel";
+import FundraiseModel from "../models/FundraiseModel";
 
-export default class ClickerController{
-    private model: ClickerModel;
+export default class FundraiseController{
+    private model: FundraiseModel;
 
     constructor(){
         this.model = null;
     }
 
-    setModel(initModel: ClickerModel){
+    setModel(initModel: FundraiseModel){
         this.model = initModel;
     }
 

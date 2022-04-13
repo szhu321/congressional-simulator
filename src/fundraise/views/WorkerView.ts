@@ -1,9 +1,9 @@
 import "phaser";
 import WorkerModel from "../models/WorkerModel";
-import ClickerButton from "./ClickerButton";
+import FundraiseButton from "./FundraiseButton";
 import millify from "millify";
 
-export default class WorkerView extends ClickerButton{
+export default class WorkerView extends FundraiseButton{
     constructor(scene: Phaser.Scene){
         super(scene);
         this.textAmount = 3;

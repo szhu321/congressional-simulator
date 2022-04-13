@@ -2,7 +2,7 @@ import "phaser";
 import UpgradeModel from "../models/UpgradeModel";
 import WorkerModel from "../models/WorkerModel";
 
-export default abstract class ClickerButton extends Phaser.GameObjects.Container{
+export default abstract class FundraiseButton extends Phaser.GameObjects.Container{
     protected fontSize: number;
     protected maxHeight: number;
     protected maxWidth: number;

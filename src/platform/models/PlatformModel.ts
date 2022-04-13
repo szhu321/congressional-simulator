@@ -1,15 +1,15 @@
-import PositionTakingView from "../views/PositionTakingView";
+import PlatformView from "../views/PlatformView";
 import QuestionModel from "./QuestionModel";
 
-export default class PositionTakingModel{
-    private view: PositionTakingView;
+export default class PlatformModel{
+    private view: PlatformView;
     private questions: QuestionModel[];
 
     constructor(){
         this.view = null;
     }
 
-    setView(view: PositionTakingView){
+    setView(view: PlatformView){
         this.view = view;
         this.questions = [];
     }

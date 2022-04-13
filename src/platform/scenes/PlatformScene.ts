@@ -1,15 +1,15 @@
 import { SCENE_CONFIG } from "../../gameconfig";
-import PositionTakingController from "./controllers/PositionTakingController";
-import AnswerModel from "./models/AnswerModel";
-import PositionTakingModel from "./models/PositionTakingModel";
-import QuestionModel from "./models/QuestionModel";
-import PositionTakingView from "./views/PositionTakingView";
+import PlatformController from "../controllers/PlatformController";
+import AnswerModel from "../models/AnswerModel";
+import PlatformModel from "../models/PlatformModel";
+import QuestionModel from "../models/QuestionModel";
+import PlatformView from "../views/PlatformView";
 
 
-export default class PositionTakingScene extends Phaser.Scene {
-    private model: PositionTakingModel;
-    private view: PositionTakingView;
-    private controller: PositionTakingController;
+export default class PlatformScene extends Phaser.Scene {
+    private model: PlatformModel;
+    private view: PlatformView;
+    private controller: PlatformController;
 
     create()
     {
@@ -17,9 +17,9 @@ export default class PositionTakingScene extends Phaser.Scene {
         this.initializeCamera();
 
         //start creating the scene under here.
-        this.model = new PositionTakingModel();
-        this.view = new PositionTakingView(this);
-        this.controller = new PositionTakingController();
+        this.model = new PlatformModel();
+        this.view = new PlatformView(this);
+        this.controller = new PlatformController();
 
         this.model.setView(this.view);
         this.view.setController(this.controller);
@@ -53,7 +53,7 @@ export default class PositionTakingScene extends Phaser.Scene {
         background.setOrigin(0, 0);
     }
 
-    createQuestionsAndAnswers(model: PositionTakingModel){
+    createQuestionsAndAnswers(model: PlatformModel){
         // let question1 = new QuestionModel("A high paying donor asked you how you would manage healthcare if you were to become elected?");
         let questions = ["A high paying donor asked you how you would manage healthcare if you were to become elected?",
                         "Should the government raise the federal minimum wage?",

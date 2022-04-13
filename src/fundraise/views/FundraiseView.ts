@@ -1,13 +1,13 @@
 import "phaser";
 import PlayerData from "../../data/PlayerData";
-import ClickerController from "../controllers/ClickerController";
-import ClickerModel from "../models/ClickerModel";
+import FundraiseController from "../controllers/FundraiseController";
+import FundraiseModel from "../models/FundraiseModel";
 import UpgradeView from "./UpgradeView";
 import WorkerView from "./WorkerView";
 import millify from "millify";
 
-export default class ClickerView extends Phaser.GameObjects.Layer{
-    private controller: ClickerController;
+export default class FundraiseView extends Phaser.GameObjects.Layer{
+    private controller: FundraiseController;
     private workerViews: WorkerView[];
     private upgradeViews: UpgradeView[];
     private buttonColor: number;
@@ -26,7 +26,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         this.upgradesPerPage = 5;
     }
 
-    setController(initController: ClickerController){
+    setController(initController: FundraiseController){
         this.controller = initController;
     }
 
@@ -38,7 +38,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         return this.upgradesPerPage;
     }
 
-    initialize(model: ClickerModel){
+    initialize(model: FundraiseModel){
         let money = this.scene.add.particles('money');
         let moneyEmitter = money.createEmitter({
             scale: { min: 0.1, max: 0.5 },
@@ -160,7 +160,7 @@ export default class ClickerView extends Phaser.GameObjects.Layer{
         }
     }
 
-    updateViewCallback(model: ClickerModel){
+    updateViewCallback(model: FundraiseModel){
         let children = this.getAll();
         let currentFundsText = children[1] as Phaser.GameObjects.Text;
         let money = PlayerData.getPlayer().getMoney();

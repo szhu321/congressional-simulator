@@ -1,12 +1,12 @@
 import WorkerModel from "./WorkerModel";
 import UpgradeModel from "./UpgradeModel";
 import PlayerData from "../../data/PlayerData"
-import ClickerView from "../views/ClickerView";
+import FundraiseView from "../views/FundraiseView";
 
-export default class ClickerModel{
+export default class FundraiseModel{
     private revenueRate: number;
     private clickRevenue: number;
-    private view: ClickerView;
+    private view: FundraiseView;
     private workers: WorkerModel[];
     private upgrades: UpgradeModel[];
     private workerPage: number;
@@ -26,7 +26,7 @@ export default class ClickerModel{
         return this.revenueRate;
     }
 
-    setView(initView: ClickerView){
+    setView(initView: FundraiseView){
         this.view = initView;
     }
 
