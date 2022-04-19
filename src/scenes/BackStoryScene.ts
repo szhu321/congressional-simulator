@@ -1,4 +1,7 @@
 import {SCENE_CONFIG} from "../gameconfig";
+import Button from "../phaserobjs/Button";
+import RadioButton from "../phaserobjs/RadioButton";
+import RadioButtonGroup from "../phaserobjs/RadioButtonGroup";
 
 export default class BackStoryScene extends Phaser.Scene
 {
@@ -31,6 +34,34 @@ export default class BackStoryScene extends Phaser.Scene
         textView.setWordWrapWidth(textBoxWidth, true).setAlign('center');
 
         
+
+        // //testing radio buttons.
+        // let rb1 = new RadioButton(this, 300, 100, 250, 50);
+        // rb1.getText().setText("Radio Button 1");
+        // let rb2 = new RadioButton(this, 300, 200, 250, 50);
+        // rb2.getText().setText("Radio Button 2");
+        // let rb3 = new RadioButton(this, 300, 300, 250, 50);
+        // rb3.getText().setText("Radio Button 3");
+        // let rb4 = new RadioButton(this, 300, 400, 250, 50);
+        // rb4.getText().setText("Radio Button 4");
+        
+        // let rbgroup = new RadioButtonGroup();
+        // rbgroup.addRadioButtons(rb1, rb2, rb3, rb4);
+
+        // this.add.existing(rb1);
+        // this.add.existing(rb2);
+        // this.add.existing(rb3);
+        // this.add.existing(rb4);
+
+        // let submitButton = new Button(this, 300, 500, 250, 50);
+        // submitButton.getText().setText("Submit");
+        // submitButton.setOnclickCallback(() => {
+        //     let selectedRadioButton = rbgroup.getSelectedRadioButton();
+        //     let selectedRadioButtonIdx = rbgroup.getSelectedRadioButtonIdx();
+        //     console.log("button", selectedRadioButton);
+        //     console.log("idx", selectedRadioButtonIdx);
+        // });
+        // this.add.existing(submitButton);
     }
 
     initializeCamera()

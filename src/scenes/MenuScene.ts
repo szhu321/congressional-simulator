@@ -26,11 +26,14 @@ export default class MenuScene extends Phaser.Scene {
     init()
     {
         //this.data.set({playerBattleFunds: 450, opponentBattleFunds: 450, playerVotes: 10, opponentVotes: 10, playerDeckSize: 20, opponentDeckSize: 20});
+        //this.input.mousePointer.camera = this.cameras.main;
     }
 
     preload() {
         this.load.image('issueCard', 'assets/issue_card.png');
         this.load.image('workerCard', 'assets/worker_card.png');
+        this.load.image('radioButtonFilled', 'assets/radio_button_filled.png');
+        this.load.image('radioButtonUnfilled', 'assets/radio_button_unfilled.png');
     }
 
     create()

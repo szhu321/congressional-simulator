@@ -72,6 +72,40 @@ export default class PlayerModel {
      */
     private moneySpent: number;
 
+    /**
+     * Can the player see the total number of voters for each tile.
+     */
+    private canSeeTotalVoters: boolean;
+
+    /**
+     * Can the player their own votes for each tile.
+     */
+    private canSeeYourVoters: boolean;
+
+    /**
+     * Can the player see the economic political stance of the tile.
+     */
+    private canSeePoliticalStanceEconomy: boolean;
+
+    /**
+     * Can the player see the healthcare political stance of the tile.
+     */
+    private canSeePoliticalStanceHealthCare: boolean;
+    /**
+     * Can the player see the education political stance of the tile.
+     */
+    private canSeePoliticalStanceEducation: boolean;
+     /**
+     * Can the player see the healthcare political stance of the tile.
+     */
+    private canSeePoliticalStanceTaxes: boolean;
+    /**
+     * Can the player see the environment political stance of the tile.
+     */
+    private canSeePoliticalStanceEnvironment: boolean;
+
+    
+
     constructor() {
         this.name = "Your Name";
         this.money = 0;
@@ -86,6 +120,7 @@ export default class PlayerModel {
         this.job = "NONE";
         this.dailyIncome = 0;
         this.moneySpent = 0;
+
     }
 
     setConfig(configObject: {name?: string, age?: number, gender?: string, politicalParty?: string, district?: number,
