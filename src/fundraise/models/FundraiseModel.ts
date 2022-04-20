@@ -58,6 +58,9 @@ export default class FundraiseModel{
         let worker = this.workers[workerIndex];
         PlayerData.getPlayer().addMoney(-1 * worker.getCost());
         worker.addWorker();
+        if(worker.getAmount() == 1){
+            this.view.showWorkerPopup(workerIndex);
+        }
         this.updateRevenueRate();
         this.unlockWorkersAndUpgrades();
         this.updateView();
