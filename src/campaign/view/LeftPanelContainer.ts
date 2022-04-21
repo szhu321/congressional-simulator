@@ -118,12 +118,19 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         info = tile.getCandidateInfoFor(CANDIDATE.OPPONENT);
         if(info)
             opponentVotes = info.getAmountOccupied();
+
+        let democraticPartisans = tile.getCandidateInfoFor(CANDIDATE.DEMOCRATIC_PARTISAN).getAmountOccupied();
+        let republicanPartisans = tile.getCandidateInfoFor(CANDIDATE.REPUBLICAN_PARTISAN).getAmountOccupied();
+        let partyPopularity = PlayerData.getPlayer().getPartyPopularity();
         this.updateDisplay([
             `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
             `Total Voters: ${tile.getNumberOfVoters()}`,
             `Total Voters Secured: ${tile.totalOccupied()}`,
             `Your Voters: ${yourVotes}`,
             `Opponent Voters: ${opponentVotes}`,
+            `Democratic Partisans: ${democraticPartisans}`,
+            `Republican Partisans: ${republicanPartisans}`,
+            `Party Popularity: ${partyPopularity}`,
             //`Worker On Tile: ${tile.isWorkerOnTile()}`,
             `Political Stance (-1 <- Liberal Conservative -> 1):`,
             `Economy: ${tile.getEconomy()}`,

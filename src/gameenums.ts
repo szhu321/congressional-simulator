@@ -21,7 +21,8 @@ export enum DAY_SPEED {
 
 export enum POLITICAL_PARTY {
     REPUBLICAN_PARTY = "Republican Party",
-    DEMOCRATIC_PARTY = "Democratic Party"
+    DEMOCRATIC_PARTY = "Democratic Party",
+    NONE = "None"
 }
 
 export enum GENDER {

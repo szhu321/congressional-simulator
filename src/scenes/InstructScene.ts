@@ -23,7 +23,11 @@ export default class InstructScene extends Phaser.Scene
         Note that you would need enough money to send the worker.\n
         Do be fast, before your opponent takes away all the voters.
         \n\n
-        DEBATE GAME: KINDOF PLAYABLE. \n
+        PLATFORM GAME: PLAYABLE.
+        Answer questions that will affect your popularity with your party.\n
+        The more popular you are the easier it is to win over votes in the campaign game.
+        \n\n
+        DEBATE GAME: DEAD. \n
         When you want to capture a tile in the campaign game that's been dominated by your opponent, you will have to play a debate game. \n
         Each round you may draw cards from your deck. You can drag the card on your deck onto the board if you have the money.
         Cards that are placed in the first round cannot be played until the next round. \n
@@ -31,6 +35,14 @@ export default class InstructScene extends Phaser.Scene
         To attack your opponent's card drag a card from your board onto your opponent's card.\n
         The game ends when one side obtains all the votes.
         `
+
+        // When you want to capture a tile in the campaign game that's been dominated by your opponent, you will have to play a debate game. \n
+        // Each round you may draw cards from your deck. You can drag the card on your deck onto the board if you have the money.
+        // Cards that are placed in the first round cannot be played until the next round. \n
+        // To attack your opponent, drag a card from your board onto your opponent's vote count.
+        // To attack your opponent's card drag a card from your board onto your opponent's card.\n
+        // The game ends when one side obtains all the votes.
+
         let fontSize = 18;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);
 

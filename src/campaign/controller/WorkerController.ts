@@ -1,4 +1,5 @@
-import { CAMPAIGN_EVENTS } from "../campaignenum";
+import PlayerData from "../../data/PlayerData";
+import { CAMPAIGN_EVENTS, CANDIDATE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileMap from "../model/TileMap";
 import Worker from "../model/Worker";
@@ -20,7 +21,19 @@ export default class WorkerController
             let tileRow = this.worker.getTileRow();
             let tileCol = this.worker.getTileCol();
             let tile = mapModel.getTileAt(tileRow, tileCol);
-            tile.occupy(this.worker.getCandidate(), this.worker.getPersuasivePower() * daysPassed);
+
+
+            let persuasivePower = this.worker.getPersuasivePower();
+
+            if(this.worker.getCandidate() === CANDIDATE.PLAYER)
+            {
+                persuasivePower += PlayerData.getPlayer().getPartyPopularity();
+            }
+            if(persuasivePower <= 0)
+            {
+                persuasivePower = 1;
+            }
+            tile.occupy(this.worker.getCandidate(), persuasivePower * daysPassed);
 
             //influence the surrounding tiles.
             let neighbors = mapModel.getAllNeighbors(tile);

@@ -49,7 +49,7 @@ export default class MenuScene extends Phaser.Scene {
         this.playerNameText.setFontSize(20);
 
         //player money.
-        this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 150, MENU_CONFIG.menu_height - 5, "$100");
+        this.playerMoneyText = this.add.text(MENU_CONFIG.menu_width - 180, MENU_CONFIG.menu_height - 5, "$100");
         this.playerMoneyText.setOrigin(1, 1);
         this.playerMoneyText.setFontSize(20);
         //this.fundraisingButton.setVisible(false);
@@ -65,7 +65,7 @@ export default class MenuScene extends Phaser.Scene {
             this.gameOverButton.setVisible(true);
         });
 
-        //EventDispatcher.getInstance().on();
+        EventDispatcher.getInstance().on(GAME_EVENTS.START_GAME, this.handleStartGame, this);
 
         EventDispatcher.getInstance().on(GAME_EVENTS.START_DEBATE_GAME, () => {
             PlayerData.getGameData().setDebateInSession(true);
@@ -125,8 +125,9 @@ export default class MenuScene extends Phaser.Scene {
         let money = PlayerData.getPlayer().getMoney();
         let moneySpent = PlayerData.getPlayer().getMoneySpent();
         this.playerMoneyText.setText(`$${(money - moneySpent).toFixed(2)}`);
-        this.gameDayText.setText(`Day:${PlayerData.getGameData().getCurrentDay()}/${PlayerData.getGameData().getLastDay()}`);
+        this.gameDayText.setText(`Day: ${PlayerData.getGameData().getCurrentDay()}/${PlayerData.getGameData().getLastDay()}`);
         this.debateButton.setVisible(PlayerData.getGameData().isDebateInSession());
+        this.playerNameText.setText(PlayerData.getPlayer().getPoliticalParty());
     }
 
     showScene(sceneName: string)
@@ -238,7 +239,13 @@ export default class MenuScene extends Phaser.Scene {
         this.instructButton = this.addMenuButton("instructScene", "Instructions", 5);
         this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 6);
         this.gameOverButton = this.addMenuButton("gameOverScene", "Game Over", 7);
+        
         this.gameOverButton.setVisible(false);
+        this.fundraisingButton.setVisible(false);
+        this.campaignButton.setVisible(false);
+        this.homeButton.setVisible(false);
+
+        
 
         this.allButtons.push(this.homeButton);
         this.allButtons.push(this.fundraisingButton);
@@ -248,5 +255,7 @@ export default class MenuScene extends Phaser.Scene {
         this.allButtons.push(this.instructButton);
         this.allButtons.push(this.backstoryButton);
         this.allButtons.push(this.gameOverButton);
+
+        this.selectButton(this.platformButton);
     }
 }

@@ -46,5 +46,5 @@ game.scene.add('platformScene', PlatformScene);
 //The debate area will be created and destroyed as needed.
 
 game.scene.start('menuScene');
-game.scene.start('homeScene');
-//game.scene.start('campaignScene');
+//game.scene.start('homeScene');
+game.scene.start('platformScene');

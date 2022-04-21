@@ -1,4 +1,6 @@
 import chroma = require("chroma-js");
+import PlayerData from "../../data/PlayerData";
+import { POLITICAL_PARTY } from "../../gameenums";
 import { CAMPAIGN_EVENTS, CANDIDATE } from "../campaignenum";
 import CampaignEventDispatcher from "../CampaignEventDispatcher";
 import TileController from "../controller/TileController";
@@ -68,9 +70,22 @@ export default class TileView extends Phaser.GameObjects.Polygon
         }
         
         //Workers on the tile.
-
         let playerColor = "blue";
         let opponentColor = "red";
+        if(PlayerData.getPlayer().getPoliticalParty() === POLITICAL_PARTY.REPUBLICAN_PARTY)
+        {
+            playerColor = "red";
+            opponentColor = "blue";
+            playerOccupied += republicanParticanOccupied;
+            opponentOccupied += democraticParticanOccupied;
+        }
+        else if(PlayerData.getPlayer().getPoliticalParty() === POLITICAL_PARTY.DEMOCRATIC_PARTY)
+        {
+            playerColor = "blue";
+            opponentColor = "red";
+            opponentOccupied += republicanParticanOccupied;
+            playerOccupied += democraticParticanOccupied;
+        }
 
         // TODO: fix the color scale to incorportate the partisans.
         //first scale from red and blue.
@@ -79,7 +94,7 @@ export default class TileView extends Phaser.GameObjects.Polygon
         let colorSaturation = chroma.scale(['eeeeee', colorStr]);
 
         //desaturate the color depending on the percentage Occupied.
-        let hexNum = parseInt(colorSaturation(percentageOccupied).toString().substring(1), 16);
+        let hexNum = parseInt(colorSaturation(percentageOccupied - 0.2).toString().substring(1), 16);
         //console.log(percentageOccupied, hexNum);
         this.setFillStyle(hexNum);
     }

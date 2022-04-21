@@ -111,7 +111,7 @@ export default class PlayerModel {
         this.money = 0;
         this.age = 30;
         this.gender = GENDER.MALE;
-        this.politicalParty = POLITICAL_PARTY.DEMOCRATIC_PARTY;
+        this.politicalParty = POLITICAL_PARTY.NONE;
         this.district = 0;
         this.districtPopularity = 0;
         this.partyPopularity = 0;

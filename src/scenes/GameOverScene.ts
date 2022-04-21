@@ -2,7 +2,7 @@ import { CANDIDATE } from "../campaign/campaignenum";
 import PlayerData from "../data/PlayerData";
 import EventDispatcher from "../events/EventDispatcher";
 import {SCENE_CONFIG} from "../gameconfig";
-import { GAME_EVENTS } from "../gameenums";
+import { GAME_EVENTS, POLITICAL_PARTY } from "../gameenums";
 
 export default class GameOverScene extends Phaser.Scene
 {
@@ -14,7 +14,22 @@ export default class GameOverScene extends Phaser.Scene
         EventDispatcher.getInstance().emit(GAME_EVENTS.UPDATE_GLOBAL_CAMPAIGN_DATA);
         let yourVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.PLAYER);
         let opponentVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.OPPONENT);
+        let democraticPartisans = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.DEMOCRATIC_PARTISAN);
+        let republicanPartisans = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.REPUBLICAN_PARTISAN);
+        let partisanVotes = 0;
 
+        if(PlayerData.getPlayer().getPoliticalParty() === POLITICAL_PARTY.DEMOCRATIC_PARTY)
+        {
+            yourVotes += democraticPartisans;
+            opponentVotes += republicanPartisans;
+            partisanVotes = democraticPartisans;
+        }
+        else
+        {
+            yourVotes += republicanPartisans;
+            opponentVotes += democraticPartisans;
+            partisanVotes = republicanPartisans;
+        }
         // yourVotes = 0;
         // opponentVotes = 0;
 
@@ -29,12 +44,14 @@ export default class GameOverScene extends Phaser.Scene
         GAME OVER\n\n\n
         ${winText}\n\n
         End Statistics:\n\n
-        Your Votes: ${yourVotes}\n
-        Opponent Votes: ${opponentVotes}\n\n
+        Your Total Votes: ${yourVotes}\n
+        Opponent Total Votes: ${opponentVotes}\n
+        Votes from partisans: ${partisanVotes}\n
+        Votes from others: ${yourVotes - partisanVotes}\n\n
 
         To restart refresh the website.
         `
-        let fontSize = 32;
+        let fontSize = 28;
         let textBoxWidth = SCENE_CONFIG.scene_width * (3/4);
 
         let textView = this.add.text(SCENE_CONFIG.scene_width / 2, 10, text);

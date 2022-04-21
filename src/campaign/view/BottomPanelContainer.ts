@@ -122,7 +122,7 @@ export default class BottomPanelContainer extends Phaser.GameObjects.Container
         this.add(button);
 
         button = new Button(this.scene, -this.panelWidth + 400, -this.panelHeight/2, 200, 100);
-        button.getText().setText("leafleter\n$100\n\nSend");
+        button.getText().setText("Leafleter\n$100\n\nSend");
         button.setOnclickCallback(() => {
             //console.log("Bottom panel button 2 clicked.");
             if(this.spendMoney(100))
