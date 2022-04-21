@@ -94,7 +94,7 @@ export default class HomeScene extends Phaser.Scene {
 
     showScene(sceneName: string)
     {
-        let sceneNames = ['campaignScene', 'homeScene', 'clickerScene', 'debateScene',
+        let sceneNames = ['campaignScene', 'homeScene', 'fundraiseScene', 'debateScene',
                             'instructScene'];
         for(let name of sceneNames)
         {
@@ -146,9 +146,9 @@ export default class HomeScene extends Phaser.Scene {
         this.fundraisingButton.setOnclickCallback(() => {
             console.log('switching to clicker game');
             //this.scene.switch('clickerScene');
-            if(!this.scene.isActive('clickerScene'))
-                this.scene.launch('clickerScene');
-            this.showScene('clickerScene');
+            if(!this.scene.isActive('fundraiseScene'))
+                this.scene.launch('fundraiseScene');
+            this.showScene('fundraiseScene');
             //console.log(this.scene.get('clickerScene'));
             //window.open("https://forms.gle/CPLqcUc5CDEduhry6", "_blank");
         });

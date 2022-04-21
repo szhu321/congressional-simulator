@@ -5,6 +5,8 @@ import FundraiseModel from "../models/FundraiseModel";
 import UpgradeView from "./UpgradeView";
 import WorkerView from "./WorkerView";
 import millify from "millify";
+import Popup from "../../phaserobjs/Popup";
+import Content from "../../phaserobjs/Content"
 
 export default class FundraiseView extends Phaser.GameObjects.Layer{
     private controller: FundraiseController;
@@ -14,6 +16,8 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
     private buttonColorDark: number;
     private workersPerPage: number;
     private upgradesPerPage: number;
+    private popupWindow: Popup;
+    private workerDescriptions: Content[];
 
     constructor(scene: Phaser.Scene){
         super(scene);
@@ -24,6 +28,8 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
         this.buttonColorDark = 0xaba187;
         this.workersPerPage = 7;
         this.upgradesPerPage = 5;
+        this.popupWindow = new Popup(scene);
+        this.workerDescriptions = [];
     }
 
     setController(initController: FundraiseController){
@@ -36,6 +42,23 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
 
     getUpgradesPerPage(){
         return this.upgradesPerPage;
+    }
+
+    createWorkerDescriptions(descriptions: string[]){
+        for(let i = 0; i < descriptions.length; i++){
+            let content = new Content(this.scene, 100, 100, 1000, 500);
+            let textContent = descriptions[i];
+            let textObj = new Phaser.GameObjects.Text(this.scene, 0, 0, textContent, {});
+            textObj.setOrigin(0.5, 0.5);
+            textObj.setAlign("center");
+            content.add(textObj);
+            this.workerDescriptions.push(content);
+        }
+    }
+
+    showWorkerPopup(index: number){
+        this.popupWindow.setContent(this.workerDescriptions[index]);
+        this.popupWindow.showPopup();
     }
 
     initialize(model: FundraiseModel){
@@ -158,6 +181,8 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
             this.add(upgradeView);
             this.upgradeViews.push(upgradeView);
         }
+
+        this.add(this.popupWindow);
     }
 
     updateViewCallback(model: FundraiseModel){
@@ -191,13 +216,13 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
             >= workers[i + model.getWorkerPage() * this.workersPerPage].getCost());
         }
 
-        let workerNextRect = children[7] as Phaser.GameObjects.Rectangle;
+        let workerNextRect = children[7];
         if(workers.length < this.workersPerPage || (model.getWorkerPage() + 1) * this.workersPerPage >= workers.length){
             workerNextRect.disableInteractive();
-            workerNextRect.setFillStyle(this.buttonColorDark);
+            (workerNextRect as Phaser.GameObjects.Rectangle).setFillStyle(this.buttonColorDark);
         }else{
             workerNextRect.setInteractive();
-            workerNextRect.setFillStyle(this.buttonColor);
+            (workerNextRect as Phaser.GameObjects.Rectangle).setFillStyle(this.buttonColor);
         }
 
         let workerPrevRect = children[9] as Phaser.GameObjects.Rectangle;
@@ -239,6 +264,10 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
         }else{
             upgradePrevRect.setInteractive();
             upgradePrevRect.setFillStyle(this.buttonColor);
+        }
+
+        if(this.popupWindow.visible){
+            this.bringToTop(this.popupWindow);
         }
     }
 }
