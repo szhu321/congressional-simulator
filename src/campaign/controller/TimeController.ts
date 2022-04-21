@@ -9,7 +9,7 @@ export default class TimeController
     private scene: CampaignScene; 
     private timerDisplay: Phaser.GameObjects.Text;
     //private day: number;
-    private timerId: number;
+    private timerId: NodeJS.Timer;
 
     constructor(scene: CampaignScene, timerDisplay: Phaser.GameObjects.Text)
     {

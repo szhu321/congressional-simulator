@@ -30,7 +30,7 @@ export default class PlatformView extends Phaser.GameObjects.Container{
 
         let answers = question.getAnswers();
         for(let i = 0; i < answers.length; i++){
-            let answer = new Button(this.scene, 700, 200 + 75 * i, 900, 50);
+            let answer = new Button(this.scene, 700, 150 + 75 * i, 900, 50);
             answer.getText().setText(answers[i].getText());
             answer.setOnclickCallback(() => {
                 console.log("Quiz answer");
@@ -68,7 +68,7 @@ export default class PlatformView extends Phaser.GameObjects.Container{
 
         let answers = question.getAnswers();
         for(let i = 0; i < answers.length; i++){
-            let answer = new Button(this.scene, 700, 200 + 75 * i, 900, 50);
+            let answer = new Button(this.scene, 700, 150 + 75 * i, 900, 50);
             answer.getText().setText(answers[i].getText());
             answer.setOnclickCallback(() => {
                 console.log("Quiz answer");
