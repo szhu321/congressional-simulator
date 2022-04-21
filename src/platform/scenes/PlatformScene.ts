@@ -30,8 +30,6 @@ export default class PlatformScene extends Phaser.Scene {
 
         this.add.existing(this.view);
     }
-
-
     
     initializeCamera()
     {

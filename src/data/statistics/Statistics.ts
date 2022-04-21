@@ -1,7 +1,7 @@
 import DemographicsData from "./DemographicsData";
 import DistrictData, { StateEnum } from "./DistrictData";
 
-
+//Singleton used to get district statistics.
 export default class Statistics
 {
     private static singleton: Statistics;

@@ -47,3 +47,4 @@ game.scene.add('platformScene', PlatformScene);
 
 game.scene.start('menuScene');
 game.scene.start('homeScene');
+//game.scene.start('campaignScene');

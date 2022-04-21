@@ -1,10 +1,12 @@
 import { SCENE_CONFIG } from "../gameconfig";
+import chroma = require("chroma-js");
 
 export default class Button extends Phaser.GameObjects.Container
 {
     private background: Phaser.GameObjects.Rectangle;
     private text: Phaser.GameObjects.Text;
     private onclickCallback: Function;
+    private defaultOnclickCallback: Function;
     private buttonWidth: number;
     private buttonHeight: number;
     private buttonColor: number;
@@ -32,6 +34,7 @@ export default class Button extends Phaser.GameObjects.Container
     {
         //callback
         this.onclickCallback = () => {console.log('button default callback.')};
+        this.defaultOnclickCallback = this.onclickCallback;
 
         //background
         this.background = this.scene.add.rectangle(0, 0, this.buttonWidth, this.buttonHeight, this.buttonColor);
@@ -60,12 +63,34 @@ export default class Button extends Phaser.GameObjects.Container
     public setOnclickCallback(onclickCallback: Function)
     {
         this.onclickCallback = onclickCallback;
+        this.defaultOnclickCallback = this.onclickCallback;
         this.background.removeAllListeners();
         this.background.addListener('pointerup', this.onclickCallback);
     }
 
     public setBackgroundColor(color: number)
     {
+        this.buttonColor = color;
         this.background.setFillStyle(color);
+    }
+
+    public disable()
+    {
+        let colorScale = chroma.scale(["000000", this.buttonColor.toString(16)]);
+        let colorStr = colorScale(0.5).toString();
+        let hexNum = parseInt(colorStr.substring(1), 16);
+        this.background.setFillStyle(hexNum);
+
+        //this.onclickCallback = () => {};
+        this.background.disableInteractive();
+    }
+
+    public enable()
+    {
+        this.background.setFillStyle(this.buttonColor);
+
+        //this.onclickCallback = this.defaultOnclickCallback;
+        this.background.setInteractive();
+        //this.background.on('pointerdown', this.onclickCallback);
     }
 }

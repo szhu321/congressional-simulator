@@ -23,10 +23,13 @@ export default class MenuScene extends Phaser.Scene {
     private gameOverButton: Button;
     private platformButton: Button;
 
+    private allButtons: Button[];
+
     init()
     {
         //this.data.set({playerBattleFunds: 450, opponentBattleFunds: 450, playerVotes: 10, opponentVotes: 10, playerDeckSize: 20, opponentDeckSize: 20});
         //this.input.mousePointer.camera = this.cameras.main;
+        this.allButtons = new Array<Button>();
     }
 
     preload() {
@@ -61,6 +64,8 @@ export default class MenuScene extends Phaser.Scene {
             this.showScene("gameOverScene");
             this.gameOverButton.setVisible(true);
         });
+
+        //EventDispatcher.getInstance().on();
 
         EventDispatcher.getInstance().on(GAME_EVENTS.START_DEBATE_GAME, () => {
             PlayerData.getGameData().setDebateInSession(true);
@@ -97,15 +102,21 @@ export default class MenuScene extends Phaser.Scene {
             this.scene.add("debateScene", DebateScene);
         });
 
-        //start the campaign scene.
-        if(!this.scene.isActive("campaignScene"))
-            this.scene.launch("campaignScene");
-        this.showScene("campaignScene");
+        console.log("Campaign Scene active", this.scene.isActive("campaignScene"));
+        console.log("Home Scene active", this.scene.isActive("homeScene"));
 
-        //switch back to homescene;
-        if(!this.scene.isActive("homeScene"))
-            this.scene.launch("homeScene");
-        this.showScene("homeScene");
+
+        // //start the campaign scene.
+        // if(!this.scene.isActive("campaignScene"))
+        //     this.scene.launch("campaignScene");
+        // this.showScene("campaignScene");
+
+        // //switch back to homescene;
+        // if(!this.scene.isActive("homeScene"))
+        //     this.scene.launch("homeScene");
+        // this.showScene("homeScene");
+        // let camera = this.scene.get("campaignScene").cameras.main;
+        // this.changeCameraViewportOffScreen(camera);
     }
 
     update()
@@ -154,6 +165,19 @@ export default class MenuScene extends Phaser.Scene {
         camera.setViewport(x, y, width, height);
     }
 
+    private handleStartGame()
+    {
+        this.fundraisingButton.setVisible(true);
+        this.campaignButton.setVisible(true);
+        this.homeButton.setVisible(true);
+        if(!this.scene.isActive("campaignScene"))
+            this.scene.launch("campaignScene");
+        this.showScene("platformScene");
+        // if(!this.scene.isActive("homeScene"))
+        //     this.scene.launch("homeScene");
+        // this.showScene("homeScene");
+    }
+
     private addMenuButton(sceneName: string, buttonText: string, positionNumber: number): Button
     {
         let firstButtonStartX = 90;
@@ -172,9 +196,23 @@ export default class MenuScene extends Phaser.Scene {
             if(!this.scene.isActive(sceneName))
                 this.scene.launch(sceneName);
             this.showScene(sceneName);
+            this.selectButton(button);
+            //button.disableInteractive();
         });
         this.add.existing(button);
         return button;
+    }
+
+    private selectButton(button: Button)
+    {
+        if(this.allButtons.indexOf(button) !== -1)
+        {
+            for(let btn of this.allButtons)
+            {
+                btn.enable();
+            }
+            button.disable();
+        }
     }
 
     private initializeMenu()
@@ -201,5 +239,14 @@ export default class MenuScene extends Phaser.Scene {
         this.backstoryButton = this.addMenuButton("backstoryScene", "Back Story", 6);
         this.gameOverButton = this.addMenuButton("gameOverScene", "Game Over", 7);
         this.gameOverButton.setVisible(false);
+
+        this.allButtons.push(this.homeButton);
+        this.allButtons.push(this.fundraisingButton);
+        this.allButtons.push(this.campaignButton);
+        this.allButtons.push(this.platformButton);
+        this.allButtons.push(this.debateButton);
+        this.allButtons.push(this.instructButton);
+        this.allButtons.push(this.backstoryButton);
+        this.allButtons.push(this.gameOverButton);
     }
 }
