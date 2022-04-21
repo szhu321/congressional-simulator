@@ -1,3 +1,5 @@
+import DemographicsData from "../../data/statistics/DemographicsData";
+import DistrictData, { StateEnum } from "../../data/statistics/DistrictData";
 import TileMapController from "../controller/TileMapController";
 import Tile from "../model/Tile";
 import TileMap from "../model/TileMap";
@@ -23,14 +25,17 @@ export default class TileMapFactory
      * @param population - The total population of the tile map.
      * @returns {TileMap} The tileMap.
      */
-    public static getTileMap(scene: CampaignScene, type: TileMapType = TileMapType.DEFAULT, population: number = 5000): TileMap
+    public static getTileMap(scene: CampaignScene, type: TileMapType = TileMapType.DEFAULT, district: DistrictData = null, population: number = 5000): TileMap
     {
         let tileMap = new TileMap(this.getRowCount(type), this.getColCount(type));
         let tileMapView = new TileMapView(scene);
         let tileMapController = new TileMapController(scene);
 
+        if(!district)
+            district = new DistrictData(0, StateEnum.NEW_YORK, new DemographicsData(100000, 20000, 2000));
+
         //initialize the tiles based on the tiles inside tileMap.
-        let map = this.generateNewMap(scene, tileMap.getRows(), tileMap.getCols(), population);
+        let map = this.generateNewMap(scene, tileMap.getRows(), tileMap.getCols(), district);
         tileMap.populateMap(map);
 
         //store in tileMapView an 2D array of all the tileViews.
@@ -56,7 +61,7 @@ export default class TileMapFactory
         return tileMap;
     }
 
-    private static generateNewMap(scene: CampaignScene, rows: number, cols: number, population: number): Tile[][]
+    private static generateNewMap(scene: CampaignScene, rows: number, cols: number, district: DistrictData): Tile[][]
     {
         //let populationDistribution = [][];
 
@@ -70,11 +75,13 @@ export default class TileMapFactory
                     map[i][j] = null;
                 else
                 {
-                    let newTile = TileFactory.getTile(scene, Math.floor(population / (rows * cols)));
+                    let newTile = TileFactory.getTile(scene, Math.floor(district.getDemographics().getTotalPopulation() / (rows * cols)));
                     newTile.setRow(i);
                     newTile.setCol(j);
                     newTile.getView().setRow(i);
                     newTile.getView().setCol(j);
+                    newTile.setNumberOfDemocraticPartisans(Math.floor(district.getDemographics().getDemocraticVoters() / (rows * cols)));
+                    newTile.setNumberOfRepublicanPartisans(Math.floor(district.getDemographics().getRepublicanVoters() / (rows * cols)));
                     map[i][j] = newTile;
                 }  
             }

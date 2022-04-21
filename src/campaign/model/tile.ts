@@ -5,6 +5,8 @@ import Worker from "./Worker";
 export default class Tile
 {
     private numberOfVoters: number;
+    private numberOfRepublicanPartisians: number;
+    private numberOfDemocraticPartisians: number;
     //private workerOnTile: boolean;
     private symbol: string;
     private visible: boolean;
@@ -42,6 +44,8 @@ export default class Tile
         this.numberOfVoters = totalPopulation;
         this.candidateInfos = new Array<CandidateInfo>();
         this.workers = new Array<Worker>();
+        this.numberOfRepublicanPartisians = 0;
+        this.numberOfDemocraticPartisians = 0;
         //this.workerOnTile = false;
         //symbol is deprecated.
         this.symbol = "X";
@@ -58,6 +62,20 @@ export default class Tile
 
     public getNumberOfVoters(): number {return this.numberOfVoters;}
     public setNumberOfVoters(value: number) {this.numberOfVoters = value;}
+    public getNumberOfRepublicanPartisans(): number {return this.numberOfRepublicanPartisians;}
+    public setNumberOfRepublicanPartisans(value: number)
+    {
+        this.numberOfRepublicanPartisians = value;
+        this.deoccupy(CANDIDATE.REPUBLICAN_PARTISAN, -1);
+        this.occupy(CANDIDATE.REPUBLICAN_PARTISAN, this.numberOfRepublicanPartisians);
+    }
+    public getNumberOfDemocraticPartisans(): number {return this.numberOfDemocraticPartisians;}
+    public setNumberOfDemocraticPartisans(value: number)
+    {
+        this.numberOfDemocraticPartisians = value;
+        this.deoccupy(CANDIDATE.DEMOCRATIC_PARTISAN, -1);
+        this.occupy(CANDIDATE.DEMOCRATIC_PARTISAN, this.numberOfDemocraticPartisians);
+    }
     public isWorkerOnTile(): boolean {
         return this.workers.length > 0;
     }
@@ -198,7 +216,7 @@ export default class Tile
     /**
      * 
      * @param candidate - The candidate.
-     * @param amount - The amount that will be deoccupied or tried to be deoccupied.
+     * @param amount - The amount that will be deoccupied or tried to be deoccupied. -1 means all.
      * @returns The actual amount that was deoccupied.
      */
     public deoccupy(candidate: CANDIDATE, amount: number): number
@@ -207,6 +225,11 @@ export default class Tile
         if(candidateInfo)
         {
             let amountOccupied = candidateInfo.getAmountOccupied();
+            if(amount === -1) //if amount is -1 deoccupy all voters.
+            {
+                candidateInfo.setAmountOccupied(0);
+                return amountOccupied;
+            }
             let amountDeoccupied = 0;
             if(amount > amountOccupied)
             {

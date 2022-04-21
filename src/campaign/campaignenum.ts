@@ -23,5 +23,7 @@ export enum WORKER_TYPE {
 
 export enum CANDIDATE {
     OPPONENT = 'opponent',
-    PLAYER = 'player'
+    PLAYER = 'player',
+    REPUBLICAN_PARTISAN = 'republican_partisan',
+    DEMOCRATIC_PARTISAN = 'democratic_partisan'
 }

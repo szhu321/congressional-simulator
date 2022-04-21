@@ -58,6 +58,8 @@ export default class TileView extends Phaser.GameObjects.Polygon
         let percentageOccupied = tile.percentageOccupied();
         let playerOccupied = tile.percentageOccupiedBy(CANDIDATE.PLAYER);
         let opponentOccupied = tile.percentageOccupiedBy(CANDIDATE.OPPONENT);
+        let republicanParticanOccupied = tile.percentageOccupiedBy(CANDIDATE.REPUBLICAN_PARTISAN);
+        let democraticParticanOccupied = tile.percentageOccupiedBy(CANDIDATE.DEMOCRATIC_PARTISAN);
         let tileStrokeSize = 5;
         
         if(tile.isWorkerOnTile())
@@ -69,6 +71,8 @@ export default class TileView extends Phaser.GameObjects.Polygon
 
         let playerColor = "blue";
         let opponentColor = "red";
+
+        // TODO: fix the color scale to incorportate the partisans.
         //first scale from red and blue.
         let colorScale = chroma.scale([opponentColor, playerColor]);
         let colorStr = colorScale(playerOccupied/percentageOccupied).toString();

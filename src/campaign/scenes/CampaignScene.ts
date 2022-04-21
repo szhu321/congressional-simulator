@@ -87,7 +87,7 @@ export default class CampaignScene extends Phaser.Scene
     private initializeTileMap()
     {
         let district = Statistics.getInstance().getDistrictDatas();
-        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL, district[0].getDemographics().getTotalPopulation());
+        this.tileMap = TileMapFactory.getTileMap(this, TileMapType.SMALL, district[0]);
         //this.tileMap.getView().setDepth(-5);
         this.tileMapView = this.tileMap.getView();
         this.tileMapController = this.tileMap.getView().getTileMapController();
