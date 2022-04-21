@@ -64,12 +64,12 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
     initialize(model: FundraiseModel){
         let money = this.scene.add.particles('money');
         let moneyEmitter = money.createEmitter({
-            scale: { min: 0.1, max: 0.5 },
+            scale: { min: 0.3, max: 0.35 },
             speed: { min: 100, max: 200 },
             quantity: 0.1,
             frequency: 1,
             lifespan: 1000,
-            gravityY: 100,
+            // gravityY: 100,
             on: false,
         });
 
@@ -83,14 +83,15 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
         let workersText = this.scene.add.text(571, 50, [`Workers`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
         let upgradesText = this.scene.add.text(1013, 50, [`Upgrades`]).setFontSize(30).setFontFamily('Trebuchet MS').setColor('#00ffff');
 
-        let clickCallRect = this.scene.add.rectangle(0, 0, 0, 0, this.buttonColor);
-        let clickCallText = this.scene.add.text(80, 350, [`Text/Call`]).setFontSize(18).setColor('black');
-        let clickCallBounds = clickCallText.getBounds();
-        clickCallRect.setSize(clickCallBounds.width + 10, clickCallBounds.height + 10);
-        clickCallRect.setPosition(clickCallText.getCenter().x - clickCallRect.width / 2, clickCallText.getCenter().y - clickCallRect.height / 2);
+        let clickCallRect = this.scene.add.rectangle(225, 450, 100, 100, this.buttonColor);
+        let clickCallText = this.scene.add.text(177, 480, [`Text/Call`]).setFontSize(18).setColor('black');
+        let clickCallImg = this.scene.add.image(225, 440, "phone");
+        // let clickCallBounds = clickCallText.getBounds();
+        // clickCallRect.setSize(clickCallBounds.width + 10, clickCallBounds.height + 10);
+        // clickCallRect.setPosition(clickCallText.getCenter().x - clickCallRect.width / 2, clickCallText.getCenter().y - clickCallRect.height / 2);
         clickCallRect.setInteractive({useHandCursor: true});
 
-        moneyEmitter.setPosition(clickCallRect.getCenter().x + clickCallRect.width / 2, clickCallRect.getCenter().y + clickCallRect.height / 2);
+        moneyEmitter.setPosition(clickCallRect.getCenter().x, clickCallRect.getCenter().y);
 
         clickCallRect.on('pointerup', () => {
             this.controller.processClickCallText();
@@ -157,6 +158,7 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
         this.add(upgradeNextText);
         this.add(upgradePrevRect);
         this.add(upgradePrevText);
+        this.add(clickCallImg);
 
         let workers = model.getWorkers();
         for(let i = 0; i < workers.length; i++){

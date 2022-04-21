@@ -15,6 +15,7 @@ export default class FundraiseScene extends Phaser.Scene{
 
     preload(){
         this.load.image('money', 'assets/money1.png');
+        this.load.image('phone', 'assets/phone.png')
     }
 
     create(){

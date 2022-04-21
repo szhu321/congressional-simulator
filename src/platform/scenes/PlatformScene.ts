@@ -4,6 +4,7 @@ import AnswerModel from "../models/AnswerModel";
 import PlatformModel from "../models/PlatformModel";
 import QuestionModel from "../models/QuestionModel";
 import PlatformView from "../views/PlatformView";
+import { POLITICAL_PARTY } from "../../gameenums";
 
 
 export default class PlatformScene extends Phaser.Scene {
@@ -30,6 +31,10 @@ export default class PlatformScene extends Phaser.Scene {
 
         this.add.existing(this.view);
     }
+
+    update(time: number, delta: number){
+        this.controller.passTime(delta);
+    }
     
     initializeCamera()
     {
@@ -52,70 +57,246 @@ export default class PlatformScene extends Phaser.Scene {
     }
 
     createQuestionsAndAnswers(model: PlatformModel){
-        // let question1 = new QuestionModel("A high paying donor asked you how you would manage healthcare if you were to become elected?");
-        let questions = ["A high paying donor asked you how you would manage healthcare if you were to become elected?",
-                        "Should the government raise the federal minimum wage?",
-                        "Should the federal government pay for tuition at four-year colleges and universities?",
-                        "Should the U.S. expand offshore oil drilling?",
-                        "Should the U.S. raise taxes on the rich?",
-                        "Should the U.S. raise or lower the tax rate for corporations?",
-                        "Should the government increase environmental regulations to prevent climate change?",
-                        "Do you support the legalization of marijuana?"];
+        let questions = ["Which political party do you belong to?",
+            "Which district in New York are you running for House Representative in?",
+            "A high paying donor asked you how you would manage healthcare if you were to become elected?",
+            "Should the government raise the federal minimum wage?",
+            "Should the federal government pay for tuition at four-year colleges and universities?",
+            "Should the U.S. expand offshore oil drilling?",
+            "Should the U.S. raise taxes on the rich?",
+            "Should the U.S. raise or lower the tax rate for corporations?",
+            "Should the government increase environmental regulations to prevent climate change?",
+            "Do you support the legalization of marijuana?"];
         let answers = [[
-            "Support the Affordable Care Act",
-            "Denounce the Affordable Care Act",
-            "Do nothing"
+            {
+                text: POLITICAL_PARTY.DEMOCRATIC_PARTY,
+                effect: 0
+            },
+            {
+                text: POLITICAL_PARTY.REPUBLICAN_PARTY,
+                effect: 0
+            }
         ], [
-            "Yes",
-            "No",
-            "Yes, and adjust it every year according to inflation",
-            "Yes, and make it a living wage",
-            "No, most minimum wage jobs are meant to develop experience, not support a family",
-            "No, this will only cause prices to increase in a never ending cycle"
+            {
+                text: "District 1",
+                effect: 0
+            },
+            {
+                text: "District 2",
+                effect: 0
+            },
+            {
+                text: "District 3",
+                effect: 0
+            },
+            {
+                text: "District 4",
+                effect: 0
+            },
+            {
+                text: "District 5",
+                effect: 0
+            },
+            {
+                text: "District 6",
+                effect: 0
+            },
         ], [
-            "Yes",
-            "No",
-            "Yes, but only for partial tuition",
-            "No, but provide lower interest rates for student loans",
-            "No, but provide more scholarship opportunities for low-income students",
+            {
+                text: "Support the Affordable Care Act",
+                effect: 1
+            },
+            {
+                text: "Denounce the Affordable Care Act",
+                effect: -1
+            },
+            {
+                text: "Do nothing",
+                effect: 0
+            },
         ], [
-            "Yes",
-            "No",
-            "Yes, and deregulate the energy sector to let the free market determine the best energy solutions",
-            "No, and provide more incentives for alternative energy production",
-            "No, but maintain our current offshore oil wells",
-            "No, and nationalize the energy sector",
-            "No, end all offshore oil drilling"
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Yes, and adjust it every year according to inflation",
+                effect: 1
+            },
+            {
+                text: "Yes, and make it a living wage",
+                effect: 1
+            },
+            {
+                text: "No, most minimum wage jobs are meant to develop experience, not support a family",
+                effect: -1
+            },
+            {
+                text: "No, this will only cause prices to increase in a never ending cycle",
+                effect: -1
+            },
         ], [
-            "Yes",
-            "No",
-            "Lower the income tax rate and remove all existing tax loopholes for large corporations",
-            "Yes, and raise taxes on all income brackets",
-            "No, but lower taxes for the poor",
-            "Reform to a flat tax",
-            "No, keep the current tax structure"
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Yes, but only for partial tuition",
+                effect: 1
+            },
+            {
+                text: "No, but provide lower interest rates for student loans",
+                effect: 1
+            },
+            {
+                text: "No, but provide more scholarship opportunities for low-income students",
+                effect: 1
+            },
         ], [
-            "Raise",
-            "Lower",
-            "Maintain the current rate",
-            "Keep current rates but eliminate deductions and loopholes",
-            "Lower, but eliminate deductions and loopholes",
-            "Increase for large multinational corporations but lower for small businesses",
-            "Remove taxes on corporations and tax shareholder dividends instead"
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Yes, and deregulate the energy sector to let the free market determine the best energy solutions",
+                effect: -1
+            },
+            {
+                text: "No, and provide more incentives for alternative energy production",
+                effect: 1
+            },
+            {
+                text: "No, but maintain our current offshore oil wells",
+                effect: -1
+            },
+            {
+                text: "No, and nationalize the energy sector",
+                effect: 1
+            },
+            {
+                text: "No, end all offshore oil drilling",
+                effect: 1
+            },
         ], [
-            "Yes",
-            "No",
-            "Yes, and provide more incentives for alternative energy production",
-            "No, provide more incentives for alternative energy production instead",
-            "No, and global warming is a natural occurrence",
-            "No, tax carbon emissions instead"
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Lower the income tax rate and remove all existing tax loopholes for large corporations",
+                effect: 1
+            },
+            {
+                text: "Yes, and raise taxes on all income brackets",
+                effect: 1
+            },
+            {
+                text: "No, but lower taxes for the poor",
+                effect: 1
+            },
+            {
+                text: "Reform to a flat tax",
+                effect: -1
+            },
+            {
+                text: "No, keep the current tax structure",
+                effect: -1
+            },
         ], [
-            "Yes",
-            "No",
-            "Yes, and legalize, tax, and regulate marijuana instead of criminalizing it",
-            "No, and increase penalties for non-violent drug offenders",
-            "Yes, but only for medical use",
-            "Yes, and immediately release anyone serving time solely for drug offenses"
+            {
+                text: "Raise",
+                effect: 1
+            },
+            {
+                text: "Lower",
+                effect: -1
+            },
+            {
+                text: "Maintain the current rate",
+                effect: -1
+            },
+            {
+                text: "Keep current rates but eliminate deductions and loopholes",
+                effect: 1
+            },
+            {
+                text: "Lower, but eliminate deductions and loopholes",
+                effect: 1
+            },
+            {
+                text: "Increase for large multinational corporations but lower for small businesses",
+                effect: 1
+            },
+            {
+                text: "Remove taxes on corporations and tax shareholder dividends instead",
+                effect: -1
+            },
+        ], [
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Yes, and provide more incentives for alternative energy production",
+                effect: 1
+            },
+            {
+                text: "No, provide more incentives for alternative energy production instead",
+                effect: 1
+            },
+            {
+                text: "No, and global warming is a natural occurrence",
+                effect: -1
+            },
+            {
+                text: "No, tax carbon emissions instead",
+                effect: 1
+            },
+        ], [
+            {
+                text: "Yes",
+                effect: 1
+            },
+            {
+                text: "No",
+                effect: -1
+            },
+            {
+                text: "Yes, and legalize, tax, and regulate marijuana instead of criminalizing it",
+                effect: 1
+            },
+            {
+                text: "No, and increase penalties for non-violent drug offenders",
+                effect: -1
+            },
+            {
+                text: "Yes, but only for medical use",
+                effect: 1
+            },
+            {
+                text: "Yes, and immediately release anyone serving time solely for drug offenses",
+                effect: 1
+            },
         ]]
 
         for(let i = 0; i < questions.length; i++){

@@ -34,7 +34,7 @@ export default class PlayerModel {
     private money: number;
 
     /**
-     * Measures how popular the player is with the people in thir district.
+     * Measures how popular the player is with the people in their district.
      */
     private districtPopularity: number;
 
@@ -222,7 +222,7 @@ export default class PlayerModel {
 
     getPartyPopularity()
     {
-        return this.getPartyPopularity;
+        return this.partyPopularity;
     }
 
     setPartyPopularity(value: number)
@@ -232,7 +232,7 @@ export default class PlayerModel {
 
     getTotalTimePlaying()
     {
-        return this.getTotalTimePlaying;
+        return this.totalTimePlaying;
     }
 
     setTotalTimePlaying(value: number)

@@ -1,3 +1,4 @@
+import PlayerData from "../../data/PlayerData";
 import PlatformModel from "../models/PlatformModel";
 
 export default class PlatformController{
@@ -9,5 +10,13 @@ export default class PlatformController{
 
     setModel(model: PlatformModel){
         this.model = model;
+    }
+
+    selectAnswer(questionIndex: number, answerIndex: number){
+        this.model.chooseNewQuestion(questionIndex, answerIndex);
+    }
+
+    passTime(delta: number){
+        this.model.checkDay(PlayerData.getGameData().getCurrentDay());
     }
 }
