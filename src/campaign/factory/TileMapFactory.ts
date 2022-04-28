@@ -63,7 +63,7 @@ export default class TileMapFactory
 
     private static generateNewMap(scene: CampaignScene, rows: number, cols: number, district: DistrictData): Tile[][]
     {
-        //let populationDistribution = [][];
+        let mapDensityLayout = this.createMapLayout(rows, cols);
 
         let map = Array<Tile[]>(rows);
         for(let i = 0; i < rows; i++)
@@ -75,13 +75,16 @@ export default class TileMapFactory
                     map[i][j] = null;
                 else
                 {
-                    let newTile = TileFactory.getTile(scene, Math.floor(district.getDemographics().getTotalPopulation() / (rows * cols)));
+                    let totalPop = Math.floor(district.getDemographics().getTotalPopulation() * mapDensityLayout.getTileAt(i,j).populationPercentage);
+                    let democraticPartisans = Math.floor(district.getDemographics().getDemocraticVoters() * mapDensityLayout.getTileAt(i, j).democraticPartisanPercentage);
+                    let republicanPartisans = Math.floor(district.getDemographics().getRepublicanVoters() * mapDensityLayout.getTileAt(i, j).republicanPartisanPercentage);
+                    let newTile = TileFactory.getTile(scene, totalPop);
                     newTile.setRow(i);
                     newTile.setCol(j);
                     newTile.getView().setRow(i);
                     newTile.getView().setCol(j);
-                    newTile.setNumberOfDemocraticPartisans(Math.floor(district.getDemographics().getDemocraticVoters() / (rows * cols)));
-                    newTile.setNumberOfRepublicanPartisans(Math.floor(district.getDemographics().getRepublicanVoters() / (rows * cols)));
+                    newTile.setNumberOfDemocraticPartisans(democraticPartisans);
+                    newTile.setNumberOfRepublicanPartisans(republicanPartisans);
                     map[i][j] = newTile;
                 }  
             }
@@ -94,13 +97,23 @@ export default class TileMapFactory
     {
         let struct = new TileMapStructure(rows, cols);
         
+        //there will be 5 denseareas.
         let denseAreas = 5;
 
-        //set population density to one.
+        //set population density to 0. as well as republican and democratic partisan numbers.
         for(let i = 0; i < rows; i++)
+        {
             for(let j = 0; j < cols; j++)
-                struct.getTileAt(i, j).populationDensityNumber = 1;
-
+            {
+                let tile = struct.getTileAt(i, j);
+                if(tile)
+                {
+                    tile.populationDensityNumber = 0;
+                    tile.republicanPartisanDensityNumber = 0;
+                    tile.democraticPartisanDensityNumber = 0;
+                }
+            }
+        }
         //pick some locations that will be dense.
         while(denseAreas > 0)
         {
@@ -111,11 +124,46 @@ export default class TileMapFactory
             if(randomTile.isDead == false)
             {
                 //TODO: finish logic.
+                for(let i = 5; i >= 0; i--)
+                {
+                    struct.spreadPopulationDensityAt(randomRow, randomCol, i);
+                }
             }
             denseAreas--;
         }
-        
 
+        //calculate the percentages
+        let totalPopulationDensity = 1;
+        let totalRepublicanPartisanDensity = 1;
+        let totalDemocraticPartisanDensity = 1;
+
+        for(let i = 0; i < rows; i++)
+        {
+            for(let j = 0; j < cols; j++)
+            {
+                let tile = struct.getTileAt(i, j);
+                if(tile)
+                {
+                    totalPopulationDensity += tile.populationDensityNumber;
+                    totalRepublicanPartisanDensity += tile.republicanPartisanDensityNumber;
+                    totalDemocraticPartisanDensity += tile.democraticPartisanDensityNumber;
+                }
+            }
+        }
+
+        for(let i = 0; i < rows; i++)
+        {
+            for(let j = 0; j < cols; j++)
+            {
+                let tile = struct.getTileAt(i, j);
+                if(tile)
+                {
+                    tile.populationPercentage = tile.populationDensityNumber / totalPopulationDensity;
+                    tile.republicanPartisanPercentage = tile.republicanPartisanDensityNumber / totalRepublicanPartisanDensity;
+                    tile.democraticPartisanPercentage = tile.democraticPartisanDensityNumber / totalDemocraticPartisanDensity;
+                }
+            }
+        }
         return struct;
     }
 
@@ -185,7 +233,11 @@ class TileStructure
     public isClaimable: boolean; //is this tile active. If it is not claimable then it is a empty tile.
     public population: number;
     public populationPercentage: number;
+    public republicanPartisanPercentage: number;
+    public democraticPartisanPercentage: number;
     public populationDensityNumber: number;
+    public republicanPartisanDensityNumber: number;
+    public democraticPartisanDensityNumber: number;
     public row: number;
     public col: number;
 
@@ -214,6 +266,145 @@ class TileMapStructure
                 this.map[i][j].row = i;
                 this.map[i][j].col = j;
             }
+        }
+    }
+
+    /**
+     * Perform a even distribution of numbers to the area specified.
+     * The spread determines how far from the selected tile do the numbers go.
+     * @param row - The row.
+     * @param col - The col.
+     * @param spread - The spread. How far the number spreads.
+     */
+    public spreadRepublicanPartisanDensityAt(row: number , col: number, spread: number = 0)
+    {
+        let tile = this.getTileAt(row, col);
+        if(tile == null)
+            return;
+        //add one to the republican partisan density to the current tile and to neighboring tiles.
+        let visited = new Array<TileStructure>(); //stores the tiles that were processed.
+
+        if(spread < 0)
+            spread = 0;
+        
+        let searchQueue = new Array<TileStructure>();
+        let searchQueueRange = new Array<number>();
+        searchQueue.push(tile);
+        searchQueueRange.push(0);
+        while(searchQueue.length > 0)
+        {
+            let currentTile = searchQueue.shift();
+            let currentTileRange = searchQueueRange.shift();
+            //add one to the current tile.
+            //add this tile to the searched already list.
+            currentTile.republicanPartisanDensityNumber++;
+            let neighbors = this.getAllNeighbors(currentTile);
+            for(let neighbor of neighbors)
+            {
+                let neighborRange = currentTileRange + 1;
+                if(neighbor != null)
+                {
+                    if(neighborRange <= spread && visited.indexOf(neighbor) === -1)
+                    {
+                        searchQueue.push(neighbor);
+                        searchQueueRange.push(neighborRange);
+                    }
+                }
+            }
+            visited.push(currentTile);
+        }
+    }
+
+
+    /**
+     * Perform a even distribution of numbers to the area specified.
+     * The spread determines how far from the selected tile do the numbers go.
+     * @param row - The row.
+     * @param col - The col.
+     * @param spread - The spread. How far the number spreads.
+     */
+    public spreadPopulationDensityAt(row: number , col: number, spread: number = 0)
+    {
+        let tile = this.getTileAt(row, col);
+        if(tile == null)
+            return;
+        //add one to the republican partisan density to the current tile and to neighboring tiles.
+        let visited = new Array<TileStructure>(); //stores the tiles that were processed.
+
+        if(spread < 0)
+            spread = 0;
+        
+        let searchQueue = new Array<TileStructure>();
+        let searchQueueRange = new Array<number>();
+        searchQueue.push(tile);
+        searchQueueRange.push(0);
+        while(searchQueue.length > 0)
+        {
+            let currentTile = searchQueue.shift();
+            let currentTileRange = searchQueueRange.shift();
+            //add one to the current tile.
+            //add this tile to the searched already list.
+            currentTile.populationDensityNumber++;
+            let neighbors = this.getAllNeighbors(currentTile);
+            for(let neighbor of neighbors)
+            {
+                let neighborRange = currentTileRange + 1;
+                if(neighbor != null)
+                {
+                    if(neighborRange <= spread && visited.indexOf(neighbor) === -1)
+                    {
+                        searchQueue.push(neighbor);
+                        searchQueueRange.push(neighborRange);
+                    }
+                }
+            }
+            visited.push(currentTile);
+        }
+    }
+
+    /**
+     * Perform a even distribution of numbers to the area specified.
+     * The spread determines how far from the selected tile do the numbers go.
+     * @param row - The row.
+     * @param col - The col.
+     * @param spread - The spread. How far the number spreads.
+     */
+    public spreadDemocraticPartisanDensityAt(row: number , col: number, spread: number = 0)
+    {
+        let tile = this.getTileAt(row, col);
+        if(tile == null)
+            return;
+        //add one to the republican partisan density to the current tile and to neighboring tiles.
+        let visited = new Array<TileStructure>(); //stores the tiles that were processed.
+
+        if(spread < 0)
+            spread = 0;
+        
+        let searchQueue = new Array<TileStructure>();
+        let searchQueueRange = new Array<number>();
+        searchQueue.push(tile);
+        searchQueueRange.push(0);
+        while(searchQueue.length > 0)
+        {
+            let currentTile = searchQueue.shift();
+            let currentTileRange = searchQueueRange.shift();
+            //add one to the current tile.
+            //add this tile to the searched already list.
+            currentTile.democraticPartisanDensityNumber++;
+            let neighbors = this.getAllNeighbors(currentTile);
+            for(let neighbor of neighbors)
+            {
+                let neighborRange = currentTileRange + 1;
+                if(neighbor != null)
+                {
+                    if(neighborRange <= spread && visited.indexOf(neighbor) === -1)
+                    {
+                        searchQueue.push(neighbor);
+                        searchQueueRange.push(neighborRange);
+                    }
+                }
+            }
+            visited.push(currentTile);
         }
     }
 
