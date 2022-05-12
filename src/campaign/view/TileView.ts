@@ -7,7 +7,7 @@ import TileController from "../controller/TileController";
 import Tile from "../model/Tile";
 import CampaignScene from '../scenes/CampaignScene';
 
-export default class TileView extends Phaser.GameObjects.Polygon
+export default class TileView extends Phaser.GameObjects.Polygon //TODO: reformat the tile as a Phaser.Container
 {
     private campaignScene: CampaignScene;
     private tileController: TileController;
@@ -17,12 +17,16 @@ export default class TileView extends Phaser.GameObjects.Polygon
     private playerWorkingIcon: Phaser.GameObjects.Rectangle;
     private opponentWorkingIcon: Phaser.GameObjects.Rectangle;
 
+    private imageLoaded: boolean;
+    private populationImage: Phaser.GameObjects.Image;
+
     constructor(scene: CampaignScene, x: number, y: number, points: any, color: number, row: number, col: number)
     {
         super(scene, x, y, points, color);
         this.campaignScene = scene;
         this.row = row;
         this.col = col;
+        this.imageLoaded = false;
         let tileStrokeSize = 5;
         let hitarea = new Phaser.Geom.Polygon(points);
         this.setOrigin(0.5, 0.5);
@@ -64,6 +68,35 @@ export default class TileView extends Phaser.GameObjects.Polygon
         let democraticParticanOccupied = tile.percentageOccupiedBy(CANDIDATE.DEMOCRATIC_PARTISAN);
         let tileStrokeSize = 5;
         
+        /* Loading an image is performed once per tile. The image that will be displayed
+        would be based on the population of the tile. If the population is below a certain
+        threshold, no image is added.
+        */
+        if(this.imageLoaded === false)
+        {
+            let population = tile.getNumberOfVoters();
+            console.log(population);
+            if(population < 100)
+            {
+                //do nothing   
+            }
+            else
+            {
+                let imageName = "tile_city";
+                if(population < 1000)
+                {
+                    imageName = "tile_rural";
+                }
+                else if(population < 10000)
+                {
+                    imageName = "tile_town";
+                }
+                this.populationImage = this.scene.add.image(this.x, this.y, imageName);
+                this.populationImage.setOrigin(0.5, 0.5);
+            }
+            this.imageLoaded = true;
+        }
+
         if(tile.isWorkerOnTile())
         {
             this.setStrokeStyle(tileStrokeSize, 0x37ed98);

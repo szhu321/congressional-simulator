@@ -132,6 +132,44 @@ export default class TileMapFactory
             denseAreas--;
         }
 
+        denseAreas = 3;
+        //democratic partisan spread.
+        while(denseAreas > 0)
+        {
+            let randomCol = Math.floor(Math.random() * cols);
+            let randomRow = Math.floor(Math.random() * rows);
+
+            let randomTile = struct.getTileAt(randomRow, randomCol);
+            if(randomTile.isDead == false)
+            {
+                //TODO: finish logic.
+                for(let i = 5; i >= 0; i--)
+                {
+                    struct.spreadDemocraticPartisanDensityAt(randomRow, randomCol, i);
+                }
+            }
+            denseAreas--;
+        }
+
+        denseAreas = 3;
+        //republican partisan spread.
+        while(denseAreas > 0)
+        {
+            let randomCol = Math.floor(Math.random() * cols);
+            let randomRow = Math.floor(Math.random() * rows);
+
+            let randomTile = struct.getTileAt(randomRow, randomCol);
+            if(randomTile.isDead == false)
+            {
+                //TODO: finish logic.
+                for(let i = 5; i >= 0; i--)
+                {
+                    struct.spreadRepublicanPartisanDensityAt(randomRow, randomCol, i);
+                }
+            }
+            denseAreas--;
+        }
+
         //calculate the percentages
         let totalPopulationDensity = 1;
         let totalRepublicanPartisanDensity = 1;

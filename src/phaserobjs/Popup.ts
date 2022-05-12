@@ -1,4 +1,5 @@
 import { SCENE_CONFIG } from "../gameconfig";
+import Button from "./Button";
 import Content from "./Content";
 
 
@@ -6,6 +7,7 @@ export default class Popup extends Phaser.GameObjects.Container
 {
     private background: Phaser.GameObjects.Rectangle;
     private content: Content;
+    private hidePopupButton: Button;
 
     constructor(scene: Phaser.Scene)
     {
@@ -20,9 +22,10 @@ export default class Popup extends Phaser.GameObjects.Container
         this.background.setInteractive();
         //when the background is clicked the popup is closed.
         this.background.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, () => {
-            this.hidePopup();
+            //this.hidePopup();
+            //do nothing when the background is clicked.
         });
-        //prevent the clicking of the background affect anything under it.
+        //clicking the background will prevent the event from going to anything under it.
         this.preventEventPropogataion(this.background);
         this.add(this.background);
         this.content = null;
@@ -30,6 +33,15 @@ export default class Popup extends Phaser.GameObjects.Container
         this.scene.add.existing(this);
         //hide the popup at the beginning.
         this.hidePopup();
+
+        //create a hide popup button.
+        this.hidePopupButton = new Button(scene, 0, 0, 50, 50, 0xff0000);
+        this.hidePopupButton.getText().setText("X");
+        this.hidePopupButton.setOnclickCallback(() => {
+            this.hidePopup();
+        });
+        //this.scene.add.existing(this.hidePopupButton);
+        //this.add(this.hidePopupButton);
     }
 
     public getContent(): Content{return this.content;}
@@ -39,12 +51,16 @@ export default class Popup extends Phaser.GameObjects.Container
         {
             this.remove(this.content);
             this.scene.children.remove(this.content);
+            this.content.remove(this.hidePopupButton);
         }
         this.content = value;
         //prvent the click from the content affect anything under it.
         this.preventEventPropogataion(this.content);
         this.scene.add.existing(this.content);
         this.add(this.content);
+        //add the button to the content.
+        this.content.add(this.hidePopupButton);
+        this.hidePopupButton.setPosition(this.content.getBackground().width / 2, -this.content.getBackground().height / 2);
     }
 
     public showPopup()

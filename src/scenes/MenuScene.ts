@@ -37,6 +37,9 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('workerCard', 'assets/worker_card.png');
         this.load.image('radioButtonFilled', 'assets/radio_button_filled.png');
         this.load.image('radioButtonUnfilled', 'assets/radio_button_unfilled.png');
+        this.load.image('tile_city', 'assets/tile_city.png');
+        this.load.image('tile_rural', 'assets/tile_rural.png');
+        this.load.image('tile_town', 'assets/tile_town.png');
     }
 
     create()

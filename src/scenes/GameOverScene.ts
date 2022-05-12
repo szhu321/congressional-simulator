@@ -47,7 +47,7 @@ export default class GameOverScene extends Phaser.Scene
         Your Total Votes: ${yourVotes}\n
         Opponent Total Votes: ${opponentVotes}\n
         Votes from partisans: ${partisanVotes}\n
-        Votes from others: ${yourVotes - partisanVotes}\n\n
+        Votes from campaign: ${yourVotes - partisanVotes}\n\n
 
         To restart refresh the website.
         `
