@@ -7,11 +7,10 @@ import TileController from "../controller/TileController";
 import Tile from "../model/Tile";
 import CampaignScene from '../scenes/CampaignScene';
 
-export default class TileView extends Phaser.GameObjects.Container //TODO: reformat the tile as a Phaser.Container
+export default class TileViewOld extends Phaser.GameObjects.Polygon //TODO: reformat the tile as a Phaser.Container
 {
     private campaignScene: CampaignScene;
     private tileController: TileController;
-    private tilePolygon: Phaser.GameObjects.Polygon;
     private row: number;
     private col: number;
 
@@ -23,25 +22,24 @@ export default class TileView extends Phaser.GameObjects.Container //TODO: refor
 
     constructor(scene: CampaignScene, x: number, y: number, points: any, color: number, row: number, col: number)
     {
-        super(scene, x, y);
-        this.tilePolygon = new Phaser.GameObjects.Polygon(scene, x, y, points, color);
+        super(scene, x, y, points, color);
         this.campaignScene = scene;
         this.row = row;
         this.col = col;
         this.imageLoaded = false;
         let tileStrokeSize = 5;
         let hitarea = new Phaser.Geom.Polygon(points);
-        this.tilePolygon.setOrigin(0.5, 0.5);
-        this.tilePolygon.setStrokeStyle(tileStrokeSize, 0xaaaaaa);
-        this.tilePolygon.setInteractive({hitArea: hitarea, hitAreaCallback: Phaser.Geom.Polygon.Contains ,useHandCursor: true});
-        this.tilePolygon.on(Phaser.Input.Events.POINTER_OVER, () => {
+        this.setOrigin(0.5, 0.5);
+        this.setStrokeStyle(tileStrokeSize, 0xaaaaaa);
+        this.setInteractive({hitArea: hitarea, hitAreaCallback: Phaser.Geom.Polygon.Contains ,useHandCursor: true});
+        this.on(Phaser.Input.Events.POINTER_OVER, () => {
             this.setAlpha(0.8);
             //this.drawTile(this.tileMap.getTileAt(row,col));
         });
-        this.tilePolygon.on(Phaser.Input.Events.POINTER_OUT, () => {
+        this.on(Phaser.Input.Events.POINTER_OUT, () => {
             this.setAlpha(1);
         });
-        this.tilePolygon.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+        this.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonReleased())
             {
                 //add a event system.
@@ -49,7 +47,6 @@ export default class TileView extends Phaser.GameObjects.Container //TODO: refor
                 emitter.emit(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, this.row, this.col, this.tileController.getTile());
             }
         })
-        this.add(this.tilePolygon);
     }
 
     public setRow(value: number) {this.row = value;}
@@ -79,35 +76,30 @@ export default class TileView extends Phaser.GameObjects.Container //TODO: refor
         {
             let population = tile.getNumberOfVoters();
             console.log(population);
-            if(population < 10000)
+            if(population < 100)
             {
                 //do nothing   
             }
             else
             {
                 let imageName = "tile_city";
-                if(population < 30000)
-                {
-                    imageName = "tile_town";
-                }
-                if(population < 20000)
+                if(population < 1000)
                 {
                     imageName = "tile_rural";
                 }
-                this.populationImage = new Phaser.GameObjects.Image(this.scene, this.x, this.y, imageName);
+                else if(population < 10000)
+                {
+                    imageName = "tile_town";
+                }
+                this.populationImage = this.scene.add.image(this.x, this.y, imageName);
                 this.populationImage.setOrigin(0.5, 0.5);
-                this.populationImage.setPosition(-39, -39);
-                this.populationImage.setDisplaySize(50, 50);
-                this.populationImage.setAlpha(0.8);
-                this.add(this.populationImage);
-                this.bringToTop(this.populationImage);
             }
             this.imageLoaded = true;
         }
 
         if(tile.isWorkerOnTile())
         {
-            this.tilePolygon.setStrokeStyle(tileStrokeSize, 0x37ed98);
+            this.setStrokeStyle(tileStrokeSize, 0x37ed98);
         }
         
         //Workers on the tile.
@@ -137,6 +129,6 @@ export default class TileView extends Phaser.GameObjects.Container //TODO: refor
         //desaturate the color depending on the percentage Occupied.
         let hexNum = parseInt(colorSaturation(percentageOccupied - 0.2).toString().substring(1), 16);
         //console.log(percentageOccupied, hexNum);
-        this.tilePolygon.setFillStyle(hexNum);
+        this.setFillStyle(hexNum);
     }
 }
