@@ -6,10 +6,19 @@ import { GAME_EVENTS, POLITICAL_PARTY } from "../gameenums";
 
 export default class GameOverScene extends Phaser.Scene
 {
+    preload()
+    {
+        this.load.audio('win', 'assets/win_sound.wav');
+        this.load.audio('lose', 'assets/lose_sound.mp3');
+    }
+
     create()
     {
         this.initializeBackground();
         this.initializeCamera();
+
+        this.sound.add('win');
+        this.sound.add('lose');
 
         EventDispatcher.getInstance().emit(GAME_EVENTS.UPDATE_GLOBAL_CAMPAIGN_DATA);
         let yourVotes = PlayerData.getCampaignData().getMapModel().getTotalVotesFor(CANDIDATE.PLAYER);
@@ -34,10 +43,14 @@ export default class GameOverScene extends Phaser.Scene
         // opponentVotes = 0;
 
         let winText = "There is a tie. No one was elected. There will be a new election.";
-        if(yourVotes > opponentVotes)
+        if(yourVotes > opponentVotes){
             winText = "Congratulation! You won the election!!!";
-        if(yourVotes < opponentVotes)
+            this.sound.play('win');
+        }
+        if(yourVotes < opponentVotes){
             winText = "You lost the election. Try again in 2 years";
+            this.sound.play('lose');
+        }
 
 
         let text = `

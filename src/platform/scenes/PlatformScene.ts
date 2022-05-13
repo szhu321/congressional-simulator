@@ -163,11 +163,11 @@ export default class PlatformScene extends Phaser.Scene {
         ], [
             {
                 text: "Yes",
-                effect: 1
+                effect: -1
             },
             {
                 text: "No",
-                effect: -1
+                effect: 1
             },
             {
                 text: "Yes, and deregulate the energy sector to let the free market determine the best energy solutions",
