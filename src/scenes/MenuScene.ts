@@ -40,10 +40,15 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('tile_city', 'assets/tile_city.png');
         this.load.image('tile_rural', 'assets/tile_rural.png');
         this.load.image('tile_town', 'assets/tile_town.png');
+        this.load.audio('button', 'assets/button_press.mp3');
+        this.load.audio('game_music', 'assets/game_music.mp3');
     }
 
     create()
     {
+        this.sound.add('button');
+        this.sound.add('game_music');
+
         this.initializeMenu();
         //PlayerData.getPlayer().addMoney(5000);
         //player name.
@@ -107,6 +112,8 @@ export default class MenuScene extends Phaser.Scene {
 
         console.log("Campaign Scene active", this.scene.isActive("campaignScene"));
         console.log("Home Scene active", this.scene.isActive("homeScene"));
+
+        this.sound.play('game_music', {loop: true});
 
 
         // //start the campaign scene.
@@ -201,6 +208,7 @@ export default class MenuScene extends Phaser.Scene {
                 this.scene.launch(sceneName);
             this.showScene(sceneName);
             this.selectButton(button);
+            this.sound.play('button');
             //button.disableInteractive();
         });
         this.add.existing(button);

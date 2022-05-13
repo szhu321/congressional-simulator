@@ -93,9 +93,25 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
 
         moneyEmitter.setPosition(clickCallRect.getCenter().x, clickCallRect.getCenter().y);
 
+        let sfx = this.scene.sound.add('call1');
+        let sfx2 = this.scene.sound.add('call2');
+        let sfx3 = this.scene.sound.add('call3');
+
         clickCallRect.on('pointerup', () => {
             this.controller.processClickCallText();
             moneyEmitter.emitParticle(1);
+            let sound = Math.floor(Math.random() * 3);
+            switch(sound){
+                case 0:
+                    sfx.play();
+                    break;
+                case 1:
+                    sfx2.play();
+                    break;
+                case 2:
+                    sfx3.play();
+                    break;
+            }
         })
 
         let workerNextRect = this.scene.add.rectangle(0, 0, 0, 0, this.buttonColor);

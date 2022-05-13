@@ -40,7 +40,10 @@ export default class Button extends Phaser.GameObjects.Container
         this.background = this.scene.add.rectangle(0, 0, this.buttonWidth, this.buttonHeight, this.buttonColor);
         this.background.setInteractive({useHandCursor: true});
         this.background.setOrigin(0.5, 0.5);
-        this.background.on('pointerdown', this.onclickCallback);
+        this.background.on('pointerdown', () => {
+            this.onclickCallback();
+            this.scene.sound.play('button');
+        });
         this.add(this.background);
 
         //text

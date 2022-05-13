@@ -15,7 +15,10 @@ export default class FundraiseScene extends Phaser.Scene{
 
     preload(){
         this.load.image('money', 'assets/money1.png');
-        this.load.image('phone', 'assets/phone.png')
+        this.load.image('phone', 'assets/phone.png');
+        this.load.audio('call1', 'assets/call_button_sound.mp3');
+        this.load.audio('call2', 'assets/call_button_sound_2.mp3');
+        this.load.audio('call3', 'assets/call_button_sound_3.mp3');
     }
 
     create(){
