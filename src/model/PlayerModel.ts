@@ -110,7 +110,7 @@ export default class PlayerModel {
 
     constructor() {
         this.name = "Your Name";
-        this.money = 100000000;
+        this.money = 0;
         this.age = 30;
         this.gender = GENDER.MALE;
         this.politicalParty = POLITICAL_PARTY.NONE;
