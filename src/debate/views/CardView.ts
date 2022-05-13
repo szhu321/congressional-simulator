@@ -135,12 +135,12 @@ export default class CardView extends Phaser.GameObjects.Container{
             let cardAbility = children[4] as Phaser.GameObjects.Text;
             cardAbility.setText(model.getAbility());
             let cardAttack = children[5] as Phaser.GameObjects.Text;
-            cardAttack.setText(model.getAttack().toString());
+            cardAttack.setText("A: "+ model.getAttack().toString());
             let cardImage = children[7] as Phaser.GameObjects.Image;
             cardImage.setVisible(false);
         }
         let cardHealth = children[6] as Phaser.GameObjects.Text;
-        cardHealth.setText(model.getHealth().toString());
+        cardHealth.setText("H: " + model.getHealth().toString());
         if(model.hasAction()){
             this.background.setFillStyle(this.cardColor);
             this.setInteractive();

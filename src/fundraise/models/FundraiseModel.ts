@@ -98,13 +98,13 @@ export default class FundraiseModel{
         let currentFunds = PlayerData.getPlayer().getMoney();
         for(let i = 0; i < this.workers.length; i++){
             let worker = this.workers[i];
-            if(currentFunds >= worker.getCost() && !worker.getIsUnlocked()){
+            if(currentFunds * 2 >= worker.getCost() && !worker.getIsUnlocked()){
                 worker.unlockPurchase();
             }
         }
         for(let i = 0; i < this.upgrades.length; i++){
             let upgrade = this.upgrades[i];
-            if(currentFunds >= upgrade.getCost() && !upgrade.getIsUnlocked()){
+            if(currentFunds * 2 >= upgrade.getCost() && !upgrade.getIsUnlocked()){
                 if(upgrade.getTarget() == 0){
                     upgrade.unlockPurchase();
                 }else{
@@ -114,6 +114,10 @@ export default class FundraiseModel{
                 }
             }
         }
+    }
+
+    unlockFirstWorker(){
+        this.workers[0].unlockPurchase();
     }
 
     updateRevenueRate(){

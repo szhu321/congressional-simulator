@@ -36,6 +36,8 @@ export default class FundraiseScene extends Phaser.Scene{
         let workerDescriptions = this.createWorkerDescriptions();
         this.view.createWorkerDescriptions(workerDescriptions);
 
+        this.model.unlockFirstWorker();
+
         this.view.initialize(this.model);
 
         this.add.existing(this.view);
