@@ -8,7 +8,7 @@
 export const GAME_CONFIG = {
     game_width: 1400,
     game_height: 730,
-    game_version_number: "0.3",
+    game_version_number: "0.4",
 }
 
 /**
