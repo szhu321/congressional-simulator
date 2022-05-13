@@ -110,7 +110,7 @@ export default class PlayerModel {
 
     constructor() {
         this.name = "Your Name";
-        this.money = 0;
+        this.money = 100000000;
         this.age = 30;
         this.gender = GENDER.MALE;
         this.politicalParty = POLITICAL_PARTY.NONE;
@@ -127,13 +127,20 @@ export default class PlayerModel {
             `Upgrade your Analyst Desk to unlock more features.`,
             `Analyst Desk Level 1\n
             Unlocked 'Total Voters' and 'Total Voters Secured' on the left side panel.\n
-            \t Total Voters: The total number of voters that is present on a single tile.\n
-            \t Total Voters Secured: The total number of voters that have already decided on who to vote for.`,
+            Total Voters: The total number of voters that is present on a single tile.\n
+            Total Voters Secured: The total number of voters that have already decided on who to vote for.`,
             `Analyst Desk Level 2\n
             Unlocked 'Your Voters' and 'Opponent Voters' on the left side panel.\n
-            \t Your Voters: The number of voters that `,
-            ``,
-            ``,
+            Your Voters: The number of voters that you have taken on this tile. \n
+            Opponent Voters: The number of voters that your opponent have taken on this tile.`,
+            `Analyst Desk Level 3\n
+            Unlocked 'Party Popularity' on the left side panel\n
+            The party popularity increases the effectiveness of the workers you sent to campaign. 
+            The higher this number is, the better.`,
+            `Analyst Desk Level 4\n
+            Unlocked 'Democratic Partisans' and 'Republican Partisans' on the left side panel\n
+            Displays the number of partisans in each party. Partisans will always vote for their own party.\n
+            `,
         ]
     }
 

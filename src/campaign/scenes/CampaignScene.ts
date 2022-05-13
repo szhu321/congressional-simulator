@@ -84,7 +84,7 @@ export default class CampaignScene extends Phaser.Scene
         let content = new TextContent(this, 100, 100, 1000, 500);
         let textContent = `
         Welcome to campaigning.\n\n
-        Your goal is to have more voters on your side when the general elections starts(day 180).\n
+        Your goal is to have more voters on your side when the general elections starts(day 730).\n
         To send a worker, click on a tile on the map to select it, 
         then press on a worker on the bottom panel to send them.
         Note that you would need enough money to send the worker.\n

@@ -13,6 +13,7 @@ import MyText from "./MyText";
         super(scene, x, y, width, height);
         this.text = new MyText(scene, 0, 0, "");
         this.text.setColor("#ffffff");
+        this.text.setWordWrapWidth(width);
         //this.scene.add.existing(this.text);
         this.add(this.text);
     }

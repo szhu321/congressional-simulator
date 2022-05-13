@@ -7,6 +7,7 @@ import WorkerView from "./WorkerView";
 import millify from "millify";
 import Popup from "../../phaserobjs/Popup";
 import Content from "../../phaserobjs/Content"
+import TextContent from "../../phaserobjs/TextContent";
 
 export default class FundraiseView extends Phaser.GameObjects.Layer{
     private controller: FundraiseController;
@@ -17,7 +18,7 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
     private workersPerPage: number;
     private upgradesPerPage: number;
     private popupWindow: Popup;
-    private workerDescriptions: Content[];
+    private workerDescriptions: TextContent[];
 
     constructor(scene: Phaser.Scene){
         super(scene);
@@ -46,12 +47,14 @@ export default class FundraiseView extends Phaser.GameObjects.Layer{
 
     createWorkerDescriptions(descriptions: string[]){
         for(let i = 0; i < descriptions.length; i++){
-            let content = new Content(this.scene, 100, 100, 1000, 500);
-            let textContent = descriptions[i];
-            let textObj = new Phaser.GameObjects.Text(this.scene, 0, 0, textContent, {});
-            textObj.setOrigin(0.5, 0.5);
-            textObj.setAlign("center");
-            content.add(textObj);
+            // let content = new Content(this.scene, 100, 100, 1000, 500);
+            // let textContent = descriptions[i];
+            // let textObj = new Phaser.GameObjects.Text(this.scene, 0, 0, textContent, {});
+            // textObj.setOrigin(0.5, 0.5);
+            // textObj.setAlign("center");
+            // content.add(textObj);
+            let content = new TextContent(this.scene, 100, 100, 1000, 500);
+            content.setText(descriptions[i]);
             this.workerDescriptions.push(content);
         }
     }

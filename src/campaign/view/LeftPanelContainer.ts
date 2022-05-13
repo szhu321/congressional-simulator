@@ -24,6 +24,8 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     private upgradePanelText: string[];
     private upgradePanelCost: number[];
 
+    private infoButton: Button;
+
     constructor(scene: Phaser.Scene)
     {
         super(scene);
@@ -67,7 +69,7 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         this.initializeInteractiveZone();
 
         //add a button to unlock the panels infomation list.
-        this.upgradePanelButton = new Button(this.scene, this.panelWidth / 2, this.panelHeight - 100, 200, 100);
+        this.upgradePanelButton = new Button(this.scene, this.panelWidth / 2, this.panelHeight - 150, 200, 100);
         this.upgradePanelButton.setOnclickCallback(() => {
             this.upgradePanel();
         });
@@ -76,8 +78,15 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         this.upgradeIndex = 0;
         this.upgradePanelText = ["Analyst Desk Level 1", "Analyst Desk Level 2", 
         "Analyst Desk Level 3", "Analyst Desk Level 4", "Analyst Deck Level 5"];
-        this.upgradePanelCost = [100, 300, 800, 2000, 200000];
+        this.upgradePanelCost = [100, 500, 5000, 100000, 100000000];
         this.upgradePanelButton.getText().setText(`${this.upgradePanelText[this.upgradeIndex]}\n Cost:$${this.upgradePanelCost[this.upgradeIndex]}`);
+        
+        this.infoButton = new Button(this.scene, this.panelWidth / 2, this.panelHeight - 50, 200, 50);
+        this.infoButton.getText().setText("Info");
+        this.infoButton.setOnclickCallback(() => {
+            CampaignEventDispatcher.getInstance().emit(CAMPAIGN_EVENTS.DISPLAY_TEXT_POPUP, PlayerData.getPlayer().getAnalystDeskLevelPopupTexts()[PlayerData.getPlayer().getAnalystDeskLevel()]);
+        });
+        this.add(this.infoButton);
     }
 
     private upgradePanel()
