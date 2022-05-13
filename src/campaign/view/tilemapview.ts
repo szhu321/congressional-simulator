@@ -26,15 +26,22 @@ export default class TileMapView extends Phaser.GameObjects.Container
     private dragStartX: number;
     private dragStartY: number;
 
+    private zoomIndex: number;
+    private zoomValues: number[];
+
     constructor(scene: Phaser.Scene)
     {
         super(scene);
         this.setActive(true);
         this.selectedTile = {row: -1, col: -1};
         this.isDragging = false;
+        this.zoomValues = [0.5, 0.73, 1, 1.5, 2];
+        this.zoomIndex = 2;
         this.initializeBackground();
         this.initializeDraggingZooming();
         this.initializeSelectedHexagonOverlay();
+
+        
         
         //this.tileMapTiles;
         CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.CAMPAIGN_SELECTED_TILE, (row: number, col: number, tile: Tile) => {
@@ -176,6 +183,41 @@ export default class TileMapView extends Phaser.GameObjects.Container
         this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_UP, (pointer: Phaser.Input.Pointer) => {
             this.isDragging = false;
         });
+        this.on(Phaser.Input.Events.GAMEOBJECT_POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
+            //console.log(pointer);
+            if(pointer.deltaY < 0)
+            {
+                //zoom in.
+                //pointer.camera.setZoom(2, 2);
+                this.zoomIn();
+            }
+            if(pointer.deltaY > 0)
+            {
+                //zoom out.
+                //pointer.camera.setZoom(0.5, 0.5);
+                this.zoomOut();
+            }
+        })
+    }
+
+    private zoomIn()
+    {
+        this.zoomIndex++;
+        if(this.zoomIndex >= this.zoomValues.length)
+        {
+            this.zoomIndex = this.zoomValues.length - 1;
+        }
+        this.setScale(this.zoomValues[this.zoomIndex], this.zoomValues[this.zoomIndex]);
+    }
+
+    private zoomOut()
+    {
+        this.zoomIndex--;
+        if(this.zoomIndex < 0)
+        {
+            this.zoomIndex = 0;
+        }
+        this.setScale(this.zoomValues[this.zoomIndex], this.zoomValues[this.zoomIndex]);
     }
 
     private initializeBackground()

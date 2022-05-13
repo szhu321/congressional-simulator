@@ -11,18 +11,20 @@ import Tile from '../model/Tile';
 import TileMapView from '../view/TileMapView';
 import TileMapFactory, { TileMapType } from '../factory/TileMapFactory';
 import EventDispatcher from '../../events/EventDispatcher';
-import { GAME_EVENTS } from '../../gameenums';
+import { DAY_SPEED, GAME_EVENTS } from '../../gameenums';
 import PlayerData from '../../data/PlayerData';
-import { CANDIDATE } from '../campaignenum';
+import { CAMPAIGN_EVENTS, CANDIDATE } from '../campaignenum';
 import Popup from '../../phaserobjs/Popup';
 import Content from '../../phaserobjs/Content';
 import Statistics from '../../data/statistics/Statistics';
 import TextContent from '../../phaserobjs/TextContent';
+import Button from '../../phaserobjs/Button';
+import CampaignEventDispatcher from '../CampaignEventDispatcher';
 
 export default class CampaignScene extends Phaser.Scene
 {
     private sidePanel: LeftPanelContainer;
-    private dayDisplay: Phaser.GameObjects.Text;
+    //private dayDisplay: Phaser.GameObjects.Text;
     private bottomPanel: BottomPanelContainer;
      
     //TileMap MVC
@@ -40,6 +42,8 @@ export default class CampaignScene extends Phaser.Scene
 
     private popupWindow: Popup;
 
+    private giveUpButton: Button;
+
     preload()
     {  
         
@@ -48,7 +52,6 @@ export default class CampaignScene extends Phaser.Scene
     create()
     {
         //used to size the scene camera correctly because of the menu on the top.
-        this.initializeCamera();
         this.initializeBackground();
         this.initializeTileMap();
         this.initializeSidePanel();
@@ -62,8 +65,18 @@ export default class CampaignScene extends Phaser.Scene
 
         this.initializePopupWindow();
         //this.scene.setActive(true);
-    }
+        this.initializeCamera();
+        this.tileMapView.setScale(1, 1);
 
+        CampaignEventDispatcher.getInstance().on(CAMPAIGN_EVENTS.DISPLAY_TEXT_POPUP, (text: string) => {
+            //create a popup with the specifed text.
+            let content = new TextContent(this, 100, 100, 1000, 500);
+            content.setText(text);
+            this.popupWindow.setContent(content);
+            this.popupWindow.showPopup();
+        })
+    }
+ 
     private initializePopupWindow()
     {
         this.popupWindow = new Popup(this);
@@ -129,6 +142,11 @@ export default class CampaignScene extends Phaser.Scene
         let width = SCENE_CONFIG.scene_width;
         let height = SCENE_CONFIG.scene_height;
         this.cameras.main.setViewport(x, y, width, height);
+        //this.cameras.main.ignore(this.tileMapView);
+
+        //let mapCamera = this.cameras.add(x, y, width, height);
+        //mapCamera.ignore([this.sidePanel, this.bottomPanel, this.dayDisplay, this.yourVotesDisplay, this.opponentVotesDisplay, this.popupWindow]);
+
     }
 
     private initializeBackground()
@@ -153,10 +171,10 @@ export default class CampaignScene extends Phaser.Scene
 
     private initializeTopRightDisplay()
     {
-        this.dayDisplay = this.add.text(this.game.scale.width, 0, "Day: 1");
-        this.dayDisplay.setFontSize(20);
-        this.dayDisplay.setOrigin(1, 0);
-        this.timeController = new TimeController(this, this.dayDisplay);
+        // this.dayDisplay = this.add.text(this.game.scale.width, 0, "Day: 1");
+        // this.dayDisplay.setFontSize(20);
+        // this.dayDisplay.setOrigin(1, 0);
+        this.timeController = new TimeController(this);
 
         this.yourVotesDisplay = this.add.text(SCENE_CONFIG.scene_width, 20, "You: 0 Votes");
         this.yourVotesDisplay.setFontSize(20);
@@ -165,6 +183,14 @@ export default class CampaignScene extends Phaser.Scene
         this.opponentVotesDisplay = this.add.text(SCENE_CONFIG.scene_width, 40, "Opponent: 0 Votes");
         this.opponentVotesDisplay.setFontSize(20);
         this.opponentVotesDisplay.setOrigin(1, 0);
+
+        
+        this.giveUpButton = new Button(this, SCENE_CONFIG.scene_width - 70, 80, 100, 20);
+        this.giveUpButton.getText().setText("Give Up");
+        this.giveUpButton.setOnclickCallback(() => {
+            EventDispatcher.getInstance().emit(GAME_EVENTS.CHANGE_GAME_DAY_SPEED, DAY_SPEED.FASTER_THAN_FASTEST);
+        });
+        this.add.existing(this.giveUpButton);
     }
 
     private initializeSidePanel()

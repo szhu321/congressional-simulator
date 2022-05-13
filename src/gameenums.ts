@@ -42,5 +42,9 @@ export enum GAME_EVENTS {
     UPDATE_GLOBAL_CAMPAIGN_DATA = "update_global_campaign_data",
     START_DEBATE_GAME = "start_debate_game",
     END_DEBATE_GAME = "end_debate_game",
-    START_GAME = "start_game"
+    START_GAME = "start_game",
+    /**
+     * Args: (speed: DAY_SPEED)
+     */
+    CHANGE_GAME_DAY_SPEED = "change_game_day_speed"
 }

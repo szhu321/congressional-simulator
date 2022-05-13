@@ -7,19 +7,19 @@ import CampaignScene from "../scenes/CampaignScene";
 export default class TimeController
 {
     private scene: CampaignScene; 
-    private timerDisplay: Phaser.GameObjects.Text;
+    //private timerDisplay: Phaser.GameObjects.Text;
     //private day: number;
     private timerId: NodeJS.Timer;
 
-    constructor(scene: CampaignScene, timerDisplay: Phaser.GameObjects.Text)
+    constructor(scene: CampaignScene/*, timerDisplay: Phaser.GameObjects.Text*/)
     {
         this.scene = scene;
-        this.timerDisplay = timerDisplay;
-        this.timerDisplay.setText(`Day: 0 / ${PlayerData.getGameData().getLastDay()}`);
+        //this.timerDisplay = timerDisplay;
+        //this.timerDisplay.setText(`Day: 0 / ${PlayerData.getGameData().getLastDay()}`);
         //this.day = 1;
         this.timerId = setInterval(() => {
             PlayerData.getGameData().setCurrentDay(PlayerData.getGameData().getCurrentDay() + 1);
-            this.timerDisplay.setText(`Day: ${PlayerData.getGameData().getCurrentDay()} / 730`);
+            //this.timerDisplay.setText(`Day: ${PlayerData.getGameData().getCurrentDay()} / 730`);
             this.passTime();
             if(PlayerData.getGameData().getLastDay() <= PlayerData.getGameData().getCurrentDay())
             {
@@ -29,6 +29,19 @@ export default class TimeController
                 EventDispatcher.getInstance().emit(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN);
             }
         }, DAY_SPEED.FASTER);
+
+        EventDispatcher.getInstance().on(GAME_EVENTS.CHANGE_GAME_DAY_SPEED, (speed: DAY_SPEED) => {
+            clearInterval(this.timerId);
+            this.timerId = setInterval(() => {
+                PlayerData.getGameData().setCurrentDay(PlayerData.getGameData().getCurrentDay() + 1);
+                this.passTime();
+                if(PlayerData.getGameData().getLastDay() <= PlayerData.getGameData().getCurrentDay())
+                {
+                    clearInterval(this.timerId);
+                    EventDispatcher.getInstance().emit(GAME_EVENTS.DISPLAY_GAME_OVER_SCREEN);
+                }
+            }, speed);
+        })
     }
 
     public stopTimer()

@@ -104,7 +104,9 @@ export default class PlayerModel {
      */
     private canSeePoliticalStanceEnvironment: boolean;
 
-    
+    private analystDeskLevel: number;
+
+    private analystDeskLevelPopupTexts: string[];
 
     constructor() {
         this.name = "Your Name";
@@ -120,7 +122,19 @@ export default class PlayerModel {
         this.job = "NONE";
         this.dailyIncome = 0;
         this.moneySpent = 0;
-
+        this.analystDeskLevel = 0;
+        this.analystDeskLevelPopupTexts = [
+            `Upgrade your Analyst Desk to unlock more features.`,
+            `Analyst Desk Level 1\n
+            Unlocked 'Total Voters' and 'Total Voters Secured' on the left side panel.\n
+            \t Total Voters: The total number of voters that is present on a single tile.\n
+            \t Total Voters Secured: The total number of voters that have already decided on who to vote for.`,
+            `Analyst Desk Level 2\n
+            Unlocked 'Your Voters' and 'Opponent Voters' on the left side panel.\n
+            \t Your Voters: The number of voters that `,
+            ``,
+            ``,
+        ]
     }
 
     setConfig(configObject: {name?: string, age?: number, gender?: string, politicalParty?: string, district?: number,
@@ -143,6 +157,11 @@ export default class PlayerModel {
         if(job) this.job = job;
         if(dailyIncome) this.dailyIncome = dailyIncome;
         if(moneySpent) this.moneySpent = moneySpent;
+    }
+
+    public getAnalystDeskLevelPopupTexts(): string[]
+    {
+        return this.analystDeskLevelPopupTexts;
     }
 
     getName()
@@ -275,4 +294,13 @@ export default class PlayerModel {
         this.moneySpent = value;
     }
 
+    public setAnalystDeskLevel(value: number)
+    {
+        this.analystDeskLevel = value;
+    }
+
+    public getAnalystDeskLevel(): number
+    {
+        return this.analystDeskLevel;
+    }
 }

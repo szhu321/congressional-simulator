@@ -1,5 +1,6 @@
 import PlayerData from '../../data/PlayerData';
 import { SCENE_CONFIG } from '../../gameconfig';
+import Button from '../../phaserobjs/Button';
 import { CAMPAIGN_EVENTS, CANDIDATE } from '../campaignenum';
 import CampaignEventDispatcher from '../CampaignEventDispatcher';
 import Tile from '../model/Tile';
@@ -18,12 +19,17 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
     private backgroundBorderColor: number;
     private texts: Phaser.GameObjects.Text[];
 
+    private upgradePanelButton: Button;
+    private upgradeIndex: number;
+    private upgradePanelText: string[];
+    private upgradePanelCost: number[];
+
     constructor(scene: Phaser.Scene)
     {
         super(scene);
         this.maxLines = 14;
         this.vgap = 35;
-        this.fontSize = 18;
+        this.fontSize = 20;
         this.fontFamily = SCENE_CONFIG.scene_font_family;
         this.panelWidth = 300;
         this.panelHeight = SCENE_CONFIG.scene_height;
@@ -59,6 +65,34 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
             this.texts.push(text);
         }
         this.initializeInteractiveZone();
+
+        //add a button to unlock the panels infomation list.
+        this.upgradePanelButton = new Button(this.scene, this.panelWidth / 2, this.panelHeight - 100, 200, 100);
+        this.upgradePanelButton.setOnclickCallback(() => {
+            this.upgradePanel();
+        });
+        this.add(this.upgradePanelButton);
+
+        this.upgradeIndex = 0;
+        this.upgradePanelText = ["Analyst Desk Level 1", "Analyst Desk Level 2", 
+        "Analyst Desk Level 3", "Analyst Desk Level 4", "Analyst Deck Level 5"];
+        this.upgradePanelCost = [100, 300, 800, 2000, 200000];
+        this.upgradePanelButton.getText().setText(`${this.upgradePanelText[this.upgradeIndex]}\n Cost:$${this.upgradePanelCost[this.upgradeIndex]}`);
+    }
+
+    private upgradePanel()
+    {
+        let money = PlayerData.getPlayer().getMoney();
+        let cost = this.upgradePanelCost[this.upgradeIndex];
+        //do the upgrade.
+        if(money >= cost)
+        {
+            PlayerData.getPlayer().setMoney(money - cost);
+            this.upgradeIndex++;
+            //update the value of the analystDeskLevel
+            PlayerData.getPlayer().setAnalystDeskLevel(this.upgradeIndex);
+        }
+        this.upgradePanelButton.getText().setText(`${this.upgradePanelText[this.upgradeIndex]}\n Cost:$${this.upgradePanelCost[this.upgradeIndex]}`);
     }
 
     private initializeInteractiveZone()
@@ -122,22 +156,52 @@ export default class LeftPanelContainer extends Phaser.GameObjects.Container
         let democraticPartisans = tile.getCandidateInfoFor(CANDIDATE.DEMOCRATIC_PARTISAN).getAmountOccupied();
         let republicanPartisans = tile.getCandidateInfoFor(CANDIDATE.REPUBLICAN_PARTISAN).getAmountOccupied();
         let partyPopularity = PlayerData.getPlayer().getPartyPopularity();
-        this.updateDisplay([
-            `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
-            `Total Voters: ${tile.getNumberOfVoters()}`,
-            `Total Voters Secured: ${tile.totalOccupied()}`,
-            `Your Voters: ${yourVotes}`,
-            `Opponent Voters: ${opponentVotes}`,
-            `Democratic Partisans: ${democraticPartisans}`,
-            `Republican Partisans: ${republicanPartisans}`,
-            `Party Popularity: ${partyPopularity}`,
-            //`Worker On Tile: ${tile.isWorkerOnTile()}`,
-            `Political Stance (-1 <- Liberal Conservative -> 1):`,
-            `Economy: ${tile.getEconomy()}`,
-            `Healthcare: ${tile.getHealthcare()}`,
-            `Education: ${tile.getEducation()}`,
-            `Taxes: ${tile.getTaxes()}`,
-            `Environment: ${tile.getEnvironment()}`
-        ]);
+        
+        
+        let displayText = [];
+        let analystDeskLevel = PlayerData.getPlayer().getAnalystDeskLevel();
+        if(analystDeskLevel == 0)
+        {
+            displayText.push(`Please upgrade the analyst desk to view information on this tile.`);
+        }
+        if(analystDeskLevel > 0)
+        {
+            displayText.push(`Total Voters: ${tile.getNumberOfVoters()}`);
+            displayText.push(`Total Voters Secured: ${tile.totalOccupied()}`);
+        }
+        if(analystDeskLevel > 1)
+        {
+            displayText.push(`Your Voters: ${yourVotes}`);
+            displayText.push(`Opponent Voters: ${opponentVotes}`);
+        }
+        if(analystDeskLevel > 2)
+        {
+            displayText.push(`Party Popularity: ${partyPopularity}`);
+        }
+        if(analystDeskLevel > 3)
+        {
+            displayText.push(`Democratic Partisans: ${democraticPartisans}`);
+            displayText.push(`Republican Partisans: ${republicanPartisans}`);
+        }
+
+        this.updateDisplay(displayText);
+        
+        // this.updateDisplay([
+        //     `Location(row, col): (${tile.getRow() + 1}, ${tile.getCol() + 1})`,
+        //     `Total Voters: ${tile.getNumberOfVoters()}`,
+        //     `Total Voters Secured: ${tile.totalOccupied()}`,
+        //     `Your Voters: ${yourVotes}`,
+        //     `Opponent Voters: ${opponentVotes}`,
+        //     `Democratic Partisans: ${democraticPartisans}`,
+        //     `Republican Partisans: ${republicanPartisans}`,
+        //     `Party Popularity: ${partyPopularity}`,
+        //     //`Worker On Tile: ${tile.isWorkerOnTile()}`,
+        //     `Political Stance (-1 <- Liberal Conservative -> 1):`,
+        //     `Economy: ${tile.getEconomy()}`,
+        //     `Healthcare: ${tile.getHealthcare()}`,
+        //     `Education: ${tile.getEducation()}`,
+        //     `Taxes: ${tile.getTaxes()}`,
+        //     `Environment: ${tile.getEnvironment()}`
+        // ]);
     }
 }
